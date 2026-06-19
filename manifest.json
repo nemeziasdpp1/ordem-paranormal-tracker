@@ -4,7 +4,7 @@
   "manifest_version": 1,
   "action": {
     "title": "Status do Personagem",
-    "icon": "icon.svg",
-    "popover": "index.html"
+    "icon": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/icon.svg",
+    "popover": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/index.html"
   }
 }
