@@ -4,7 +4,7 @@
   "manifest_version": 1,
   "action": {
     "title": "Status do Personagem",
-    "icon": "/icon.svg",
-    "popover": "/index.html"
+    "icon": "icon.svg",
+    "popover": "index.html"
   }
 }
