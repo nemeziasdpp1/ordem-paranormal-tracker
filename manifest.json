@@ -1,1 +1,13 @@
-
+{
+  "name": "Ordem Paranormal Tracker",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "description": "Tracker de personagens para Owlbear Rodeo",
+  "action": {
+    "title": "Tracker",
+    "icon": "/icon.png",
+    "popover": "/index.html",
+    "height": 500,
+    "width": 350
+  }
+}
