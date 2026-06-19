@@ -5,7 +5,6 @@
   "description": "Tracker de PV, SAN, PE e iniciativa",
   "action": {
     "title": "Tracker",
-    "icon": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/icon.png",
     "popover": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/index.html",
     "height": 500,
     "width": 350
