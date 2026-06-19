@@ -1,34 +1,11 @@
-const personagens = [
-  {
-    nome: "Dio",
-    pv: "20/20",
-    san: "15/15",
-    pe: "10/10",
-    iniciativa: 12
+{
+  "name": "Ordem Paranormal Tracker",
+  "version": "1.0.0",
+  "manifest_version": 1,
+  "action": {
+    "title": "Escudo do Mestre",
+    "popover": "https://crisordemparanormal.com/escudo-do-mestre/ZK1efLzTf9K7cKcQ0nfR",
+    "height": 700,
+    "width": 1000
   }
-];
-
-const container = document.getElementById("container");
-
-function render() {
-  container.innerHTML = "";
-
-  personagens
-    .sort((a, b) => b.iniciativa - a.iniciativa)
-    .forEach(p => {
-      const div = document.createElement("div");
-      div.className = "card";
-
-      div.innerHTML = `
-        <strong>${p.nome}</strong><br>
-        PV: ${p.pv}<br>
-        SAN: ${p.san}<br>
-        PE: ${p.pe}<br>
-        Iniciativa: ${p.iniciativa}
-      `;
-
-      container.appendChild(div);
-    });
 }
-
-render();
