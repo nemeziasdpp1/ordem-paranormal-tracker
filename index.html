@@ -1,16 +1,60 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <title>Status do Personagem</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #242424;
+            color: white;
+            padding: 15px;
+        }
+        .status-box {
+            background-color: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            background-color: #444;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+        }
+        label { font-weight: bold; font-size: 14px; }
+    </style>
 </head>
 <body>
 
-  <h2>Personagens</h2>
+    <h2>Ficha Rápida</h2>
 
-  <div id="container"></div>
+    <div class="status-box">
+        <label>Nome do Personagem</label>
+        <input type="text" id="char-name" placeholder="Ex: Arthur Cervero">
+    </div>
 
-  <script src="main.js"></script>
+    <div class="status-box">
+        <label>❤️ Vida (HP)</label>
+        <input type="text" id="char-hp" placeholder="Ex: 25/30">
+    </div>
+
+    <div class="status-box">
+        <label>🧠 Sanidade</label>
+        <input type="text" id="char-san" placeholder="Ex: 40/50">
+    </div>
+
+    <div class="status-box">
+        <label>⚡ Pontos de Esforço (PE)</label>
+        <input type="text" id="char-pe" placeholder="Ex: 12/15">
+    </div>
+
+    <!-- Aqui chamamos o nosso arquivo de lógica -->
+    <script type="module" src="./app.js"></script>
+
 </body>
 </html>
