@@ -2,8 +2,14 @@
   "name": "Ordem Paranormal Tracker",
   "version": "1.0.0",
   "manifest_version": 1,
+  "description": "Tracker de PV, SAN, PE e iniciativa para RPG",
+  "author": "Dio",
+  "homepage_url": "https://SEU_USUARIO.github.io/ordem-paranormal-tracker/",
   "action": {
     "title": "Tracker",
-    "url": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/index.html"
+    "icon": "/icon.png",
+    "popover": "/index.html",
+    "height": 500,
+    "width": 350
   }
 }
