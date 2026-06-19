@@ -5,7 +5,7 @@
   "description": "Tracker de PV, SAN, PE e iniciativa para RPG",
   "action": {
     "title": "Tracker",
-    "popover": "/index.html",
+    "popover": "index.html",
     "height": 500,
     "width": 350
   }
