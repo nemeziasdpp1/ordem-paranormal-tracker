@@ -1,9 +1,9 @@
 {
   "name": "Ordem Paranormal Tracker",
   "version": "1.0.0",
-  "manifest_version": 2,
-
-  "main": "index.html",
-
-  "icon": "icon.png"
+  "manifest_version": 1,
+  "action": {
+    "title": "Tracker",
+    "url": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/index.html"
+  }
 }
