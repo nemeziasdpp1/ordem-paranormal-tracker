@@ -2,11 +2,10 @@
   "name": "Ordem Paranormal Tracker",
   "version": "1.0.0",
   "manifest_version": 1,
-  "description": "Tracker de PV, SAN, PE e iniciativa para RPG",
   "action": {
-    "title": "Tracker",
-    "popover": "index.html",
-    "height": 500,
-    "width": 350
+    "title": "Escudo do Mestre",
+    "popover": "https://crisordemparanormal.com/escudo-do-mestre/ZK1efLzTf9K7cKcQ0nfR",
+    "height": 700,
+    "width": 1000
   }
 }
