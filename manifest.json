@@ -1,13 +1,11 @@
 {
+  "manifest_version": 2,
   "name": "Ordem Paranormal Tracker",
   "version": "1.0.0",
-  "manifest_version": 1,
   "description": "Tracker de PV, SAN, PE e iniciativa",
-  "action": {
-    "title": "Tracker",
-    "icon": "/icon.png",
-    "popover": "/index.html",
-    "height": 500,
-    "width": 350
-  }
+  "author": "Dio",
+
+  "background_url": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/index.html",
+
+  "icon": "https://nemeziasdpp1.github.io/ordem-paranormal-tracker/icon.png"
 }
