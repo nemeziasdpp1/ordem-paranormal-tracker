@@ -2,7 +2,9 @@
   "name": "Ordem Paranormal Tracker",
   "version": "1.0.0",
   "manifest_version": 1,
-  "description": "Tracker de personagens para Owlbear Rodeo",
+  "description": "Tracker de PV, SAN, PE e iniciativa para RPG",
+  "author": "Dio",
+  "homepage_url": "https://SEU_USUARIO.github.io/ordem-paranormal-tracker/",
   "action": {
     "title": "Tracker",
     "icon": "/icon.png",
