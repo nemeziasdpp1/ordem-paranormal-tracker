@@ -46,6 +46,34 @@ OBR.onReady(async () => {
         await salvarNaSala();
     }
 
+    // Gera as opções do Select de 0 a 95 e depois o 99
+function gerarOpcoesNex(valorAtual) {
+    let html = '';
+    for (let i = 0; i <= 95; i += 5) {
+        html += `<option value="${i}" ${valorAtual == i ? 'selected' : ''}>${i}%</option>`;
+    }
+    html += `<option value="99" ${valorAtual == 99 ? 'selected' : ''}>99%</option>`;
+    return html;
+}
+
+// Atualiza o NEX e calcula o PE/Turno automaticamente
+window.atualizarNex = async (novoNex) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+
+    p.nex = novoNex;
+    // Cálculo: NEX dividido por 5
+    p.peTurno = Math.floor(parseInt(novoNex) / 5);
+    
+    // Atualiza o campo de texto de PE/Turno na tela
+    const inputPe = document.getElementById('ext-pe-turno');
+    if (inputPe) {
+        inputPe.value = p.peTurno;
+    }
+
+    await salvarNaSala();
+};
+
     // Ouvinte de Mudanças em Tempo Real
     OBR.room.onMetadataChange((metadata) => {
         if (metadata[METADATA_KEY]) {
