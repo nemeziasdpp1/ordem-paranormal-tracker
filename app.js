@@ -1,6 +1,9 @@
 import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
 
-// Lista com os nomes e marcadores corretos conforme o livro oficial de Ordem Paranormal
+// --- Configuração OBR ---
+const METADATA_KEY = "com.ordemparanormal.ficha";
+
+// --- Lista de Perícias ---
 const LISTA_PERICIAS_BASE = [
     { nome: "Acrobacia+", attr: "agi" }, { nome: "Adestramento*", attr: "pre" },
     { nome: "Artes*", attr: "pre" }, { nome: "Atletismo", attr: "for" },
@@ -18,93 +21,92 @@ const LISTA_PERICIAS_BASE = [
     { nome: "Tecnologia*", attr: "int" }, { nome: "Vontade", attr: "pre" }
 ];
 
-// --- Variáveis Globais de Estado ---
+// --- Variáveis Globais ---
 let personagens = [];
 let idPersonagemSelecionado = null;
 let origemIniciativa = "raiz";
 
-// --- Inicialização Segura ---
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        const dadosSalvos = localStorage.getItem("ordem_paranormal_personagens");
-        if (dadosSalvos) {
-            personagens = JSON.parse(dadosSalvos);
-        }
-    } catch (e) {
-        console.error("Erro ao ler localStorage:", e);
+// --- Inicialização com OBR ---
+OBR.onReady(async () => {
+    OBR.action.setWidth(320);
+    OBR.action.setHeight(530);
+
+    // Carregar da Nuvem do OBR
+    const metadata = await OBR.room.getMetadata();
+    if (metadata[METADATA_KEY]) {
+        personagens = metadata[METADATA_KEY];
+    } else {
+        // Dados Padrão se não houver nada
+        personagens = [{ 
+            id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
+            pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
+            agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
+            nex: "35", peTurno: "7", deslocamento: "12 m / 8 q", pericias: {} 
+        }];
+        await salvarNaSala();
     }
 
-    if (!Array.isArray(personagens) || personagens.length === 0) {
-        personagens = [
-            { 
-                id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
-                pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
-                agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
-                nex: "35", peTurno: "7", deslocamento: "12 m / 8 q",
-                pericias: {} 
-            }
-        ];
-        salvarNoLocalStorage();
-    }
-    
+    // Ouvinte de Mudanças em Tempo Real
+    OBR.room.onMetadataChange((metadata) => {
+        if (metadata[METADATA_KEY]) {
+            personagens = metadata[METADATA_KEY];
+            atualizarInterfaceSincronizada();
+        }
+    });
+
     if (personagens.length > 0) idPersonagemSelecionado = personagens[0].id;
     window.voltarParaRaiz();
 });
+
+// --- Função de Salvar na Nuvem ---
+async function salvarNaSala() {
+    await OBR.room.setMetadata({
+        [METADATA_KEY]: personagens
+    });
+}
+
+// --- Atualizador de UI em tempo real ---
+function atualizarInterfaceSincronizada() {
+    // Se estiver na tela de iniciativa, redesenha
+    if (document.getElementById('aba-iniciativa').style.display === 'block') {
+        renderizarCardsIniciativa();
+    }
+    // Se estiver na tela de perícias, atualiza
+    if (document.getElementById('aba-pericias').style.display === 'block') {
+        renderizarPericias();
+    }
+    // Se estiver na tela de lista, atualiza
+    if (document.getElementById('tela-lista-personagens').style.display === 'block') {
+        renderizarListaPersonagens();
+    }
+}
 
 // --- Modal de Perícias ---
 window.abrirModalPericia = async (nomePericia) => {
     const modal = document.getElementById('modal-pericia');
     const titulo = document.getElementById('modal-titulo');
     const texto = document.getElementById('modal-texto');
-
-    // Remove os símbolos * e + para garantir que a busca seja limpa
     const chaveLimpa = nomePericia.replace(/[*+]/g, '');
 
     try {
         const response = await fetch('./data/pericias.json');
-        if (!response.ok) throw new Error("Erro ao carregar arquivo de perícias.");
-        
+        if (!response.ok) throw new Error("Erro ao carregar perícias.");
         const todasPericias = await response.json();
-        
-        // Busca usando a chave limpa
         const info = todasPericias[chaveLimpa];
-
         if (info) {
-            titulo.innerText = nomePericia; // Exibe o nome completo com símbolos
-            texto.innerHTML = `
-                <p>${info.descricao}</p>
-                <div class="regras-container">${info.regras}</div>
-            `;
+            titulo.innerText = nomePericia;
+            texto.innerHTML = `<p>${info.descricao}</p><div class="regras-container">${info.regras}</div>`;
             modal.style.display = 'flex';
-        } else {
-            console.error(`Perícia "${chaveLimpa}" não encontrada no JSON.`);
-            alert(`Detalhes para "${nomePericia}" não cadastrados.`);
         }
-    } catch (err) {
-        console.error("Erro ao carregar perícia:", err);
-        alert("Não foi possível carregar os detalhes.");
-    }
+    } catch (err) { console.error("Erro ao carregar perícia:", err); }
 };
 
-window.fecharModal = () => {
-    document.getElementById('modal-pericia').style.display = 'none';
-};
+window.fecharModal = () => document.getElementById('modal-pericia').style.display = 'none';
 
-// --- Funções de Persistência ---
-function salvarNoLocalStorage() {
-    try {
-        localStorage.setItem("ordem_paranormal_personagens", JSON.stringify(personagens));
-    } catch (e) {
-        console.error("Falha ao salvar no localStorage:", e);
-    }
-}
-
+// --- Utilitários de Dados ---
 function obterPersonagemAtual() {
     let p = personagens.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personagens.length > 0) {
-        idPersonagemSelecionado = personagens[0].id;
-        p = personagens[0];
-    }
+    if (!p && personagens.length > 0) { idPersonagemSelecionado = personagens[0].id; p = personagens[0]; }
     return p;
 }
 
@@ -114,25 +116,15 @@ window.selecionarPersonagem = (id) => {
     ocultarTodasTelas();
     const p = obterPersonagemAtual();
     if (p) {
-        const titulo = document.getElementById('nome-titulo-personagem');
-        if (titulo) titulo.innerText = p.nome;
-        const menu = document.getElementById('menu-personagem');
-        if (menu) menu.style.display = 'block';
-    } else {
-        window.voltarParaRaiz();
-    }
+        document.getElementById('nome-titulo-personagem').innerText = p.nome;
+        document.getElementById('menu-personagem').style.display = 'block';
+    } else { window.voltarParaRaiz(); }
 };
 
-window.mostrarListaPersonagens = () => { 
-    ocultarTodasTelas(); 
-    const el = document.getElementById('tela-lista-personagens'); 
-    if (el) el.style.display = 'block'; 
-    renderizarListaPersonagens(); 
-};
-
-window.voltarParaRaiz = () => { ocultarTodasTelas(); const el = document.getElementById('tela-raiz'); if (el) el.style.display = 'grid'; };
+window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
+window.voltarParaRaiz = () => { ocultarTodasTelas(); document.getElementById('tela-raiz').style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
-window.voltarParaMenuChar = () => { ocultarTodasTelas(); const el = document.getElementById('menu-personagem'); if (el) el.style.display = 'block'; };
+window.voltarParaMenuChar = () => { ocultarTodasTelas(); document.getElementById('menu-personagem').style.display = 'block'; };
 
 function ocultarTodasTelas() {
     ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais'].forEach(id => {
@@ -142,36 +134,23 @@ function ocultarTodasTelas() {
 
 // --- Iniciativa ---
 window.abrirIniciativa = (vindoDe) => {
-    origemIniciativa = vindoDe; 
-    ocultarTodasTelas();
-    const el = document.getElementById('aba-iniciativa');
-    if (el) el.style.display = 'block';
+    origemIniciativa = vindoDe; ocultarTodasTelas();
+    document.getElementById('aba-iniciativa').style.display = 'block';
     renderizarCardsIniciativa();
 };
 
 window.voltarDeIniciativa = () => {
     ocultarTodasTelas();
-    if (origemIniciativa === 'raiz') {
-        document.getElementById('tela-raiz').style.display = 'grid';
-    } else {
-        document.getElementById('menu-personagem').style.display = 'block';
-    }
+    if (origemIniciativa === 'raiz') document.getElementById('tela-raiz').style.display = 'grid';
+    else document.getElementById('menu-personagem').style.display = 'block';
 };
 
 function renderizarCardsIniciativa() {
     const container = document.getElementById('lista-iniciativa-cards');
-    if (!container) return; 
-    container.innerHTML = '';
+    if (!container) return; container.innerHTML = '';
+    const ativos = personagens.filter(p => p.emIniciativa).sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
     
-    // O sort já estava aqui e funciona para ordenar (do maior para o menor)
-    const ativos = personagens
-        .filter(p => p.emIniciativa)
-        .sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
-    
-    if (ativos.length === 0) { 
-        container.innerHTML = '<p style="text-align:center; font-size:12px; color:#666;">Nenhum personagem em iniciativa.</p>'; 
-        return; 
-    }
+    if (ativos.length === 0) { container.innerHTML = '<p style="text-align:center; font-size:12px; color:#666;">Nenhum personagem em iniciativa.</p>'; return; }
 
     ativos.forEach(p => {
         const card = document.createElement('div');
@@ -185,128 +164,95 @@ function renderizarCardsIniciativa() {
                     <input type="text" value="${p.pe}" style="background:transparent; border:none; color:#ffff55; width:40px; text-align:center; outline:none; font-weight:bold;" oninput="atualizarDado('${p.id}','pe',this.value)">
                 </div>
             </div>
-            <input type="text" value="${p.ini}" 
-                   style="background:transparent; border:none; border-bottom:1px solid white; color:white; font-size:20px; width:30px; text-align:center; font-weight:bold; outline:none;" 
-                   oninput="atualizarDado('${p.id}','ini',this.value)" 
-                   onblur="renderizarCardsIniciativa()">
+            <input type="text" value="${p.ini}" style="background:transparent; border:none; border-bottom:1px solid white; color:white; font-size:20px; width:30px; text-align:center; font-weight:bold; outline:none;" oninput="atualizarDado('${p.id}','ini',this.value)">
         `;
         container.appendChild(card);
     });
 }
 
-// --- Perícias Otimizadas ---
-window.alterarExtraPericia = (nomePericia, valorExtra) => {
+// --- Perícias ---
+window.alterarExtraPericia = async (nomePericia, valorExtra) => {
     const p = obterPersonagemAtual();
-    if (!p || !p.pericias) return;
+    if (!p) return;
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
-    
     p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
-    const total = (p.pericias[nomePericia].treino || 0) + p.pericias[nomePericia].extra;
-    
-    const totalElemento = document.getElementById(`total-${nomePericia}`);
-    if (totalElemento) totalElemento.innerText = `( ${total} )`;
-    
-    salvarNoLocalStorage();
+    await salvarNaSala();
 };
 
-window.alterarTreinoPericia = (nomePericia, valorTreino) => {
+window.alterarTreinoPericia = async (nomePericia, valorTreino) => {
     const p = obterPersonagemAtual();
     if (!p) return;
     if (!p.pericias) p.pericias = {};
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
-    
     p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
-    renderizarPericias();
-    salvarNoLocalStorage();
+    await salvarNaSala();
 };
 
 function renderizarPericias() {
     const container = document.getElementById('lista-pericias-container');
-    if (!container) return; 
-    container.innerHTML = '';
-    const p = obterPersonagemAtual(); 
-    if (!p) return;
+    if (!container) return; container.innerHTML = '';
+    const p = obterPersonagemAtual(); if (!p) return;
     if (!p.pericias) p.pericias = {};
     
     LISTA_PERICIAS_BASE.forEach(peri => {
-        const dadosSalvos = p.pericias[peri.nome] || { treino: 0, extra: 0 };
-        const treino = dadosSalvos.treino || 0; 
-        const extra = dadosSalvos.extra || 0; 
-        const total = treino + extra;
-        
-        const itemRow = document.createElement('div'); 
-        itemRow.className = `pericia-item-row p-treino-${treino}`;
+        const dados = p.pericias[peri.nome] || { treino: 0, extra: 0 };
+        const total = dados.treino + dados.extra;
+        const itemRow = document.createElement('div');
+        itemRow.className = `pericia-item-row p-treino-${dados.treino}`;
         itemRow.innerHTML = `
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" onclick="abrirModalPericia('${peri.nome}')" style="cursor:pointer;">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" onclick="abrirModalPericia('${peri.nome}')" style="cursor:pointer;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/></svg>
             <span class="p-nome" onclick="abrirModalPericia('${peri.nome}')" style="cursor: pointer;">${peri.nome}</span>
             <span class="p-attr">( ${peri.attr.toUpperCase()} )</span>
             <span id="total-${peri.nome}">( ${total} )</span>
             <select class="pericia-select-ficha" onchange="alterarTreinoPericia('${peri.nome}', this.value)">
-                <option value="0" ${treino === 0 ? 'selected' : ''}>0</option>
-                <option value="5" ${treino === 5 ? 'selected' : ''}>5</option>
-                <option value="10" ${treino === 10 ? 'selected' : ''}>10</option>
-                <option value="15" ${treino === 15 ? 'selected' : ''}>15</option>
+                <option value="0" ${dados.treino === 0 ? 'selected' : ''}>0</option>
+                <option value="5" ${dados.treino === 5 ? 'selected' : ''}>5</option>
+                <option value="10" ${dados.treino === 10 ? 'selected' : ''}>10</option>
+                <option value="15" ${dados.treino === 15 ? 'selected' : ''}>15</option>
             </select>
-            <input type="text" class="pericia-input-ficha" value="${extra}" oninput="alterarExtraPericia('${peri.nome}', this.value)" placeholder="0">
+            <input type="text" class="pericia-input-ficha" value="${dados.extra}" oninput="alterarExtraPericia('${peri.nome}', this.value)" placeholder="0">
         `;
         container.appendChild(itemRow);
     });
 }
 
-// --- Outros ---
-window.toggleModoEdicao = () => {
+// --- Funções de Edição e Salvar ---
+window.toggleModoEdicao = async () => {
     const btn = document.getElementById('btn-toggle-atrib');
     const inputs = document.querySelectorAll('.input-editavel');
-    if (!btn) return;
-    
     if (btn.innerHTML.includes('Editar')) {
-        btn.innerHTML = 'Salvar';
-        btn.style.borderColor = '#22c55e';
-        btn.style.color = '#22c55e';
-        inputs.forEach(input => {
-            input.removeAttribute('readonly');
-            input.classList.remove('input-travado');
-        });
+        btn.innerHTML = 'Salvar'; btn.style.borderColor = '#22c55e'; btn.style.color = '#22c55e';
+        inputs.forEach(i => { i.removeAttribute('readonly'); i.classList.remove('input-travado'); });
     } else {
-        btn.innerHTML = 'Editar';
-        btn.style.borderColor = '#444';
-        btn.style.color = '#aaa';
-        inputs.forEach(input => {
-            input.setAttribute('readonly', 'true');
-            input.classList.add('input-travado');
-        });
-        salvarAtributos();
-        salvarExtras();
-        salvarNoLocalStorage();
+        btn.innerHTML = 'Editar'; btn.style.borderColor = '#444'; btn.style.color = '#aaa';
+        inputs.forEach(i => { i.setAttribute('readonly', 'true'); i.classList.add('input-travado'); });
+        await salvarAtributos(); await salvarExtras();
     }
 };
 
-window.salvarAtributos = () => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
-    const agi = document.getElementById('at-agi'); if (agi) p.agi = agi.value;
-    const intel = document.getElementById('at-int'); if (intel) p.int = intel.value;
-    const vig = document.getElementById('at-vig'); if (vig) p.vig = vig.value;
-    const pre = document.getElementById('at-pre'); if (pre) p.pre = pre.value;
-    const forc = document.getElementById('at-for'); if (forc) p.forca = forc.value;
+window.salvarAtributos = async () => {
+    const p = obterPersonagemAtual(); if (!p) return;
+    p.agi = document.getElementById('at-agi').value;
+    p.int = document.getElementById('at-int').value;
+    p.vig = document.getElementById('at-vig').value;
+    p.pre = document.getElementById('at-pre').value;
+    p.forca = document.getElementById('at-for').value;
+    await salvarNaSala();
 };
 
-window.salvarExtras = () => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
-    const nex = document.getElementById('ext-nex'); if (nex) p.nex = nex.value.replace('%', '');
-    const peTurno = document.getElementById('ext-pe-turno'); if (peTurno) p.peTurno = peTurno.value;
-    const desloc = document.getElementById('ext-deslocamento'); if (desloc) p.deslocamento = desloc.value;
+window.salvarExtras = async () => {
+    const p = obterPersonagemAtual(); if (!p) return;
+    p.nex = document.getElementById('ext-nex').value.replace('%', '');
+    p.peTurno = document.getElementById('ext-pe-turno').value;
+    p.deslocamento = document.getElementById('ext-deslocamento').value;
+    await salvarNaSala();
 };
 
-window.salvarExtrasDireto = (campo, valor) => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
+window.salvarExtrasDireto = async (campo, valor) => {
+    const p = obterPersonagemAtual(); if (!p) return;
     p[campo] = valor;
     atualizarBarraVisual(campo);
-    salvarNoLocalStorage();
+    await salvarNaSala();
 };
 
 function atualizarBarraVisual(campo) {
@@ -317,42 +263,38 @@ function atualizarBarraVisual(campo) {
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
     let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
     
-    let cor = "#991b1b"; let idElemento = "bar-vida";
-    if (campo === 'san') { cor = "#6b21a8"; idElemento = "bar-sanidade"; }
-    if (campo === 'pe') { cor = "#c2410c"; idElemento = "bar-esforco"; }
+    let cor = campo === 'san' ? "#6b21a8" : campo === 'pe' ? "#c2410c" : "#991b1b";
+    let idElemento = campo === 'san' ? "bar-sanidade" : campo === 'pe' ? "bar-esforco" : "bar-vida";
     
     const el = document.getElementById(idElemento);
     if (el) el.style.backgroundImage = `linear-gradient(to right, ${cor} ${Math.round(pct)}%, transparent ${Math.round(pct)}%)`;
 }
 
-window.ajustarStatus = (campo, delta) => {
+window.ajustarStatus = async (campo, delta) => {
     const p = obterPersonagemAtual(); if (!p) return;
-    let valorAtual = String(p[campo] || "0 / 0");
-    let partes = valorAtual.split('/');
-    let atual = parseInt(partes[0]) || 0;
+    let partes = String(p[campo] || "0 / 0").split('/');
+    let atual = Math.max(0, (parseInt(partes[0]) || 0) + delta);
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
-    atual = Math.max(0, atual + delta);
-    
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
+    
     const inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
     const inputEl = document.getElementById(inputId);
     if (inputEl) inputEl.value = p[campo];
     atualizarBarraVisual(campo);
-    salvarNoLocalStorage();
+    await salvarNaSala();
 };
 
 window.abrirAbaChar = (idAba) => {
     ocultarTodasTelas();
-    const elAba = document.getElementById(idAba);
-    if (elAba) elAba.style.display = 'block';
+    document.getElementById(idAba).style.display = 'block';
     const p = obterPersonagemAtual(); if (!p) return;
     
     if (idAba === 'aba-info') {
-        const nome = document.getElementById('info-nome'); if (nome) nome.value = p.nome || "";
-        const jogador = document.getElementById('info-jogador'); if (jogador) jogador.value = p.jogador || "";
-        const origem = document.getElementById('info-origem'); if (origem) origem.value = p.origem || "";
-        const classe = document.getElementById('info-classe'); if (classe) classe.value = p.classe || "";
-        const emIni = document.getElementById('info-em-iniciativa'); if (emIni) emIni.checked = !!p.emIniciativa;
+        document.getElementById('info-nome').value = p.nome || "";
+        document.getElementById('info-jogador').value = p.jogador || "";
+        document.getElementById('info-origem').value = p.origem || "";
+        document.getElementById('info-classe').value = p.classe || "";
+        document.getElementById('info-em-iniciativa').checked = !!p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
         document.getElementById('at-agi').value = p.agi || "0";
         document.getElementById('at-int').value = p.int || "0";
@@ -369,35 +311,35 @@ window.abrirAbaChar = (idAba) => {
     } else if (idAba === 'aba-pericias') { renderizarPericias(); }
 };
 
-window.salvarDadosForm = () => {
+window.salvarDadosForm = async () => {
     const p = obterPersonagemAtual(); if (!p) return;
     p.nome = document.getElementById('info-nome').value;
     p.jogador = document.getElementById('info-jogador').value;
     p.origem = document.getElementById('info-origem').value;
     p.classe = document.getElementById('info-classe').value;
     document.getElementById('nome-titulo-personagem').innerText = p.nome;
-    salvarNoLocalStorage(); 
+    await salvarNaSala(); 
 };
 
-window.excluirPersonagemAtual = () => {
+window.excluirPersonagemAtual = async () => {
     const p = obterPersonagemAtual();
     if (!p || !confirm(`Excluir ${p.nome}?`)) return;
     personagens = personagens.filter(char => char.id !== p.id);
-    salvarNoLocalStorage();
+    await salvarNaSala();
     window.mostrarListaPersonagens();
 };
 
-window.alternarIniciativa = (checked) => { 
+window.alternarIniciativa = async (checked) => { 
     const p = obterPersonagemAtual(); 
-    if (p) { p.emIniciativa = checked; salvarNoLocalStorage(); } 
+    if (p) { p.emIniciativa = checked; await salvarNaSala(); } 
 };
 
-window.atualizarDado = (id, campo, valor) => { 
+window.atualizarDado = async (id, campo, valor) => { 
     const p = personagens.find(c => c.id === id); 
-    if (p) { p[campo] = valor; salvarNoLocalStorage(); } 
+    if (p) { p[campo] = valor; await salvarNaSala(); } 
 };
 
-function renderizarListaPersonagens() {
+window.renderizarListaPersonagens = () => {
     const container = document.getElementById('lista-botoes-personagens'); if (!container) return;
     container.innerHTML = '';
     personagens.forEach(p => {
@@ -405,11 +347,9 @@ function renderizarListaPersonagens() {
         btn.onclick = () => window.selecionarPersonagem(p.id); container.appendChild(btn);
     });
     const bNovo = document.createElement('button'); bNovo.className = 'menu-btn'; bNovo.innerText = '+ Novo';
-    bNovo.onclick = () => { 
+    bNovo.onclick = async () => { 
         personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false, nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {} }); 
-        salvarNoLocalStorage(); renderizarListaPersonagens(); 
+        await salvarNaSala(); renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
-}
-
-OBR.onReady(() => { OBR.action.setWidth(320); OBR.action.setHeight(530); });
+};
