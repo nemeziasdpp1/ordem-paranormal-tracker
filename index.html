@@ -41,27 +41,40 @@
         <div class="atributos-wrapper">
             <input type="text" id="at-agi" class="input-atrib pos-agi input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
             <input type="text" id="at-int" class="input-atrib pos-int input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
-            <input type="text" id="at-vig" class="input-atrib pos-vig input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
+            <input type="text" id="at-vig" class="input-travado pos-vig input-atrib input-editavel" value="0" readonly oninput="salvarAtributos()">
             <input type="text" id="at-pre" class="input-atrib pos-pre input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
             <input type="text" id="at-for" class="input-atrib pos-for input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
         </div>
 
-        <div class="nex-container">
-            <select id="ext-nex" class="input-travado input-editavel" onchange="atualizarNex(this.value)" disabled>
-            </select>
-            <span class="nex-fixed-symbol">%</span>
-        </div>
-                
-        <div class="stat-box-stack">
-            <input type="text" id="ext-pe-turno" class="input-box-style input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
-            <span class="label-stack">PE / TURNO</span>
-        </div>
-        
-        <div class="stat-box-stack">
-            <input type="text" id="ext-deslocamento" class="input-box-style input-travado input-editavel" value="0m" readonly oninput="salvarExtras()">
-            <span class="label-stack">DESLOCAMENTO</span>
-        </div>
+        <div class="stats-extras-container">
+            <div class="row-nex-pe">
+                <div class="stat-box-stack nex-group">
+                    <span class="label-stat-fixed">NEX</span>
+                    <div class="nex-input-group input-travado input-editavel">
+                        <select id="ext-nex" onchange="atualizarNex(this.value)" disabled>
+                            </select>
+                        <span class="nex-fixed-symbol">%</span>
+                    </div>
+                </div>
 
+                <div class="stat-box-stack pe-group">
+                    <input type="number" id="ext-pe-turno" class="input-box-style input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
+                    <span class="label-stack">PE / TURNO</span>
+                </div>
+            </div>
+
+            <div class="row-deslocamento">
+                <div class="stat-box-stack desloc-group">
+                    <div class="desloc-input-group input-travado input-editavel">
+                        <input type="number" id="ext-deslocamento-m" step="0.5" value="0" readonly oninput="atualizarDeslocamentoMetro(this.value)">
+                        <span class="desloc-text-fixed">m /</span>
+                        <input type="number" id="ext-deslocamento-q" value="0" readonly oninput="atualizarDeslocamentoQuadrado(this.value)">
+                        <span class="desloc-text-fixed">q</span>
+                    </div>
+                    <span class="label-stack">DESLOCAMENTO</span>
+                </div>
+            </div>
+        </div>
         <div class="resource-bar-container">
             <span class="resource-label">VIDA</span>
             <div id="bar-vida" class="resource-bar">
