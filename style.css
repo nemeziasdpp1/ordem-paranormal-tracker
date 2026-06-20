@@ -296,6 +296,12 @@ body {
     z-index: 9999;           /* Garante que fique acima de tudo */
 }
 
+.nota-pericia {
+    font-size: 0.75rem; /* Isso reduz o tamanho da fonte */
+    color: #6b7280;     /* Opcional: uma cor cinza para dar destaque menor */
+    display: block;     /* Opcional: pula linha se necessário */
+}
+
 .modal-conteudo {
     background: #1a1a1a;
     color: #e0e0e0;
