@@ -112,7 +112,7 @@
             accent-color: #a855f7;
         }
 
-        /* --- O Visual Original do Card de Status (Mantido e Protegido) --- */
+        /* --- O Visual Original do Card de Status Mantido --- */
         .character-card {
             display: flex;
             justify-content: space-between;
@@ -191,19 +191,9 @@
 
     <div id="aba-iniciativa" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarDeIniciativa()">⬅ Voltar</button>
-        <div class="character-card">
-            <div class="info-section">
-                <input type="text" class="char-name" id="char-name-display" oninput="salvarDadosIniciativa()">
-                <div class="stats-row">
-                    <input type="text" class="stat-pv" id="char-pv" oninput="salvarDadosIniciativa()">
-                    <input type="text" class="stat-san" id="char-san" oninput="salvarDadosIniciativa()">
-                    <input type="text" class="stat-pe" id="char-pe" oninput="salvarDadosIniciativa()">
-                </div>
+        <h3 style="color: #a855f7; margin: 0 0 12px 0; text-align: center; font-size: 14px;">Ordem de Iniciativa</h3>
+        <div id="lista-iniciativa-cards" style="display: flex; flex-direction: column; gap: 10px;">
             </div>
-            <div>
-                <input type="text" class="stat-ini" id="char-ini" oninput="salvarDadosIniciativa()">
-            </div>
-        </div>
     </div>
 
     <div id="aba-info" class="tela-oculta">
