@@ -11,8 +11,8 @@ let personagens = [
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
-// --- Navegação ---
-window.mostrarListaPersonagens = () => { ocultarTodas Telas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
+// --- Navegação (Corrigido o espaço em ocultarTodasTelas) ---
+window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
 window.voltarParaRaiz = () => { ocultarTodasTelas(); document.getElementById('tela-raiz').style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
 window.voltarParaMenuChar = () => { ocultarTodasTelas(); document.getElementById('menu-personagem').style.display = 'block'; };
@@ -126,5 +126,5 @@ function renderizarListaPersonagens() {
 // Configuração do tamanho da janela da extensão no Owlbear
 OBR.onReady(() => { 
     OBR.action.setWidth(320); 
-    OBR.action.setHeight(280); /* Reduzido de 320 para 280 para ajustar ao novo tamanho da imagem */
+    OBR.action.setHeight(280); 
 });
