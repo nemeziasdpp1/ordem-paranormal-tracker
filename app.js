@@ -1,6 +1,6 @@
 import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
 
-// Lista de fichas da mesa (Começa com a Yuki selecionada por padrão)
+// Banco de dados simulado em memória
 let personagens = [
     { 
         id: "yuki", 
@@ -11,13 +11,13 @@ let personagens = [
         pv: "31 / 31", 
         san: "47 / 47", 
         pe: "41 / 49", 
-        ini: "0", 
+        ini: "15", 
         emIniciativa: false 
     }
 ];
 
-let idPersonagemSelecionado = "yuki"; // Yuki é o padrão ao abrir a extensão
-let origemIniciativa = "raiz"; // Controla o destino do botão voltar ('raiz' ou 'menu-char')
+let idPersonagemSelecionado = "yuki"; 
+let origemIniciativa = "raiz"; 
 
 // --- Funções de Navegação de Telas ---
 window.mostrarListaPersonagens = function() {
@@ -40,21 +40,12 @@ window.voltarParaMenuChar = function() {
     document.getElementById('menu-personagem').style.display = 'block';
 };
 
-// --- Atalho Único de Iniciativa ---
+// --- Tela de Iniciativa Unificada (Gera a lista de cards originais) ---
 window.abrirIniciativa = function(vindoDe) {
-    origemIniciativa = vindoDe; // Memoriza de qual tela o usuário clicou
+    origemIniciativa = vindoDe; 
     ocultarTodasTelas();
     document.getElementById('aba-iniciativa').style.display = 'block';
-    
-    // Carrega o card do personagem ativo na tela de iniciativa
-    const p = personagens.find(char => char.id === idPersonagemSelecionado);
-    if (p) {
-        document.getElementById('char-name-display').value = p.nome;
-        document.getElementById('char-pv').value = p.pv;
-        document.getElementById('char-san').value = p.san;
-        document.getElementById('char-pe').value = p.pe;
-        document.getElementById('char-ini').value = p.ini;
-    }
+    renderizarCardsIniciativa();
 };
 
 window.voltarDeIniciativa = function() {
@@ -66,7 +57,50 @@ window.voltarDeIniciativa = function() {
     }
 };
 
-// --- Navegação Interna da Ficha ---
+// --- Renderiza os Cards Reais com Cores na Iniciativa ---
+function renderizarCardsIniciativa() {
+    const container = document.getElementById('lista-iniciativa-cards');
+    container.innerHTML = '';
+
+    // Filtra apenas quem está marcado com o checkbox e ordena por iniciativa (Maior para Menor)
+    const ativos = personagens
+        .filter(p => p.emIniciativa)
+        .sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
+
+    if (ativos.length === 0) {
+        container.innerHTML = '<p style="font-size:12px; color:#666; text-align:center; padding-top:15px;">Nenhum personagem na iniciativa.</p>';
+        return;
+    }
+
+    ativos.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        
+        // Injeta a estrutura visual exata com os inputs funcionais e cores corretas
+        card.innerHTML = `
+            <div class="info-section">
+                <input type="text" class="char-name" value="${p.nome}" oninput="atualizarDadoCombate('${p.id}', 'nome', this.value)">
+                <div class="stats-row">
+                    <input type="text" class="stat-pv" value="${p.pv}" oninput="atualizarDadoCombate('${p.id}', 'pv', this.value)">
+                    <input type="text" class="stat-san" value="${p.san}" oninput="atualizarDadoCombate('${p.id}', 'san', this.value)">
+                    <input type="text" class="stat-pe" value="${p.pe}" oninput="atualizarDadoCombate('${p.id}', 'pe', this.value)">
+                </div>
+            </div>
+            <div>
+                <input type="text" class="stat-ini" value="${p.ini}" oninput="atualizarDadoCombate('${p.id}', 'ini', this.value)" onblur="renderizarCardsIniciativa()">
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// Salva alterações feitas direto nos cards de iniciativa
+window.atualizarDadoCombate = function(id, campo, valor) {
+    const p = personagens.find(char => char.id === id);
+    if (p) p[campo] = valor;
+};
+
+// --- Seleção de Personagem e Formulário ---
 window.selecionarPersonagem = function(id) {
     idPersonagemSelecionado = id;
     ocultarTodasTelas();
@@ -91,17 +125,6 @@ window.abrirAbaChar = function(idAba) {
     }
 };
 
-// --- Sincronização e Salvamento Automático de Inputs ---
-window.salvarDadosIniciativa = function() {
-    const p = personajes.find(char => char.id === idPersonagemSelecionado);
-    if (!p) return;
-    p.nome = document.getElementById('char-name-display').value;
-    p.pv = document.getElementById('char-pv').value;
-    p.san = document.getElementById('char-san').value;
-    p.pe = document.getElementById('char-pe').value;
-    p.ini = document.getElementById('char-ini').value;
-};
-
 window.salvarDadosForm = function() {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -117,7 +140,7 @@ window.alternarIniciativa = function(checked) {
     if (p) p.emIniciativa = checked;
 };
 
-// --- Funções Auxiliares ---
+// --- Auxiliares de Interface ---
 function ocultarTodasTelas() {
     const telas = [
         'tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa',
@@ -150,7 +173,7 @@ function renderizarListaPersonagens() {
         const novoId = 'char_' + Date.now();
         personagens.push({ 
             id: novoId, nome: 'Desconhecido', jogador: 'Jogador', origem: 'Mundano', classe: 'Nenhuma', 
-            pv: "20 / 20", san: "20 / 20", pe: "5 / 5", ini: "0", emIniciativa: false 
+            pv: "20 / 20", san: "20 / 20", pe: "5 / 5", ini: "10", emIniciativa: false 
         });
         renderizarListaPersonagens();
     };
