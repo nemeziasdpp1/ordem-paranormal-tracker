@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Tracker Ordem Paranormal</title>
     <style>
-        /* Estilo de fundo geral */
         body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a; 
@@ -13,19 +12,14 @@
             margin: 0;
         }
 
-        /* Utilitário para ocultar telas */
-        .tela-oculta {
-            display: none;
-        }
+        .tela-oculta { display: none; }
 
-        /* Grade do Menu (2 colunas) */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
 
-        /* Botões Estilo Ordem Paranormal */
         .menu-btn {
             background-color: #111;
             border: 1px solid #a855f7; 
@@ -36,15 +30,8 @@
             cursor: pointer;
             text-align: center;
             font-size: 13px;
-            transition: background 0.2s;
         }
 
-        .menu-btn:hover {
-            background-color: #222;
-            border-color: #c084fc;
-        }
-
-        /* Botão para retornar */
         .btn-voltar {
             background-color: #222;
             border: 1px solid #444;
@@ -56,109 +43,52 @@
             margin-bottom: 10px;
         }
 
-        .btn-voltar:hover {
-            background-color: #333;
-            color: white;
+        /* --- Estilos de Atributos --- */
+        .atributos-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto;
+            background-image: url('atributos.png'); /* Certifique-se de subir a imagem com este nome */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
-        /* --- Estilo: Ficha de Informações (Formulário) --- */
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            background-color: #111;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .form-group {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #fff;
-            padding-bottom: 3px;
-        }
-
-        .form-group label {
-            font-size: 11px;
-            color: #888;
-            font-weight: bold;
-            width: 110px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input {
-            color: white;
-            font-size: 16px;
-            flex-grow: 1;
-            border: none;
-            background: transparent;
-            outline: none;
-            font-family: Arial, sans-serif;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 5px;
-            font-size: 13px;
-            color: #ccc;
-        }
-
-        .checkbox-group input {
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-            accent-color: #a855f7;
-        }
-
-        /* --- O Visual Original do Card de Status Mantido --- */
-        .character-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #111111;
-            padding: 12px 15px;
-            border-radius: 8px;
-        }
-
-        .info-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px; 
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 15px; 
-        }
-
-        input {
-            background: transparent;
-            border: none;
-            outline: none;
-            font-weight: bold;
-            font-family: Arial, sans-serif;
-        }
-
-        .char-name { color: white; font-size: 18px; width: 150px; }
-        .stat-pv { color: #ff5555; font-size: 13px; width: 45px; }
-        .stat-san { color: #aa55ff; font-size: 13px; width: 45px; }
-        .stat-pe { color: #ffff55; font-size: 13px; width: 45px; }
-
-        .stat-ini {
-            color: white;
-            font-size: 26px;
+        .input-atrib {
+            position: absolute;
             width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
             text-align: center;
-            border-bottom: 2px solid white;
-            padding-bottom: 2px;
+            outline: none;
+            transform: translate(-50%, -50%);
         }
+
+        /* Coordenadas aproximadas para cada hexágono */
+        .pos-agi { top: 18%; left: 50%; }
+        .pos-int { top: 43%; left: 86%; }
+        .pos-vig { top: 82%; left: 72%; }
+        .pos-pre { top: 82%; left: 28%; }
+        .pos-for { top: 43%; left: 14%; }
+
+        /* Estilos dos Cards e Forms (Mantidos) */
+        .form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
+        .form-group { display: flex; align-items: center; border-bottom: 1px solid #fff; padding-bottom: 3px; }
+        .form-group label { font-size: 10px; color: #888; width: 100px; }
+        .form-group input { color: white; flex-grow: 1; border: none; background: transparent; outline: none; }
+        .checkbox-group { display: flex; align-items: center; gap: 8px; font-size: 12px; }
         
-        input:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
+        .character-card { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; border-radius: 8px; }
+        .stats-row { display: flex; gap: 10px; }
+        .stat-pv { color: #ff5555; width: 45px; font-weight: bold; background: transparent; border: none; }
+        .stat-san { color: #aa55ff; width: 45px; font-weight: bold; background: transparent; border: none; }
+        .stat-pe { color: #ffff55; width: 45px; font-weight: bold; background: transparent; border: none; }
+        .stat-ini { color: white; font-size: 26px; width: 40px; text-align: center; border: none; border-bottom: 2px solid white; background: transparent; }
     </style>
 </head>
 <body>
@@ -170,8 +100,7 @@
 
     <div id="tela-lista-personagens" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarParaRaiz()">⬅ Voltar</button>
-        <div id="lista-botoes-personagens" class="menu-grid">
-            </div>
+        <div id="lista-botoes-personagens" class="menu-grid"></div>
     </div>
 
     <div id="menu-personagem" class="tela-oculta">
@@ -189,32 +118,29 @@
         </div>
     </div>
 
+    <div id="aba-atrib" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
+        <div class="atributos-wrapper">
+            <input type="text" id="at-agi" class="input-atrib pos-agi" value="0" oninput="salvarAtributos()">
+            <input type="text" id="at-int" class="input-atrib pos-int" value="0" oninput="salvarAtributos()">
+            <input type="text" id="at-vig" class="input-atrib pos-vig" value="0" oninput="salvarAtributos()">
+            <input type="text" id="at-pre" class="input-atrib pos-pre" value="0" oninput="salvarAtributos()">
+            <input type="text" id="at-for" class="input-atrib pos-for" value="0" oninput="salvarAtributos()">
+        </div>
+    </div>
+
     <div id="aba-iniciativa" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarDeIniciativa()">⬅ Voltar</button>
-        <h3 style="color: #a855f7; margin: 0 0 12px 0; text-align: center; font-size: 14px;">Ordem de Iniciativa</h3>
-        <div id="lista-iniciativa-cards" style="display: flex; flex-direction: column; gap: 10px;">
-            </div>
+        <div id="lista-iniciativa-cards" style="display: flex; flex-direction: column; gap: 10px;"></div>
     </div>
 
     <div id="aba-info" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
         <div class="form-container">
-            <div class="form-group">
-                <label>PERSONAGEM</label>
-                <input type="text" id="info-nome" oninput="salvarDadosForm()">
-            </div>
-            <div class="form-group">
-                <label>JOGADOR</label>
-                <input type="text" id="info-jogador" oninput="salvarDadosForm()">
-            </div>
-            <div class="form-group">
-                <label>ORIGEM</label>
-                <input type="text" id="info-origem" oninput="salvarDadosForm()">
-            </div>
-            <div class="form-group">
-                <label>CLASSE</label>
-                <input type="text" id="info-classe" oninput="salvarDadosForm()">
-            </div>
+            <div class="form-group"><label>PERSONAGEM</label><input type="text" id="info-nome" oninput="salvarDadosForm()"></div>
+            <div class="form-group"><label>JOGADOR</label><input type="text" id="info-jogador" oninput="salvarDadosForm()"></div>
+            <div class="form-group"><label>ORIGEM</label><input type="text" id="info-origem" oninput="salvarDadosForm()"></div>
+            <div class="form-group"><label>CLASSE</label><input type="text" id="info-classe" oninput="salvarDadosForm()"></div>
             <div class="checkbox-group">
                 <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
                 <label for="info-em-iniciativa">Adicionar à iniciativa</label>
@@ -222,12 +148,11 @@
         </div>
     </div>
 
-    <div id="aba-atrib" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">AGI, FOR, INT...</p></div>
-    <div id="aba-pericias" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Perícias...</p></div>
-    <div id="aba-combate" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Ataques...</p></div>
-    <div id="aba-inv" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Itens...</p></div>
-    <div id="aba-hab" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Poderes...</p></div>
-    <div id="aba-rituais" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Rituais...</p></div>
+    <div id="aba-pericias" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
+    <div id="aba-combate" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
+    <div id="aba-inv" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
+    <div id="aba-hab" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
+    <div id="aba-rituais" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
 
     <script type="module" src="./app.js"></script>
 </body>
