@@ -132,13 +132,45 @@
             padding: 5px;
             border-radius: 2px;
             outline: none;
+            box-sizing: border-box;
         }
 
-        #ext-nex { width: 42px; color: #60a5fa; } 
-        #ext-pe-turno { width: 35px; }
-        #ext-deslocamento { width: 80px; }
+        /* Container Customizado do NEX (Fundo igual, texto branco e % fixo) */
+        .nex-container {
+            display: inline-flex;
+            align-items: center;
+            background: #0a0a0a;
+            border: 1px solid #ffffff;
+            border-radius: 2px;
+            padding: 5px;
+            box-sizing: border-box;
+            height: 27px;
+        }
 
-        /* Barras de Recursos Dinâmicas Corrigidas */
+        #ext-nex {
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            width: 24px;
+            outline: none;
+            padding: 0;
+        }
+
+        .nex-fixed-symbol {
+            font-size: 13px;
+            color: white;
+            font-weight: bold;
+            margin-left: 1px;
+            user-select: none;
+        }
+
+        #ext-pe-turno { width: 35px; height: 27px; }
+        #ext-deslocamento { width: 80px; height: 27px; }
+
+        /* Barras de Recursos Dinâmicas */
         .resource-bar-container {
             display: flex;
             flex-direction: column;
@@ -161,7 +193,7 @@
             height: 32px;
             border: 1px solid #333;
             box-sizing: border-box;
-            background-color: #0a0a0a; /* Fundo escuro base garantido */
+            background-color: #0a0a0a;
         }
 
         .resource-bar button {
@@ -249,7 +281,10 @@
             <div class="row-top-stats">
                 <div class="stat-box-inline">
                     <span class="label-inline">NEX</span>
-                    <input type="text" id="ext-nex" class="input-box-style" value="0%" oninput="salvarExtras()">
+                    <div class="nex-container">
+                        <input type="text" id="ext-nex" value="0" oninput="salvarExtras()">
+                        <span class="nex-fixed-symbol">%</span>
+                    </div>
                 </div>
                 <div class="stat-box-stack">
                     <input type="text" id="ext-pe-turno" class="input-box-style" value="0" oninput="salvarExtras()">
