@@ -43,7 +43,6 @@ window.salvarAtributos = () => {
     }
 };
 
-// --- Salvamento dos Novos Campos Extras ---
 window.salvarExtras = () => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (p) {
@@ -54,13 +53,41 @@ window.salvarExtras = () => {
 };
 
 window.salvarExtrasDireto = (campo, valor) => {
-    const p = personnages.find(char => char.id === idPersonagemSelecionado);
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (p) {
         p[campo] = valor;
+        atualizarBarraVisual(campo);
     }
 };
 
-// --- Lógica Interativa dos botões << < > >> das barras ---
+// --- NOVA FUNÇÃO: Atualiza o preenchimento da barra baseado no valor atual / max ---
+function atualizarBarraVisual(campo) {
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) return;
+
+    let valor = p[campo] || "0 / 0";
+    let partes = valor.split('/');
+    let atual = parseInt(partes[0]) || 0;
+    let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
+
+    // Calcula a porcentagem de preenchimento
+    let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
+
+    // Define as cores correspondentes
+    let cor = "#991b1b"; // Vida
+    let idElemento = "bar-vida";
+    
+    if (campo === 'san') { cor = "#6b21a8"; idElemento = "bar-sanidade"; }
+    if (campo === 'pe') { cor = "#c2410c"; idElemento = "bar-esforco"; }
+
+    const el = document.getElementById(idElemento);
+    if (el) {
+        // Aplica o background linear para criar o efeito cortado idêntico à imagem
+        el.style.background = `linear-gradient(90deg, ${cor} ${pct}%, #0a0a0a ${pct}%)`;
+    }
+}
+
+// --- Ajuste dos botões interativos (Atualizado para somar/subtrair e limitar ao max) ---
 window.ajustarStatus = (campo, delta) => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -70,22 +97,19 @@ window.ajustarStatus = (campo, delta) => {
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
 
-    if (delta === 'min') {
-        atual = 0;
-    } else if (delta === 'max') {
-        atual = max;
-    } else {
-        atual = atual + delta;
-    }
+    atual = atual + delta;
 
+    // Garante que não fique negativo e não passe do máximo do personagem
     if (atual < 0) atual = 0;
+    if (atual > max) atual = max;
 
-    // Salva de volta no formato "X / Y" ou só "X" se não tiver barra
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
     
-    // Atualiza o input visual na hora
     let inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
     document.getElementById(inputId).value = p[campo];
+
+    // Atualiza a proporção da cor de fundo
+    atualizarBarraVisual(campo);
 };
 
 window.abrirAbaChar = (idAba) => {
@@ -101,20 +125,23 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('info-classe').value = p.classe;
         document.getElementById('info-em-iniciativa').checked = p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
-        // Carrega atributos
         document.getElementById('at-agi').value = p.agi;
         document.getElementById('at-int').value = p.int;
         document.getElementById('at-vig').value = p.vig;
         document.getElementById('at-pre').value = p.pre;
         document.getElementById('at-for').value = p.forca;
         
-        // Carrega novos campos extras
         document.getElementById('ext-nex').value = p.nex || "0%";
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
         document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
         document.getElementById('bar-display-san').value = p.san || "0 / 0";
         document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
+
+        // Força o preenchimento correto das cores ao abrir a aba
+        atualizarBarraVisual('pv');
+        atualizarBarraVisual('san');
+        atualizarBarraVisual('pe');
     }
 };
 
@@ -181,8 +208,7 @@ function renderizarListaPersonagens() {
     container.appendChild(bNovo);
 }
 
-// Configuração do tamanho da janela ajustado para os novos elementos
 OBR.onReady(() => { 
     OBR.action.setWidth(320); 
-    OBR.action.setHeight(530); /* Expandido para caber a imagem + novos campos extras */
+    OBR.action.setHeight(530); 
 });
