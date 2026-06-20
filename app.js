@@ -45,7 +45,7 @@ let personagens = [
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
-// FUNÇÃO CORRIGIDA: Agora procurando em "personagens" corretamente
+// Função de segurança para garantir ponteiro válido ao personagem selecionado
 function obterPersonagemAtual() {
     let p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p && personagens.length > 0) {
@@ -56,42 +56,61 @@ function obterPersonagemAtual() {
 }
 
 // --- Navegação ---
-window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
-window.voltarParaRaiz = () => { ocultarTodasTelas(); document.getElementById('tela-raiz').style.display = 'grid'; };
+window.mostrarListaPersonagens = () => { 
+    ocultarTodasTelas(); 
+    const el = document.getElementById('tela-lista-personagens');
+    if (el) el.style.display = 'block'; 
+    renderizarListaPersonagens(); 
+};
+window.voltarParaRaiz = () => { 
+    ocultarTodasTelas(); 
+    const el = document.getElementById('tela-raiz');
+    if (el) el.style.display = 'grid'; 
+};
 window.voltarParaLista = () => window.mostrarListaPersonagens();
-window.voltarParaMenuChar = () => { ocultarTodasTelas(); document.getElementById('menu-personagem').style.display = 'block'; };
+window.voltarParaMenuChar = () => { 
+    ocultarTodasTelas(); 
+    const el = document.getElementById('menu-personagem');
+    if (el) el.style.display = 'block'; 
+};
 
 window.abrirIniciativa = (vindoDe) => {
     origemIniciativa = vindoDe; 
     ocultarTodasTelas();
-    document.getElementById('aba-iniciativa').style.display = 'block';
+    const el = document.getElementById('aba-iniciativa');
+    if (el) el.style.display = 'block';
     renderizarCardsIniciativa();
 };
 
 window.voltarDeIniciativa = () => {
     ocultarTodasTelas();
-    if (origemIniciativa === 'raiz') document.getElementById('tela-raiz').style.display = 'grid';
-    else document.getElementById('menu-personagem').style.display = 'block';
+    if (origemIniciativa === 'raiz') {
+        const el = document.getElementById('tela-raiz');
+        if (el) el.style.display = 'grid';
+    } else {
+        const el = document.getElementById('menu-personagem');
+        if (el) el.style.display = 'block';
+    }
 };
 
 // --- Atributos ---
 window.salvarAtributos = () => {
     const p = obterPersonagemAtual();
     if (p) {
-        p.agi = document.getElementById('at-agi').value;
-        p.int = document.getElementById('at-int').value;
-        p.vig = document.getElementById('at-vig').value;
-        p.pre = document.getElementById('at-pre').value;
-        p.forca = document.getElementById('at-for').value;
+        const agi = document.getElementById('at-agi'); if (agi) p.agi = agi.value;
+        const intel = document.getElementById('at-int'); if (intel) p.int = intel.value;
+        const vig = document.getElementById('at-vig'); if (vig) p.vig = vig.value;
+        const pre = document.getElementById('at-pre'); if (pre) p.pre = pre.value;
+        const forc = document.getElementById('at-for'); if (forc) p.forca = forc.value;
     }
 };
 
 window.salvarExtras = () => {
     const p = obterPersonagemAtual();
     if (p) {
-        p.nex = document.getElementById('ext-nex').value.replace('%', '');
-        p.peTurno = document.getElementById('ext-pe-turno').value;
-        p.deslocamento = document.getElementById('ext-deslocamento').value;
+        const nex = document.getElementById('ext-nex'); if (nex) p.nex = nex.value.replace('%', '');
+        const peTurno = document.getElementById('ext-pe-turno'); if (peTurno) p.peTurno = peTurno.value;
+        const desloc = document.getElementById('ext-deslocamento'); if (desloc) p.deslocamento = desloc.value;
     }
 };
 
@@ -140,7 +159,8 @@ window.ajustarStatus = (campo, delta) => {
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
     
     let inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
-    document.getElementById(inputId).value = p[campo];
+    const inputEl = document.getElementById(inputId);
+    if (inputEl) inputEl.value = p[campo];
 
     atualizarBarraVisual(campo);
 };
@@ -215,30 +235,31 @@ function renderizarPericias() {
 // --- Gerenciamento de Abas e Telas ---
 window.abrirAbaChar = (idAba) => {
     ocultarTodasTelas();
-    document.getElementById(idAba).style.display = 'block';
+    const elAba = document.getElementById(idAba);
+    if (elAba) elAba.style.display = 'block';
     
     const p = obterPersonagemAtual();
     if (!p) return;
 
     if (idAba === 'aba-info') {
-        document.getElementById('info-nome').value = p.nome || "";
-        document.getElementById('info-jogador').value = p.jogador || "";
-        document.getElementById('info-origem').value = p.origem || "";
-        document.getElementById('info-classe').value = p.classe || "";
-        document.getElementById('info-em-iniciativa').checked = !!p.emIniciativa;
+        const nome = document.getElementById('info-nome'); if (nome) nome.value = p.nome || "";
+        const jogador = document.getElementById('info-jogador'); if (jogador) jogador.value = p.jogador || "";
+        const origem = document.getElementById('info-origem'); if (origem) origem.value = p.origem || "";
+        const classe = document.getElementById('info-classe'); if (classe) classe.value = p.classe || "";
+        const emIni = document.getElementById('info-em-iniciativa'); if (emIni) emIni.checked = !!p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
-        document.getElementById('at-agi').value = p.agi || "0";
-        document.getElementById('at-int').value = p.int || "0";
-        document.getElementById('at-vig').value = p.vig || "0";
-        document.getElementById('at-pre').value = p.pre || "0";
-        document.getElementById('at-for').value = p.forca || "0";
+        const agi = document.getElementById('at-agi'); if (agi) agi.value = p.agi || "0";
+        const intel = document.getElementById('at-int'); if (intel) intel.value = p.int || "0";
+        const vig = document.getElementById('at-vig'); if (vig) vig.value = p.vig || "0";
+        const pre = document.getElementById('at-pre'); if (pre) pre.value = p.pre || "0";
+        const forc = document.getElementById('at-for'); if (forc) forc.value = p.forca || "0";
         
-        document.getElementById('ext-nex').value = (p.nex || "0").replace('%', '');
-        document.getElementById('ext-pe-turno').value = p.peTurno || "0";
-        document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
-        document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
-        document.getElementById('bar-display-san').value = p.san || "0 / 0";
-        document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
+        const nex = document.getElementById('ext-nex'); if (nex) nex.value = (p.nex || "0").replace('%', '');
+        const peTurno = document.getElementById('ext-pe-turno'); if (peTurno) peTurno.value = p.peTurno || "0";
+        const desloc = document.getElementById('ext-deslocamento'); if (desloc) desloc.value = p.deslocamento || "0m";
+        const pv = document.getElementById('bar-display-pv'); if (pv) pv.value = p.pv || "0 / 0";
+        const san = document.getElementById('bar-display-san'); if (san) san.value = p.san || "0 / 0";
+        const pe = document.getElementById('bar-display-pe'); if (pe) pe.value = p.pe || "0 / 0";
 
         atualizarBarraVisual('pv');
         atualizarBarraVisual('san');
@@ -251,11 +272,13 @@ window.abrirAbaChar = (idAba) => {
 window.salvarDadosForm = () => {
     const p = obterPersonagemAtual();
     if (!p) return;
-    p.nome = document.getElementById('info-nome').value;
-    p.jogador = document.getElementById('info-jogador').value;
-    p.origem = document.getElementById('info-origem').value;
-    p.classe = document.getElementById('info-classe').value;
-    document.getElementById('nome-titulo-personagem').innerText = p.nome;
+    const nome = document.getElementById('info-nome'); if (nome) p.nome = nome.value;
+    const jogador = document.getElementById('info-jogador'); if (jogador) p.jogador = jogador.value;
+    const origem = document.getElementById('info-origem'); if (origem) p.origem = origem.value;
+    const classe = document.getElementById('info-classe'); if (classe) p.classe = classe.value;
+    
+    const titulo = document.getElementById('nome-titulo-personagem');
+    if (titulo) titulo.innerText = p.nome;
 };
 
 window.alternarIniciativa = (checked) => {
@@ -267,12 +290,18 @@ window.selecionarPersonagem = (id) => {
     idPersonagemSelecionado = id;
     ocultarTodasTelas();
     const p = obterPersonagemAtual();
-    document.getElementById('nome-titulo-personagem').innerText = p.nome;
-    document.getElementById('menu-personagem').style.display = 'block';
+    if (p) {
+        const titulo = document.getElementById('nome-titulo-personagem');
+        if (titulo) titulo.innerText = p.nome;
+        
+        const menu = document.getElementById('menu-personagem');
+        if (menu) menu.style.display = 'block';
+    }
 };
 
 function renderizarCardsIniciativa() {
     const container = document.getElementById('lista-iniciativa-cards');
+    if (!container) return;
     container.innerHTML = '';
     const ativos = personagens.filter(p => p.emIniciativa).sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
     if (ativos.length === 0) { container.innerHTML = '<p style="text-align:center; font-size:12px; color:#666;">Vazio.</p>'; return; }
@@ -294,6 +323,7 @@ function ocultarTodasTelas() {
 
 function renderizarListaPersonagens() {
     const container = document.getElementById('lista-botoes-personagens');
+    if (!container) return;
     container.innerHTML = '';
     personagens.forEach(p => {
         const btn = document.createElement('button'); btn.className = 'menu-btn'; btn.innerText = p.nome;
