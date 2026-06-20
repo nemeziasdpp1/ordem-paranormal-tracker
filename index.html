@@ -322,6 +322,26 @@
             border-radius: 4px !important;
             box-shadow: 0 0 5px #a855f7 !important;
         }
+
+        /* Botão Vermelho de Excluir */
+        .btn-excluir {
+            margin-top: 15px;
+            width: 100%;
+            background-color: #991b1b;
+            color: white;
+            border: 1px solid #7f1d1d;
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+        .btn-excluir:hover {
+            background-color: #b91c1c;
+        }
     </style>
 </head>
 <body>
@@ -503,6 +523,10 @@
                 <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
                 <label for="info-em-iniciativa">Adicionar à iniciativa</label>
             </div>
+            
+            <button class="btn-excluir" onclick="excluirPersonagemAtual()">
+                Excluir Personagem
+            </button>
         </div>
     </div>
 
@@ -516,7 +540,7 @@
             const btn = document.getElementById('btn-toggle-atrib');
             const inputs = document.querySelectorAll('.input-editavel');
             
-            if (btn.innerHTML.includes('')) {
+            if (btn.innerHTML.includes('Editar')) {
                 // ALTERNA PARA MODO: EDITANDO
                 btn.innerHTML = 'Salvar';
                 btn.style.borderColor = '#22c55e'; // Borda verde indicativa
