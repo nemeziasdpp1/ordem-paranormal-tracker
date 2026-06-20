@@ -31,12 +31,10 @@ OBR.onReady(async () => {
     OBR.action.setWidth(320);
     OBR.action.setHeight(530);
 
-    // Carregar da Nuvem do OBR
     const metadata = await OBR.room.getMetadata();
     if (metadata[METADATA_KEY]) {
         personagens = metadata[METADATA_KEY];
     } else {
-        // Dados Padrão se não houver nada
         personagens = [{ 
             id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
             pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
@@ -46,35 +44,6 @@ OBR.onReady(async () => {
         await salvarNaSala();
     }
 
-    // Gera as opções do Select de 0 a 95 e depois o 99
-function gerarOpcoesNex(valorAtual) {
-    let html = '';
-    for (let i = 0; i <= 95; i += 5) {
-        html += `<option value="${i}" ${valorAtual == i ? 'selected' : ''}>${i}%</option>`;
-    }
-    html += `<option value="99" ${valorAtual == 99 ? 'selected' : ''}>99%</option>`;
-    return html;
-}
-
-// Atualiza o NEX e calcula o PE/Turno automaticamente
-window.atualizarNex = async (novoNex) => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
-
-    p.nex = novoNex;
-    // Cálculo: NEX dividido por 5
-    p.peTurno = Math.floor(parseInt(novoNex) / 5);
-    
-    // Atualiza o campo de texto de PE/Turno na tela
-    const inputPe = document.getElementById('ext-pe-turno');
-    if (inputPe) {
-        inputPe.value = p.peTurno;
-    }
-
-    await salvarNaSala();
-};
-
-    // Ouvinte de Mudanças em Tempo Real
     OBR.room.onMetadataChange((metadata) => {
         if (metadata[METADATA_KEY]) {
             personagens = metadata[METADATA_KEY];
@@ -86,27 +55,40 @@ window.atualizarNex = async (novoNex) => {
     window.voltarParaRaiz();
 });
 
+// --- Lógica de NEX e PE ---
+window.gerarOpcoesNex = (valorAtual) => {
+    let html = '';
+    for (let i = 0; i <= 95; i += 5) {
+        html += `<option value="${i}" ${valorAtual == i ? 'selected' : ''}>${i}%</option>`;
+    }
+    html += `<option value="99" ${valorAtual == 99 ? 'selected' : ''}>99%</option>`;
+    return html;
+};
+
+window.atualizarNex = async (novoNex) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+
+    p.nex = novoNex;
+    p.peTurno = Math.floor(parseInt(novoNex) / 5);
+    
+    const inputPe = document.getElementById('ext-pe-turno');
+    if (inputPe) {
+        inputPe.value = p.peTurno;
+    }
+    await salvarNaSala();
+};
+
 // --- Função de Salvar na Nuvem ---
 async function salvarNaSala() {
-    await OBR.room.setMetadata({
-        [METADATA_KEY]: personagens
-    });
+    await OBR.room.setMetadata({ [METADATA_KEY]: personagens });
 }
 
-// --- Atualizador de UI em tempo real ---
+// --- Atualizador de UI ---
 function atualizarInterfaceSincronizada() {
-    // Se estiver na tela de iniciativa, redesenha
-    if (document.getElementById('aba-iniciativa').style.display === 'block') {
-        renderizarCardsIniciativa();
-    }
-    // Se estiver na tela de perícias, atualiza
-    if (document.getElementById('aba-pericias').style.display === 'block') {
-        renderizarPericias();
-    }
-    // Se estiver na tela de lista, atualiza
-    if (document.getElementById('tela-lista-personagens').style.display === 'block') {
-        renderizarListaPersonagens();
-    }
+    if (document.getElementById('aba-iniciativa').style.display === 'block') renderizarCardsIniciativa();
+    if (document.getElementById('aba-pericias').style.display === 'block') renderizarPericias();
+    if (document.getElementById('tela-lista-personagens').style.display === 'block') renderizarListaPersonagens();
 }
 
 // --- Modal de Perícias ---
@@ -250,10 +232,18 @@ window.toggleModoEdicao = async () => {
     const inputs = document.querySelectorAll('.input-editavel');
     if (btn.innerHTML.includes('Editar')) {
         btn.innerHTML = 'Salvar'; btn.style.borderColor = '#22c55e'; btn.style.color = '#22c55e';
-        inputs.forEach(i => { i.removeAttribute('readonly'); i.classList.remove('input-travado'); });
+        inputs.forEach(i => { 
+            i.removeAttribute('readonly'); 
+            i.removeAttribute('disabled'); 
+            i.classList.remove('input-travado'); 
+        });
     } else {
         btn.innerHTML = 'Editar'; btn.style.borderColor = '#444'; btn.style.color = '#aaa';
-        inputs.forEach(i => { i.setAttribute('readonly', 'true'); i.classList.add('input-travado'); });
+        inputs.forEach(i => { 
+            i.setAttribute('readonly', 'true'); 
+            i.setAttribute('disabled', 'true'); 
+            i.classList.add('input-travado'); 
+        });
         await salvarAtributos(); await salvarExtras();
     }
 };
@@ -270,7 +260,7 @@ window.salvarAtributos = async () => {
 
 window.salvarExtras = async () => {
     const p = obterPersonagemAtual(); if (!p) return;
-    p.nex = document.getElementById('ext-nex').value.replace('%', '');
+    p.nex = document.getElementById('ext-nex').value; 
     p.peTurno = document.getElementById('ext-pe-turno').value;
     p.deslocamento = document.getElementById('ext-deslocamento').value;
     await salvarNaSala();
@@ -329,7 +319,11 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-vig').value = p.vig || "0";
         document.getElementById('at-pre').value = p.pre || "0";
         document.getElementById('at-for').value = p.forca || "0";
-        document.getElementById('ext-nex').value = String(p.nex || "0");
+        
+        // Novo seletor NEX
+        const selectNex = document.getElementById('ext-nex');
+        if (selectNex) selectNex.innerHTML = gerarOpcoesNex(p.nex || 0);
+        
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
         document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
