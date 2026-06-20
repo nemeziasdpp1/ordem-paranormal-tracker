@@ -18,8 +18,8 @@ const LISTA_PERICIAS_BASE = [
     { nome: "Tecnologia*", attr: "int" }, { nome: "Vontade", attr: "pre" }
 ];
 
-// Dados Iniciais e Persistência na memória
-let personagens = [
+// NOVO: Carrega os dados salvos do localStorage ou inicia com o padrão se estiver vazio
+let personagens = JSON.parse(localStorage.getItem("ordem_paranormal_personagens")) || [
     { 
         id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
         pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
@@ -32,42 +32,40 @@ let personagens = [
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
+// NOVO: Função para persistir as alterações no navegador
+function salvarNoLocalStorage() {
+    localStorage.setItem("ordem_paranormal_personagens", JSON.stringify(personagens));
+}
+
 // Função de segurança para garantir ponteiro válido ao personagem selecionado
 function obterPersonagemAtual() {
-    let p = personagens.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personagens.length > 0) {
-        idPersonagemSelecionado = personagens[0].id;
-        p = personagens[0];
+    let p = personajes.find(char => char.id === idPersonagemSelecionado);
+    if (!p && personajes.length > 0) {
+        idPersonagemSelecionado = personajes[0].id;
+        p = personajes[0];
     }
     return p;
 }
 
-// --- CLIQUE NO PERSONAGEM (CORREÇÃO DE CONEXÃO) ---
+// --- CLIQUE NO PERSONAGEM ---
 window.selecionarPersonagem = (id) => {
     idPersonagemSelecionado = id;
-    
-    // 1. Esconde a lista
     ocultarTodasTelas();
-    
     const p = obterPersonagemAtual();
     if (p) {
-        // 2. Atualiza o título do menu
         const titulo = document.getElementById('nome-titulo-personagem');
         if (titulo) titulo.innerText = p.nome;
-        
-        // 3. Mostra o menu de opções do personagem (INFORMAÇÕES, INICIATIVA, ATRIBUTOS, PERÍCIAS...)
         const menu = document.getElementById('menu-personagem');
         if (menu) menu.style.display = 'block';
     }
 };
 
-// --- Renderização Dinâmica de Cards de Iniciativa (AJUSTE DE DESIGN) ---
+// --- Renderização Dinâmica de Cards de Iniciativa ---
 function renderizarCardsIniciativa() {
     const container = document.getElementById('lista-iniciativa-cards');
     if (!container) return; 
     container.innerHTML = '';
     
-    // Filtra e Ordena os personagens em iniciativa
     const ativos = personagens
         .filter(p => p.emIniciativa)
         .sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
@@ -81,7 +79,6 @@ function renderizarCardsIniciativa() {
         const card = document.createElement('div');
         card.className = 'character-card';
         
-        // CORREÇÃO VISUAL: Aplicado 'background:transparent; border:none; outline:none;' no input do nome para remover o quadrado branco
         card.innerHTML = `
             <div class="info-section" style="flex-grow:1; display:flex; flex-direction:column; gap:4px;">
                 <input type="text" style="color:white; font-weight:bold; background:transparent; border:none; outline:none; font-size:13px; padding:0; margin:0; width:100%;" value="${p.nome}" oninput="atualizarDado('${p.id}','nome',this.value)">
@@ -97,17 +94,15 @@ function renderizarCardsIniciativa() {
     });
 }
 
-// --- Ajuste da Função toggleModoEdicao() (SEM EMOJI) ---
+// --- Alternar Modo Edição ---
 window.toggleModoEdicao = () => {
     const btn = document.getElementById('btn-toggle-atrib');
     const inputs = document.querySelectorAll('.input-editavel');
     if (!btn || inputs.length === 0) return;
     
-    // CORREÇÃO: Verificação baseada em Texto puro, não Emoji
     if (btn.innerHTML.includes('Destravar')) {
-        // ALTERNA PARA MODO: EDITANDO
-        btn.innerHTML = 'Travar'; // Sem emoji
-        btn.style.borderColor = '#22c55e'; // Borda verde indicativa de ação pendente
+        btn.innerHTML = 'Travar'; 
+        btn.style.borderColor = '#22c55e'; 
         btn.style.color = '#22c55e';
         
         inputs.forEach(input => {
@@ -115,9 +110,8 @@ window.toggleModoEdicao = () => {
             input.classList.remove('input-travado');
         });
     } else {
-        // ALTERNA PARA MODO: SALVO / TRAVADO
-        btn.innerHTML = 'Destravar'; // Sem emoji
-        btn.style.borderColor = '#444'; // Volta borda cinza padrão
+        btn.innerHTML = 'Destravar'; 
+        btn.style.borderColor = '#444'; 
         btn.style.color = '#aaa';
         
         inputs.forEach(input => {
@@ -125,13 +119,15 @@ window.toggleModoEdicao = () => {
             input.classList.add('input-travado');
         });
         
-        // Executa as funções de salvamento que já existem na memória
         if (typeof salvarAtributos === 'function') salvarAtributos();
         if (typeof salvarExtras === 'function') salvarExtras();
+        
+        // SALVA AO TRAVAR AS ALTERAÇÕES
+        salvarNoLocalStorage();
     }
 }
 
-// --- Resto das Funções Protegidas (Cópia Blindada) ---
+// --- Funções de Navegação e Salvamento ---
 window.mostrarListaPersonagens = () => { ocultarTodasTelas(); const el = document.getElementById('tela-lista-personagens'); if (el) el.style.display = 'block'; renderizarListaPersonagens(); };
 window.voltarParaRaiz = () => { ocultarTodasTelas(); const el = document.getElementById('tela-raiz'); if (el) el.style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
@@ -178,7 +174,11 @@ window.salvarExtras = () => {
 
 window.salvarExtrasDireto = (campo, valor) => {
     const p = obterPersonagemAtual();
-    if (p) { p[campo] = valor; atualizarBarraVisual(campo); }
+    if (p) { 
+        p[campo] = valor; 
+        atualizarBarraVisual(campo); 
+        salvarNoLocalStorage(); // Salva mudanças diretas
+    }
 };
 
 function atualizarBarraVisual(campo) {
@@ -208,6 +208,7 @@ window.ajustarStatus = (campo, delta) => {
     const inputEl = document.getElementById(inputId);
     if (inputEl) inputEl.value = p[campo];
     atualizarBarraVisual(campo);
+    salvarNoLocalStorage(); // Salva alterações nos botões de + e -
 };
 
 window.alterarTreinoPericia = (nomePericia, valorTreino) => {
@@ -216,6 +217,7 @@ window.alterarTreinoPericia = (nomePericia, valorTreino) => {
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
     p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
     renderizarPericias(); 
+    salvarNoLocalStorage(); // Salva treino mudado
 };
 
 window.alterarExtraPericia = (nomePericia, valorExtra) => {
@@ -228,6 +230,7 @@ window.alterarExtraPericia = (nomePericia, valorExtra) => {
     const total = treino + valorNumerico;
     const totalElemento = document.getElementById(`total-${nomePericia}`);
     if (totalElemento) totalElemento.innerText = `(${total})`;
+    salvarNoLocalStorage(); // Salva bônus extra mudado
 };
 
 function renderizarPericias() {
@@ -250,15 +253,13 @@ window.abrirAbaChar = (idAba) => {
     if (elAba) elAba.style.display = 'block';
     const p = obterPersonagemAtual(); if (!p) return;
     
-    // Reseta o botão de travar da aba de atributos para o estado inicial (Texto)
     const btnTrava = document.getElementById('btn-toggle-atrib');
     if (btnTrava) {
-        btnTrava.innerHTML = 'Destravar'; // Sem emoji
+        btnTrava.innerHTML = 'Destravar'; 
         btnTrava.style.borderColor = '#444';
         btnTrava.style.color = '#aaa';
     }
     
-    // Garante que os inputs da aba de atributos comecem travados visualmente
     const inputsAtrib = document.querySelectorAll('.input-editavel');
     inputsAtrib.forEach(input => {
         input.setAttribute('readonly', 'true');
@@ -294,10 +295,24 @@ window.salvarDadosForm = () => {
     const origem = document.getElementById('info-origem'); if (origem) p.origem = origem.value;
     const classe = document.getElementById('info-classe'); if (classe) p.classe = classe.value;
     const titulo = document.getElementById('nome-titulo-personagem'); if (titulo) titulo.innerText = p.nome;
+    salvarNoLocalStorage(); // Salva informações gerais
 };
 
-window.alternarIniciativa = (checked) => { const p = obterPersonagemAtual(); if (p) p.emIniciativa = checked; };
-window.atualizarDado = (id, campo, valor) => { const p = personagens.find(c => c.id === id); if (p) p[campo] = valor; };
+window.alternarIniciativa = (checked) => { 
+    const p = obterPersonagemAtual(); 
+    if (p) { 
+        p.emIniciativa = checked; 
+        salvarNoLocalStorage(); // Salva mudança na lista de iniciativa
+    } 
+};
+
+window.atualizarDado = (id, campo, valor) => { 
+    const p = personagens.find(c => c.id === id); 
+    if (p) { 
+        p[campo] = valor; 
+        salvarNoLocalStorage(); // Salva alterações digitadas direto nos cards de iniciativa
+    } 
+};
 
 function ocultarTodasTelas() {
     ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais'].forEach(id => {
@@ -318,6 +333,7 @@ function renderizarListaPersonagens() {
             id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false,
             nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {}
         }); 
+        salvarNoLocalStorage(); // Salva ao criar um novo personagem
         renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
