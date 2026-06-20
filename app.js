@@ -39,37 +39,82 @@ function obterPersonagemAtual() {
     return p;
 }
 
-// --- CLIQUE DETECTADO (DIAGNÓSTICO CRÍTICO) ---
 window.selecionarPersonagem = (id) => {
-    console.log("=> Botão clicado para o ID:", id);
     idPersonagemSelecionado = id;
-    
     ocultarTodasTelas();
-    
     const p = obterPersonagemAtual();
-    if (!p) {
-        alert("Erro: Dados do personagem não encontrados para o ID " + id);
-        return;
-    }
-    
-    const titulo = document.getElementById('nome-titulo-personagem');
-    if (!titulo) {
-        console.warn("Aviso: ID 'nome-titulo-personagem' não foi achado no seu HTML.");
-    } else {
-        titulo.innerText = p.nome;
-    }
-    
-    const menu = document.getElementById('menu-personagem');
-    if (menu) {
-        console.log("Sucesso: Exibindo 'menu-personagem'");
-        menu.style.display = 'block';
-    } else {
-        // Se cair aqui, achamos o erro! O HTML não tem essa seção com esse ID exato.
-        alert("ERRO DE CONEXÃO HTML:\nO JavaScript tentou abrir a tela da Yuki, mas o elemento <div id='menu-personagem'> não existe no seu arquivo HTML (ou está com outro nome).");
+    if (p) {
+        const titulo = document.getElementById('nome-titulo-personagem');
+        if (titulo) titulo.innerText = p.nome;
+        const menu = document.getElementById('menu-personagem');
+        if (menu) menu.style.display = 'block';
     }
 };
 
-// --- Resto das Funções Protegidas ---
+// --- Renderização Compacta de Perícias ---
+function renderizarPericias() {
+    const container = document.getElementById('lista-pericias-container');
+    if (!container) return; 
+    container.innerHTML = '';
+    
+    const p = obterPersonagemAtual(); 
+    if (!p) return;
+    if (!p.pericias) p.pericias = {};
+
+    LISTA_PERICIAS_BASE.forEach(peri => {
+        const dadosSalvos = p.pericias[peri.nome] || { treino: 0, extra: 0 };
+        const treino = dadosSalvos.treino || 0; 
+        const extra = dadosSalvos.extra || 0; 
+        const total = treino + extra;
+
+        const itemRow = document.createElement('div'); 
+        itemRow.className = `pericia-item-row p-treino-${treino}`;
+        
+        // Estilos em linha aplicados diretamente para garantir o tamanho menor e scannabilidade
+        itemRow.innerHTML = `
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink:0; margin-right:2px;">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/>
+            </svg>
+            <span class="p-nome" style="font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-grow: 1; max-width: 95px;">${peri.nome}</span>
+            <span class="p-attr" style="font-size: 9px; opacity: 0.6; margin-right: 4px; text-transform: uppercase;">(${peri.attr})</span>
+            <span id="total-${peri.nome}" style="font-size: 11px; font-weight: bold; margin-right: 4px; min-width: 28px; text-align: center;">(${total})</span>
+            
+            <select class="pericia-select-ficha" style="font-size: 11px; padding: 1px; height: 20px;" onchange="alterarTreinoPericia('${peri.nome}', this.value)">
+                <option value="0" ${treino === 0 ? 'selected' : ''}>0</option>
+                <option value="5" ${treino === 5 ? 'selected' : ''}>5</option>
+                <option value="10" ${treino === 10 ? 'selected' : ''}>10</option>
+                <option value="15" ${treino === 15 ? 'selected' : ''}>15</option>
+            </select>
+            
+            <input type="text" class="pericia-input-ficha" style="font-size: 11px; width: 26px; height: 18px; text-align: center; padding: 1px;" value="${extra}" oninput="alterarExtraPericia('${peri.nome}', this.value)" placeholder="0">
+        `;
+        container.appendChild(itemRow);
+    });
+}
+
+window.alterarTreinoPericia = (nomePericia, valorTreino) => {
+    const p = obterPersonagemAtual(); if (!p) return;
+    if (!p.pericias) p.pericias = {};
+    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
+    p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
+    renderizarPericias(); 
+};
+
+window.alterarExtraPericia = (nomePericia, valorExtra) => {
+    const p = obterPersonagemAtual(); if (!p) return;
+    if (!p.pericias) p.pericias = {};
+    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
+    
+    const valorNumerico = parseInt(valorExtra) || 0;
+    p.pericias[nomePericia].extra = valorNumerico;
+    
+    const treino = p.pericias[nomePericia].treino || 0;
+    const total = treino + valorNumerico;
+    const totalElemento = document.getElementById(`total-${nomePericia}`);
+    if (totalElemento) totalElemento.innerText = `(${total})`;
+};
+
+// --- Telas e Navegação ---
 window.mostrarListaPersonagens = () => { 
     ocultarTodasTelas(); 
     const el = document.getElementById('tela-lista-personagens');
@@ -129,15 +174,11 @@ window.salvarExtras = () => {
 
 window.salvarExtrasDireto = (campo, valor) => {
     const p = obterPersonagemAtual();
-    if (p) {
-        p[campo] = valor;
-        atualizarBarraVisual(campo);
-    }
+    if (p) { p[campo] = valor; atualizarBarraVisual(campo); }
 };
 
 function atualizarBarraVisual(campo) {
-    const p = obterPersonagemAtual();
-    if (!p) return;
+    const p = obterPersonagemAtual(); if (!p) return;
     let valor = p[campo] || "0 / 0";
     let partes = valor.split('/');
     let atual = parseInt(partes[0]) || 0;
@@ -152,8 +193,7 @@ function atualizarBarraVisual(campo) {
 }
 
 window.ajustarStatus = (campo, delta) => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
+    const p = obterPersonagemAtual(); if (!p) return;
     let valorAtual = p[campo] || "0 / 0";
     let partes = valorAtual.split('/');
     let atual = parseInt(partes[0]) || 0;
@@ -166,44 +206,12 @@ window.ajustarStatus = (campo, delta) => {
     atualizarBarraVisual(campo);
 };
 
-window.alterarTreinoPericia = (nomePericia, valorTreino) => {
-    const p = obterPersonagemAtual(); if (!p) return;
-    if (!p.pericias) p.pericias = {};
-    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
-    p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
-    renderizarPericias(); 
-};
-
-window.alterarExtraPericia = (nomePericia, valorExtra) => {
-    const p = obterPersonagemAtual(); if (!p) return;
-    if (!p.pericias) p.pericias = {};
-    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
-    p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
-    const treino = p.pericias[nomePericia].treino || 0;
-    const total = treino + (parseInt(valorExtra) || 0);
-    const totalElemento = document.getElementById(`total-${nomePericia}`);
-    if (totalElemento) totalElemento.innerText = `( ${total} )`;
-};
-
-function renderizarPericias() {
-    const container = document.getElementById('lista-pericias-container');
-    if (!container) return; container.innerHTML = '';
-    const p = obterPersonagemAtual(); if (!p) return;
-    if (!p.pericias) p.pericias = {};
-    LISTA_PERICIAS_BASE.forEach(peri => {
-        const dadosSalvos = p.pericias[peri.nome] || { treino: 0, extra: 0 };
-        const treino = dadosSalvos.treino || 0; const extra = dadosSalvos.extra || 0; const total = treino + extra;
-        const itemRow = document.createElement('div'); itemRow.className = `pericia-item-row p-treino-${treino}`;
-        itemRow.innerHTML = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/></svg><span class="p-nome">${peri.nome}</span><span class="p-attr">( ${peri.attr.toUpperCase()} )</span><span id="total-${peri.nome}">( ${total} )</span><select class="pericia-select-ficha" onchange="alterarTreinoPericia('${peri.nome}', this.value)"><option value="0" ${treino === 0 ? 'selected' : ''}>0</option><option value="5" ${treino === 5 ? 'selected' : ''}>5</option><option value="10" ${treino === 10 ? 'selected' : ''}>10</option><option value="15" ${treino === 15 ? 'selected' : ''}>15</option></select><input type="text" class="pericia-input-ficha" value="${extra}" oninput="alterarExtraPericia('${peri.nome}', this.value)" placeholder="0">`;
-        container.appendChild(itemRow);
-    });
-}
-
 window.abrirAbaChar = (idAba) => {
     ocultarTodasTelas();
     const elAba = document.getElementById(idAba);
     if (elAba) elAba.style.display = 'block';
     const p = obterPersonagemAtual(); if (!p) return;
+    
     if (idAba === 'aba-info') {
         const nome = document.getElementById('info-nome'); if (nome) nome.value = p.nome || "";
         const jogador = document.getElementById('info-jogador'); if (jogador) jogador.value = p.jogador || "";
@@ -223,7 +231,9 @@ window.abrirAbaChar = (idAba) => {
         const san = document.getElementById('bar-display-san'); if (san) san.value = p.san || "0 / 0";
         const pe = document.getElementById('bar-display-pe'); if (pe) pe.value = p.pe || "0 / 0";
         atualizarBarraVisual('pv'); atualizarBarraVisual('san'); atualizarBarraVisual('pe');
-    } else if (idAba === 'aba-pericias') { renderizarPericias(); }
+    } else if (idAba === 'aba-pericias') { 
+        renderizarPericias(); 
+    }
 };
 
 window.salvarDadosForm = () => {
