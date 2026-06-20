@@ -277,6 +277,11 @@ body {
     font-weight: bold;
 }
 
+.titulo-regra {
+    color: #a855f7; 
+    font-weight: bold;
+}
+
 /* --- MODAL DE PERÍCIAS (Corrigido para Centralizar) --- */
 #modal-pericia {
     position: fixed; /* Fixa na tela inteira */
