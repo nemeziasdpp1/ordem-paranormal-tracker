@@ -46,15 +46,11 @@
             <input type="text" id="at-for" class="input-atrib pos-for input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
         </div>
 
-        <div class="stats-extras-container">
-            <div class="row-top-stats">
-                <div class="stat-box-stack">
-                    <div class="nex-container">
-                        <input type="text" id="ext-nex" class="input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
-                        <span class="nex-fixed-symbol">%</span>
-                    </div>
-                    <span class="label-stack">NEX</span>
-                </div>
+        <div class="nex-container">
+    <select id="ext-nex" class="input-travado input-editavel" onchange="atualizarNex(this.value)" disabled>
+        </select>
+    <span class="nex-fixed-symbol">%</span>
+</div>
                 
                 <div class="stat-box-stack">
                     <input type="text" id="ext-pe-turno" class="input-box-style input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
