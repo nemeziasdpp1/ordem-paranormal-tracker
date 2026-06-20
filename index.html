@@ -13,14 +13,19 @@
             margin: 0;
         }
 
-        /* Grade do Menu Principal (2 colunas) */
+        /* Utilitário para ocultar telas */
+        .tela-oculta {
+            display: none;
+        }
+
+        /* Grade do Menu (2 colunas) */
         .menu-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 8px;
         }
 
-        /* Botões do Menu com o Roxo da Ordem */
+        /* Botões Estilo Ordem Paranormal */
         .menu-btn {
             background-color: #111;
             border: 1px solid #a855f7; 
@@ -39,12 +44,7 @@
             border-color: #c084fc;
         }
 
-        /* Esconde todas as abas de conteúdo por padrão */
-        .aba-conteudo {
-            display: none;
-        }
-
-        /* Botão para retornar ao menu principal */
+        /* Botão para retornar */
         .btn-voltar {
             background-color: #222;
             border: 1px solid #444;
@@ -61,7 +61,58 @@
             color: white;
         }
 
-        /* --- Estilos do Card de Status --- */
+        /* --- Novo Estilo: Ficha de Informações (image_877c9d) --- */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background-color: #111;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #fff;
+            padding-bottom: 3px;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            color: #888;
+            font-weight: bold;
+            width: 110px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input {
+            color: white;
+            font-size: 16px;
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .checkbox-group input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #a855f7;
+        }
+
+        /* --- Estilos do Card de Status (Iniciativa Individual) --- */
         .character-card {
             display: flex;
             justify-content: space-between;
@@ -82,7 +133,7 @@
             gap: 15px; 
         }
 
-        input {
+        .stats-row input {
             background: transparent;
             border: none;
             outline: none;
@@ -90,7 +141,6 @@
             font-family: Arial, sans-serif;
         }
 
-        .char-name { color: white; font-size: 18px; width: 150px; }
         .stat-pv { color: #ff5555; font-size: 13px; width: 45px; }
         .stat-san { color: #aa55ff; font-size: 13px; width: 45px; }
         .stat-pe { color: #ffff55; font-size: 13px; width: 45px; }
@@ -100,75 +150,99 @@
             font-size: 26px;
             width: 40px;
             text-align: center;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-weight: bold;
             border-bottom: 2px solid white;
             padding-bottom: 2px;
-        }
-        
-        input:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div id="menu-principal" class="menu-grid">
-        <button class="menu-btn" onclick="abrirAba('aba-info')">Informações</button>
-        <button class="menu-btn" onclick="abrirAba('aba-info')">Iniciativa</button>
-        <button class="menu-btn" onclick="abrirAba('aba-atrib')">Atributos</button>
-        <button class="menu-btn" onclick="abrirAba('aba-pericias')">Perícias</button>
-        <button class="menu-btn" onclick="abrirAba('aba-combate')">Combate</button>
-        <button class="menu-btn" onclick="abrirAba('aba-inv')">Inventário</button>
-        <button class="menu-btn" onclick="abrirAba('aba-hab')">Habilidades</button>
-        <button class="menu-btn" onclick="abrirAba('aba-rituais')">Rituais</button>
+    <div id="tela-raiz" class="menu-grid">
+        <button class="menu-btn" onclick="mostrarIniciativaGeral()">Iniciativa</button>
+        <button class="menu-btn" onclick="mostrarListaPersonagens()">Personagens</button>
     </div>
 
-    <div id="aba-info" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <div class="character-card">
-            <div class="info-section">
-                <input type="text" class="char-name" id="nome" value="Yuki" placeholder="Nome">
-                <div class="stats-row">
-                    <input type="text" class="stat-pv" id="pv" value="31 / 31">
-                    <input type="text" class="stat-san" id="san" value="47 / 47">
-                    <input type="text" class="stat-pe" id="pe" value="41 / 49">
-                </div>
+    <div id="tela-lista-personagens" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaRaiz()">⬅ Voltar</button>
+        <div id="lista-botoes-personagens" class="menu-grid">
             </div>
-            <div>
-                <input type="text" class="stat-ini" id="ini" value="0">
+    </div>
+
+    <div id="menu-personagem" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaLista()">⬅ Voltar para Lista</button>
+        <h3 id="nome-titulo-personagem" style="margin: 5px 0 12px 0; color: #a855f7; text-align:center;">Nome</h3>
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="abrirAbaChar('aba-info')">Informações</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-ini-individual')">Iniciativa</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-atrib')">Atributos</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-pericias')">Perícias</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-combate')">Combate</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-inv')">Inventário</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-hab')">Habilidades</button>
+            <button class="menu-btn" onclick="abrirAbaChar('aba-rituais')">Rituais</button>
+        </div>
+    </div>
+
+    <div id="tela-iniciativa-geral" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaRaiz()">⬅ Voltar</button>
+        <h3 style="color: #a855f7; margin: 0 0 10px 0;">Ordem de Iniciativa</h3>
+        <div id="lista-iniciativa-geral" style="display: flex; flex-direction: column; gap: 6px;">
+            </div>
+    </div>
+
+    <div id="aba-info" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
+        <div class="form-container">
+            <div class="form-group">
+                <label>PERSONAGEM</label>
+                <input type="text" id="info-nome" oninput="salvarDados()">
+            </div>
+            <div class="form-group">
+                <label>JOGADOR</label>
+                <input type="text" id="info-jogador" oninput="salvarDados()">
+            </div>
+            <div class="form-group">
+                <label>ORIGEM</label>
+                <input type="text" id="info-origem" oninput="salvarDados()">
+            </div>
+            <div class="form-group">
+                <label>CLASSE</label>
+                <input type="text" id="info-classe" oninput="salvarDados()">
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
+                <label for="info-em-iniciativa">Adicionar à iniciativa</label>
             </div>
         </div>
     </div>
 
-    <div id="aba-atrib" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">AGI, FOR, INT, PRE, VIG...</p>
+    <div id="aba-ini-individual" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
+        <div class="character-card">
+            <div class="info-section">
+                <div id="card-nome-display" style="font-weight: bold; font-size: 18px; color: white;">Yuki</div>
+                <div class="stats-row">
+                    <input type="text" class="stat-pv" id="char-pv" oninput="salvarDados()">
+                    <input type="text" class="stat-san" id="char-san" oninput="salvarDados()">
+                    <input type="text" class="stat-pe" id="char-pe" oninput="salvarDados()">
+                </div>
+            </div>
+            <div>
+                <input type="text" class="stat-ini" id="char-ini" oninput="salvarDados()">
+            </div>
+        </div>
     </div>
 
-    <div id="aba-pericias" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">Suas perícias treinadas e bônus...</p>
-    </div>
-
-    <div id="aba-combate" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">Ataques, armas e esquivas...</p>
-    </div>
-
-    <div id="aba-inv" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">Itens carregados e espaços de carga...</p>
-    </div>
-
-    <div id="aba-hab" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">Poderes, habilidades de classe e de trilha...</p>
-    </div>
-
-    <div id="aba-rituais" class="aba-conteudo">
-        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
-        <p style="font-size: 14px; color: #aaa;">Rituais conhecidos, elementos e custos...</p>
-    </div>
+    <div id="aba-atrib" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">AGI, FOR, INT...</p></div>
+    <div id="aba-pericias" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Perícias...</p></div>
+    <div id="aba-combate" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Ataques...</p></div>
+    <div id="aba-inv" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Itens...</p></div>
+    <div id="aba-hab" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Poderes...</p></div>
+    <div id="aba-rituais" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button><p style="color:#aaa; font-size:13px;">Rituais...</p></div>
 
     <script type="module" src="./app.js"></script>
 </body>
