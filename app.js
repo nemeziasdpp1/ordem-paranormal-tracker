@@ -3,15 +3,16 @@ import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
 let personagens = [
     { 
         id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
-        pv: "31 / 31", san: "47 / 47", pe: "41 / 49", ini: "0", emIniciativa: false,
-        agi: "3", int: "4", vig: "2", pre: "3", forca: "1" 
+        pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
+        agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
+        nex: "35%", peTurno: "7", deslocamento: "12 m / 8 q"
     }
 ];
 
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
-// --- Navegação (Corrigido o espaço em ocultarTodasTelas) ---
+// --- Navegação ---
 window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
 window.voltarParaRaiz = () => { ocultarTodasTelas(); document.getElementById('tela-raiz').style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
@@ -42,6 +43,51 @@ window.salvarAtributos = () => {
     }
 };
 
+// --- Salvamento dos Novos Campos Extras ---
+window.salvarExtras = () => {
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (p) {
+        p.nex = document.getElementById('ext-nex').value;
+        p.peTurno = document.getElementById('ext-pe-turno').value;
+        p.deslocamento = document.getElementById('ext-deslocamento').value;
+    }
+};
+
+window.salvarExtrasDireto = (campo, valor) => {
+    const p = personnages.find(char => char.id === idPersonagemSelecionado);
+    if (p) {
+        p[campo] = valor;
+    }
+};
+
+// --- Lógica Interativa dos botões << < > >> das barras ---
+window.ajustarStatus = (campo, delta) => {
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) return;
+
+    let valorAtual = p[campo] || "0 / 0";
+    let partes = valorAtual.split('/');
+    let atual = parseInt(partes[0]) || 0;
+    let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
+
+    if (delta === 'min') {
+        atual = 0;
+    } else if (delta === 'max') {
+        atual = max;
+    } else {
+        atual = atual + delta;
+    }
+
+    if (atual < 0) atual = 0;
+
+    // Salva de volta no formato "X / Y" ou só "X" se não tiver barra
+    p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
+    
+    // Atualiza o input visual na hora
+    let inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
+    document.getElementById(inputId).value = p[campo];
+};
+
 window.abrirAbaChar = (idAba) => {
     ocultarTodasTelas();
     document.getElementById(idAba).style.display = 'block';
@@ -55,11 +101,20 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('info-classe').value = p.classe;
         document.getElementById('info-em-iniciativa').checked = p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
+        // Carrega atributos
         document.getElementById('at-agi').value = p.agi;
         document.getElementById('at-int').value = p.int;
         document.getElementById('at-vig').value = p.vig;
         document.getElementById('at-pre').value = p.pre;
         document.getElementById('at-for').value = p.forca;
+        
+        // Carrega novos campos extras
+        document.getElementById('ext-nex').value = p.nex || "0%";
+        document.getElementById('ext-pe-turno').value = p.peTurno || "0";
+        document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
+        document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
+        document.getElementById('bar-display-san').value = p.san || "0 / 0";
+        document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
     }
 };
 
@@ -117,14 +172,17 @@ function renderizarListaPersonagens() {
     });
     const bNovo = document.createElement('button'); bNovo.className = 'menu-btn'; bNovo.innerText = '+ Novo';
     bNovo.onclick = () => { 
-        personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false }); 
+        personagens.push({ 
+            id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false,
+            nex: "0%", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10"
+        }); 
         renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
 }
 
-// Configuração do tamanho da janela da extensão no Owlbear
+// Configuração do tamanho da janela ajustado para os novos elementos
 OBR.onReady(() => { 
     OBR.action.setWidth(320); 
-    OBR.action.setHeight(280); 
+    OBR.action.setHeight(530); /* Expandido para caber a imagem + novos campos extras */
 });
