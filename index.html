@@ -47,7 +47,7 @@
         /* --- Estilos de Atributos COMPACTOS --- */
         .atributos-wrapper {
             position: relative;
-            width: 240px; /* Reduzido de 320px para ficar mais compacto */
+            width: 240px; 
             height: 240px;
             margin: 0 auto;
             background-image: url('atributos.png'); 
@@ -58,24 +58,140 @@
 
         .input-atrib {
             position: absolute;
-            width: 45px; /* Reduzido de 60px para encaixar no novo tamanho */
+            width: 45px; 
             height: 45px;
             background: transparent;
             border: none;
             color: white; 
-            font-size: 24px; /* Fonte reduzida de 32px para 24px */
+            font-size: 24px; 
             font-weight: bold;
             text-align: center;
             outline: none;
             transform: translate(-50%, -50%); 
         }
 
-        /* Coordenadas mantidas (funcionam proporcionalmente) */
+        /* Coordenadas Calibradas por Você */
         .pos-agi { top: 17%; left: 50%; }
         .pos-int { top: 38%; left: 81%; }
         .pos-vig { top: 75%; left: 72%; }
         .pos-pre { top: 75%; left: 28%; }
         .pos-for { top: 38%; left: 19%; }
+
+        /* --- NOVOS ESTILOS: CAMPOS EXTRA DE STATUS --- */
+        .stats-extras-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 240px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .row-top-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 5px;
+        }
+
+        .stat-box-inline {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-box-inline .label-inline {
+            font-size: 12px;
+            font-weight: bold;
+            color: #aaa;
+        }
+
+        .stat-box-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label-stack {
+            font-size: 9px;
+            color: #888;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-box-style {
+            background: #0a0a0a;
+            border: 1px solid #ffffff;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 13px;
+            padding: 5px;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        #ext-nex { width: 42px; color: #60a5fa; } /* Azul sutil para o NEX */
+        #ext-pe-turno { width: 35px; }
+        #ext-deslocamento { width: 80px; }
+
+        /* Barras de Vida, Sanidade e Esforço */
+        .resource-bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .resource-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .resource-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 32px;
+            border: 1px solid #333;
+            box-sizing: border-box;
+        }
+
+        .bar-vida { background-color: #991b1b; }
+        .bar-sanidade { background-color: #6b21a8; }
+        .bar-esforco { background-color: #c2410c; }
+
+        .resource-bar button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 0 10px;
+            height: 100%;
+        }
+
+        .resource-bar button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .resource-bar input {
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            width: 90px;
+            outline: none;
+        }
 
         /* Estilos dos Cards e Forms (Mantidos) */
         .form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
@@ -121,12 +237,63 @@
 
     <div id="aba-atrib" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
+        
         <div class="atributos-wrapper">
             <input type="text" id="at-agi" class="input-atrib pos-agi" value="0" oninput="salvarAtributos()">
             <input type="text" id="at-int" class="input-atrib pos-int" value="0" oninput="salvarAtributos()">
             <input type="text" id="at-vig" class="input-atrib pos-vig" value="0" oninput="salvarAtributos()">
             <input type="text" id="at-pre" class="input-atrib pos-pre" value="0" oninput="salvarAtributos()">
             <input type="text" id="at-for" class="input-atrib pos-for" value="0" oninput="salvarAtributos()">
+        </div>
+
+        <div class="stats-extras-container">
+            <div class="row-top-stats">
+                <div class="stat-box-inline">
+                    <span class="label-inline">NEX</span>
+                    <input type="text" id="ext-nex" class="input-box-style" value="0%" oninput="salvarExtras()">
+                </div>
+                <div class="stat-box-stack">
+                    <input type="text" id="ext-pe-turno" class="input-box-style" value="0" oninput="salvarExtras()">
+                    <span class="label-stack">PE / TURNO</span>
+                </div>
+                <div class="stat-box-stack">
+                    <input type="text" id="ext-deslocamento" class="input-box-style" value="0m" oninput="salvarExtras()">
+                    <span class="label-stack">DESLOCAMENTO</span>
+                </div>
+            </div>
+
+            <div class="resource-bar-container">
+                <span class="resource-label">VIDA</span>
+                <div class="resource-bar bar-vida">
+                    <button onclick="ajustarStatus('pv', 'min')">&lt;&lt;</button>
+                    <button onclick="ajustarStatus('pv', -1)">&lt;</button>
+                    <input type="text" id="bar-display-pv" value="0 / 0" oninput="salvarExtrasDireto('pv', this.value)">
+                    <button onclick="ajustarStatus('pv', 1)">&gt;</button>
+                    <button onclick="ajustarStatus('pv', 'max')">&gt;&gt;</button>
+                </div>
+            </div>
+
+            <div class="resource-bar-container">
+                <span class="resource-label">SANIDADE</span>
+                <div class="resource-bar bar-sanidade">
+                    <button onclick="ajustarStatus('san', 'min')">&lt;&lt;</button>
+                    <button onclick="ajustarStatus('san', -1)">&lt;</button>
+                    <input type="text" id="bar-display-san" value="0 / 0" oninput="salvarExtrasDireto('san', this.value)">
+                    <button onclick="ajustarStatus('san', 1)">&gt;</button>
+                    <button onclick="ajustarStatus('san', 'max')">&gt;&gt;</button>
+                </div>
+            </div>
+
+            <div class="resource-bar-container">
+                <span class="resource-label">ESFORÇO</span>
+                <div class="resource-bar bar-esforco">
+                    <button onclick="ajustarStatus('pe', 'min')">&lt;&lt;</button>
+                    <button onclick="ajustarStatus('pe', -1)">&lt;</button>
+                    <input type="text" id="bar-display-pe" value="0 / 0" oninput="salvarExtrasDireto('pe', this.value)">
+                    <button onclick="ajustarStatus('pe', 1)">&gt;</button>
+                    <button onclick="ajustarStatus('pe', 'max')">&gt;&gt;</button>
+                </div>
+            </div>
         </div>
     </div>
 
