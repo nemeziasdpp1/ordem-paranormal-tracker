@@ -1,11 +1,42 @@
 import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
 
+// Lista imutável de perícias oficiais e seus respectivos atributos base
+const LISTA_PERICIAS_BASE = [
+    { nome: "Acrobacia", attr: "agi" },
+    { nome: "Adestramento", attr: "pre" },
+    { nome: "Atletismo", attr: "forca" },
+    { nome: "Atualidades", attr: "int" },
+    { nome: "Ciência", attr: "int" },
+    { nome: "Crime", attr: "agi" },
+    { nome: "Diplomacia", attr: "pre" },
+    { nome: "Enganação", attr: "pre" },
+    { nome: "Fortitude", attr: "vig" },
+    { nome: "Furtividade", attr: "agi" },
+    { nome: "Iniciativa", attr: "agi" },
+    { nome: "Intuição", attr: "pre" },
+    { nome: "Investigação", attr: "int" },
+    { nome: "Luta", attr: "forca" },
+    { nome: "Medicina", attr: "int" },
+    { nome: "Ocultismo", attr: "int" },
+    { nome: "Percepção", attr: "pre" },
+    { nome: "Pilotagem", attr: "agi" },
+    { nome: "Pontaria", attr: "agi" },
+    { nome: "Profissão", attr: "int" },
+    { nome: "Reflexos", attr: "agi" },
+    { nome: "Religião", attr: "int" },
+    { nome: "Sobrevivência", attr: "int" },
+    { nome: "Tática", attr: "int" },
+    { nome: "Tecnologia", attr: "int" },
+    { nome: "Vontade", attr: "pre" }
+];
+
 let personagens = [
     { 
         id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
         pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
         agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
-        nex: "35", peTurno: "7", deslocamento: "12 m / 8 q"
+        nex: "35", peTurno: "7", deslocamento: "12 m / 8 q",
+        pericias: {} // Estrutura para salvar treinamentos customizados
     }
 ];
 
@@ -44,7 +75,7 @@ window.salvarAtributos = () => {
 };
 
 window.salvarExtras = () => {
-    const p =       personagens.find(char => char.id === idPersonagemSelecionado);
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (p) {
         p.nex = document.getElementById('ext-nex').value.replace('%', '');
         p.peTurno = document.getElementById('ext-pe-turno').value;
@@ -69,7 +100,6 @@ function atualizarBarraVisual(campo) {
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
 
-    // O Math.min(100, ...) garante que se o valor for maior que o máximo, a barra gráfica apenas fique 100% cheia sem quebrar o CSS
     let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
     pct = Math.round(pct); 
 
@@ -95,8 +125,6 @@ window.ajustarStatus = (campo, delta) => {
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
 
     atual = atual + delta;
-
-    // Mantém o limite mínimo em 0, mas removeu a trava do limite máximo (atual > max)
     if (atual < 0) atual = 0;
 
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
@@ -107,10 +135,80 @@ window.ajustarStatus = (campo, delta) => {
     atualizarBarraVisual(campo);
 };
 
+// --- Lógica de Perícias ---
+window.alterarTreinoPericia = (nomePericia, valorTreino) => {
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) return;
+    if (!p.pericias) p.pericias = {};
+    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
+    
+    p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
+    renderizarPericias(); // Recarrega para computar totais e cores visuais
+};
+
+window.alterarExtraPericia = (nomePericia, valorExtra) => {
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) return;
+    if (!p.pericias) p.pericias = {};
+    if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
+    
+    p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
+    
+    // Atualiza o total diretamente na tela sem remontar o HTML inteiro (melhor performance ao digitar)
+    const treino = p.pericias[nomePericia].treino || 0;
+    const totalElemento = document.getElementById(`total-${nomePericia}`);
+    if (totalElemento) {
+        const soma = treino + (parseInt(valorExtra) || 0);
+        totalElemento.innerText = soma >= 0 ? `+${soma}` : soma;
+    }
+};
+
+function renderizarPericias() {
+    const container = document.getElementById('lista-pericias-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) return;
+    if (!p.pericias) p.pericias = {};
+
+    LISTA_PERICIAS_BASE.forEach(peri => {
+        // Pega o dado bruto baseado no atributo vinculado
+        const numDados = p[peri.attr] || "0";
+        
+        // Recupera valores salvos do personagem ou define o padrão
+        const dadosSalvos = p.pericias[peri.nome] || { treino: 0, extra: 0 };
+        const treino = dadosSalvos.treino || 0;
+        const extra = dadosSalvos.extra || 0;
+        const total = treino + extra;
+
+        const isTreinada = treino > 0;
+        const rowClass = isTreinada ? 'pericia-row treinada' : 'pericia-row';
+
+        const row = document.createElement('div');
+        row.className = rowClass;
+        row.innerHTML = `
+            <div class="pericia-info">
+                <span class="pericia-nome">${peri.nome}</span>
+                <span class="pericia-dados">${numDados}d20 (${peri.attr.toUpperCase()})</span>
+            </div>
+            <select class="pericia-select" onchange="alterarTreinoPericia('${peri.nome}', this.value)">
+                <option value="0" ${treino === 0 ? 'selected' : ''}>-</option>
+                <option value="5" ${treino === 5 ? 'selected' : ''}>+5 T</option>
+                <option value="10" ${treino === 10 ? 'selected' : ''}>+10 V</option>
+                <option value="15" ${treino === 15 ? 'selected' : ''}>+15 E</option>
+            </select>
+            <input type="text" class="pericia-bonus-extra" value="${extra}" oninput="alterarExtraPericia('${peri.nome}', this.value)" placeholder="0">
+            <span class="pericia-total" id="total-${peri.nome}">${total >= 0 ? '+' : ''}${total}</span>
+        `;
+        container.appendChild(row);
+    });
+}
+
 window.abrirAbaChar = (idAba) => {
     ocultarTodasTelas();
     document.getElementById(idAba).style.display = 'block';
-    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    const p = personajes.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
 
     if (idAba === 'aba-info') {
@@ -136,12 +234,14 @@ window.abrirAbaChar = (idAba) => {
         atualizarBarraVisual('pv');
         atualizarBarraVisual('san');
         atualizarBarraVisual('pe');
+    } else if (idAba === 'aba-pericias') {
+        renderizarPericias();
     }
 };
 
 // --- Formulários e Cards (Mantidos) ---
 window.salvarDadosForm = () => {
-    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    const p = personajes.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
     p.nome = document.getElementById('info-nome').value;
     p.jogador = document.getElementById('info-jogador').value;
@@ -151,7 +251,7 @@ window.salvarDadosForm = () => {
 };
 
 window.alternarIniciativa = (checked) => {
-    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    const p = personajes.find(char => char.id === idPersonagemSelecionado);
     if (p) p.emIniciativa = checked;
 };
 
@@ -195,7 +295,7 @@ function renderizarListaPersonagens() {
     bNovo.onclick = () => { 
         personagens.push({ 
             id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false,
-            nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10"
+            nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {}
         }); 
         renderizarListaPersonagens(); 
     };
