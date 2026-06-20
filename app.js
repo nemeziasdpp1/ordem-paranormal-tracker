@@ -25,7 +25,6 @@ let origemIniciativa = "raiz";
 
 // --- Inicialização Segura ---
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Carregar dados do localStorage
     try {
         const dadosSalvos = localStorage.getItem("ordem_paranormal_personagens");
         if (dadosSalvos) {
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Erro ao ler localStorage:", e);
     }
 
-    // 2. Garantir dados mínimos (Yuki)
     if (!Array.isArray(personagens) || personagens.length === 0) {
         personagens = [
             { 
@@ -49,10 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         salvarNoLocalStorage();
     }
     
-    // 3. Define o primeiro personagem como padrão se não houver
     if (personagens.length > 0) idPersonagemSelecionado = personagens[0].id;
-    
-    // Inicia na tela raiz
     window.voltarParaRaiz();
 });
 
@@ -196,7 +191,6 @@ window.alterarExtraPericia = (nomePericia, valorExtra) => {
     p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
     const total = (p.pericias[nomePericia].treino || 0) + p.pericias[nomePericia].extra;
     
-    // Atualiza apenas o texto, sem reconstruir todo o HTML (evita perder foco do input)
     const totalElemento = document.getElementById(`total-${nomePericia}`);
     if (totalElemento) totalElemento.innerText = `( ${total} )`;
     
@@ -210,7 +204,7 @@ window.alterarTreinoPericia = (nomePericia, valorTreino) => {
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
     
     p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
-    renderizarPericias(); // Re-render é aceitável aqui pois é um dropdown
+    renderizarPericias();
     salvarNoLocalStorage();
 };
 
@@ -234,7 +228,7 @@ function renderizarPericias() {
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" onclick="abrirModalPericia('${peri.nome}')" style="cursor:pointer;">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/>
             </svg>
-            <span class="p-nome">${peri.nome}</span>
+            <span class="p-nome" onclick="abrirModalPericia('${peri.nome}')" style="cursor: pointer;">${peri.nome}</span>
             <span class="p-attr">( ${peri.attr.toUpperCase()} )</span>
             <span id="total-${peri.nome}">( ${total} )</span>
             <select class="pericia-select-ficha" onchange="alterarTreinoPericia('${peri.nome}', this.value)">
