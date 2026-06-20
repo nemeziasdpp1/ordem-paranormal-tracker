@@ -91,20 +91,8 @@
         .row-top-stats {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: flex-start;
             gap: 5px;
-        }
-
-        .stat-box-inline {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .stat-box-inline .label-inline {
-            font-size: 12px;
-            font-weight: bold;
-            color: #aaa;
         }
 
         .stat-box-stack {
@@ -118,7 +106,7 @@
             color: #888;
             font-weight: bold;
             text-align: center;
-            margin-top: 3px;
+            margin-top: 4px;
             letter-spacing: 0.5px;
         }
 
@@ -135,7 +123,7 @@
             box-sizing: border-box;
         }
 
-        /* Container Customizado do NEX (Fundo igual, texto branco e % fixo) */
+        /* Container Customizado do NEX */
         .nex-container {
             display: inline-flex;
             align-items: center;
@@ -279,17 +267,19 @@
 
         <div class="stats-extras-container">
             <div class="row-top-stats">
-                <div class="stat-box-inline">
-                    <span class="label-inline">NEX</span>
+                <div class="stat-box-stack">
                     <div class="nex-container">
                         <input type="text" id="ext-nex" value="0" oninput="salvarExtras()">
                         <span class="nex-fixed-symbol">%</span>
                     </div>
+                    <span class="label-stack">NEX</span>
                 </div>
+                
                 <div class="stat-box-stack">
                     <input type="text" id="ext-pe-turno" class="input-box-style" value="0" oninput="salvarExtras()">
                     <span class="label-stack">PE / TURNO</span>
                 </div>
+                
                 <div class="stat-box-stack">
                     <input type="text" id="ext-deslocamento" class="input-box-style" value="0m" oninput="salvarExtras()">
                     <span class="label-stack">DESLOCAMENTO</span>
