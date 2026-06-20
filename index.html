@@ -309,6 +309,19 @@
         .stat-san { color: #aa55ff; width: 45px; font-weight: bold; background: transparent; border: none; }
         .stat-pe { color: #ffff55; width: 45px; font-weight: bold; background: transparent; border: none; }
         .stat-ini { color: white; font-size: 26px; width: 40px; text-align: center; border: none; border-bottom: 2px solid white; background: transparent; }
+
+        /* --- Customização do Travamento de Inputs --- */
+        .input-travado {
+            pointer-events: none !important;
+            user-select: none !important;
+            outline: none !important;
+        }
+
+        .input-editavel:not(.input-travado) {
+            background: rgba(168, 85, 247, 0.2) !important;
+            border-radius: 4px !important;
+            box-shadow: 0 0 5px #a855f7 !important;
+        }
     </style>
 </head>
 <body>
@@ -339,33 +352,36 @@
     </div>
 
     <div id="aba-atrib" class="tela-oculta">
-        <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 240px; margin: 0 auto 10px auto;">
+            <button class="btn-voltar" onclick="voltarParaMenuChar()" style="margin-bottom: 0;">⬅ Voltar</button>
+            <button id="btn-toggle-atrib" style="background: #111; border: 1px solid #444; color: #aaa; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 3px;" onclick="toggleModoEdicao()">✏️ Editar</button>
+        </div>
         
         <div class="atributos-wrapper">
-            <input type="text" id="at-agi" class="input-atrib pos-agi" value="0" oninput="salvarAtributos()">
-            <input type="text" id="at-int" class="input-atrib pos-int" value="0" oninput="salvarAtributos()">
-            <input type="text" id="at-vig" class="input-atrib pos-vig" value="0" oninput="salvarAtributos()">
-            <input type="text" id="at-pre" class="input-atrib pos-pre" value="0" oninput="salvarAtributos()">
-            <input type="text" id="at-for" class="input-atrib pos-for" value="0" oninput="salvarAtributos()">
+            <input type="text" id="at-agi" class="input-atrib pos-agi input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
+            <input type="text" id="at-int" class="input-atrib pos-int input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
+            <input type="text" id="at-vig" class="input-atrib pos-vig input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
+            <input type="text" id="at-pre" class="input-atrib pos-pre input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
+            <input type="text" id="at-for" class="input-atrib pos-for input-travado input-editavel" value="0" readonly oninput="salvarAtributos()">
         </div>
 
         <div class="stats-extras-container">
             <div class="row-top-stats">
                 <div class="stat-box-stack">
                     <div class="nex-container">
-                        <input type="text" id="ext-nex" value="0" oninput="salvarExtras()">
+                        <input type="text" id="ext-nex" class="input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
                         <span class="nex-fixed-symbol">%</span>
                     </div>
                     <span class="label-stack">NEX</span>
                 </div>
                 
                 <div class="stat-box-stack">
-                    <input type="text" id="ext-pe-turno" class="input-box-style" value="0" oninput="salvarExtras()">
+                    <input type="text" id="ext-pe-turno" class="input-box-style input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
                     <span class="label-stack">PE / TURNO</span>
                 </div>
                 
                 <div class="stat-box-stack">
-                    <input type="text" id="ext-deslocamento" class="input-box-style" value="0m" oninput="salvarExtras()">
+                    <input type="text" id="ext-deslocamento" class="input-box-style input-travado input-editavel" value="0m" readonly oninput="salvarExtras()">
                     <span class="label-stack">DESLOCAMENTO</span>
                 </div>
             </div>
@@ -414,8 +430,8 @@
                             <span style="font-size: 10px; font-weight: bold; color: #aaa; letter-spacing: 0.5px;">DEFESA</span>
                             <div style="font-size: 9px; color: #666; display: flex; align-items: center; gap: 1px; margin-top: 2px;">
                                 =10+AGI+
-                                <input id="def-equip" type="text" value="0" oninput="salvarAtributos()" style="width: 14px; background: transparent; border: none; border-bottom: 1px solid #444; color: white; text-align: center; font-size: 9px; padding: 0; font-weight: bold; outline: none;">+
-                                <input id="def-outros" type="text" value="0" oninput="salvarAtributos()" style="width: 14px; background: transparent; border: none; border-bottom: 1px solid #444; color: white; text-align: center; font-size: 9px; padding: 0; font-weight: bold; outline: none;">
+                                <input id="def-equip" type="text" class="input-travado input-editavel" value="0" readonly oninput="salvarAtributos()" style="width: 14px; background: transparent; border: none; border-bottom: 1px solid #444; color: white; text-align: center; font-size: 9px; padding: 0; font-weight: bold; outline: none;">+
+                                <input id="def-outros" type="text" class="input-travado input-editavel" value="0" readonly oninput="salvarAtributos()" style="width: 14px; background: transparent; border: none; border-bottom: 1px solid #444; color: white; text-align: center; font-size: 9px; padding: 0; font-weight: bold; outline: none;">
                             </div>
                         </div>
                     </div>
@@ -435,15 +451,15 @@
                 <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px;">
                     <div style="display: flex; align-items: center; border-bottom: 1px solid #222; padding-bottom: 2px;">
                         <span style="color: #888; font-weight: bold; font-size: 9px; width: 80px; flex-shrink: 0; letter-spacing: 0.5px;">PROTEÇÃO</span>
-                        <input id="def-protecao" type="text" oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
+                        <input id="def-protecao" type="text" class="input-travado input-editavel" readonly oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
                     </div>
                     <div style="display: flex; align-items: center; border-bottom: 1px solid #222; padding-bottom: 2px;">
                         <span style="color: #888; font-weight: bold; font-size: 9px; width: 80px; flex-shrink: 0; letter-spacing: 0.5px;">RESISTÊNCIAS</span>
-                        <input id="def-resistencias" type="text" oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
+                        <input id="def-resistencias" type="text" class="input-travado input-editavel" readonly oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
                     </div>
                     <div style="display: flex; align-items: center; border-bottom: 1px solid #222; padding-bottom: 2px;">
                         <span style="color: #888; font-weight: bold; font-size: 9px; width: 80px; flex-shrink: 0; letter-spacing: 0.5px;">PROFICIÊNCIAS</span>
-                        <input id="def-proficiencias" type="text" oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
+                        <input id="def-proficiencias" type="text" class="input-travado input-editavel" readonly oninput="salvarAtributos()" style="width: 100%; background: transparent; border: none; color: white; font-size: 11px; padding: 0; outline: none;">
                     </div>
                 </div>
             </div>
@@ -494,6 +510,43 @@
     <div id="aba-inv" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
     <div id="aba-hab" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
     <div id="aba-rituais" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
+
+    <script>
+        function toggleModoEdicao() {
+            const btn = document.getElementById('btn-toggle-atrib');
+            const inputs = document.querySelectorAll('.input-editavel');
+            
+            if (btn.innerHTML.includes('✏️')) {
+                // ALTERNA PARA MODO: EDITANDO
+                btn.innerHTML = '💾 Salvar';
+                btn.style.borderColor = '#22c55e'; // Borda verde indicativa
+                btn.style.color = '#22c55e';
+                
+                inputs.forEach(input => {
+                    input.removeAttribute('readonly');
+                    input.classList.remove('input-travado');
+                });
+            } else {
+                // ALTERNA PARA MODO: SALVO / TRAVADO
+                btn.innerHTML = '✏️ Editar';
+                btn.style.borderColor = '#444';
+                btn.style.color = '#aaa';
+                
+                inputs.forEach(input => {
+                    input.setAttribute('readonly', 'true');
+                    input.classList.add('input-travado');
+                });
+                
+                // Dispara o salvamento chamando as funções que já existem no seu app.js
+                if (typeof salvarAtributos === 'function') {
+                    salvarAtributos();
+                }
+                if (typeof salvarExtras === 'function') {
+                    salvarExtras();
+                }
+            }
+        }
+    </script>
 
     <script type="module" src="./app.js"></script>
 </body>
