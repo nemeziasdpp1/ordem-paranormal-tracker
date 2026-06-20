@@ -57,24 +57,32 @@ window.abrirModalPericia = async (nomePericia) => {
     const titulo = document.getElementById('modal-titulo');
     const texto = document.getElementById('modal-texto');
 
+    // Remove os símbolos * e + para garantir que a busca seja limpa
+    const chaveLimpa = nomePericia.replace(/[*+]/g, '');
+
     try {
         const response = await fetch('./data/pericias.json');
         if (!response.ok) throw new Error("Erro ao carregar arquivo de perícias.");
         
         const todasPericias = await response.json();
-        const info = todasPericias[nomePericia];
+        
+        // Busca usando a chave limpa
+        const info = todasPericias[chaveLimpa];
 
         if (info) {
-            titulo.innerText = nomePericia;
+            titulo.innerText = nomePericia; // Exibe o nome completo com símbolos
             texto.innerHTML = `
                 <p>${info.descricao}</p>
                 <div class="regras-container">${info.regras}</div>
             `;
             modal.style.display = 'flex';
+        } else {
+            console.error(`Perícia "${chaveLimpa}" não encontrada no JSON.`);
+            alert(`Detalhes para "${nomePericia}" não cadastrados.`);
         }
     } catch (err) {
         console.error("Erro ao carregar perícia:", err);
-        alert("Não foi possível carregar os detalhes desta perícia.");
+        alert("Não foi possível carregar os detalhes.");
     }
 };
 
