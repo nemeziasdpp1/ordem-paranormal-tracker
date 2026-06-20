@@ -45,12 +45,12 @@ let personagens = [
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
-// Função de segurança auxiliar para garantir ponteiro válido ao personagem selecionado
+// FUNÇÃO CORRIGIDA: Agora procurando em "personagens" corretamente
 function obterPersonagemAtual() {
-    let p = personajes.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personajes.length > 0) {
-        idPersonagemSelecionado = personajes[0].id;
-        p = personajes[0];
+    let p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p && personagens.length > 0) {
+        idPersonagemSelecionado = personagens[0].id;
+        p = personagens[0];
     }
     return p;
 }
