@@ -1,5 +1,6 @@
 import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
 
+// Banco de dados simulado com os dados dos personagens
 let personagens = [
     { 
         id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
@@ -11,7 +12,7 @@ let personagens = [
 let idPersonagemSelecionado = "yuki"; 
 let origemIniciativa = "raiz"; 
 
-// --- Navegação ---
+// --- Funções de Navegação de Telas ---
 window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
 window.voltarParaRaiz = () => { ocultarTodasTelas(); document.getElementById('tela-raiz').style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
@@ -30,7 +31,7 @@ window.voltarDeIniciativa = () => {
     else document.getElementById('menu-personagem').style.display = 'block';
 };
 
-// --- Logica de Atributos ---
+// --- Lógica de Salvamento e Carregamento de Atributos ---
 window.salvarAtributos = () => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (p) {
@@ -55,6 +56,7 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('info-classe').value = p.classe;
         document.getElementById('info-em-iniciativa').checked = p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
+        // Carrega os valores salvos nos inputs da tela de atributos
         document.getElementById('at-agi').value = p.agi;
         document.getElementById('at-int').value = p.int;
         document.getElementById('at-vig').value = p.vig;
@@ -63,7 +65,7 @@ window.abrirAbaChar = (idAba) => {
     }
 };
 
-// --- Outras Funções (Salvar, Renderizar, etc) ---
+// --- Outras Funções de Salvamento e Renderização (Mantidas) ---
 window.salvarDadosForm = () => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -102,6 +104,7 @@ function renderizarCardsIniciativa() {
 
 window.atualizarDado = (id, campo, valor) => { const p = personagens.find(c => c.id === id); if (p) p[campo] = valor; };
 
+// --- Funções Auxiliares de Interface (Mantidas) ---
 function ocultarTodasTelas() {
     ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais'].forEach(id => {
         const el = document.getElementById(id); if (el) el.style.display = 'none';
@@ -123,4 +126,8 @@ function renderizarListaPersonagens() {
     container.appendChild(bNovo);
 }
 
-OBR.onReady(() => { OBR.action.setWidth(320); OBR.action.setHeight(320); });
+// Inicializa o SDK e define o tamanho da janela
+OBR.onReady(() => { 
+    OBR.action.setWidth(320); 
+    OBR.action.setHeight(320); 
+});
