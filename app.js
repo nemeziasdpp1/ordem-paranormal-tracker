@@ -163,6 +163,7 @@ function renderizarCardsIniciativa() {
     if (!container) return; 
     container.innerHTML = '';
     
+    // O sort já estava aqui e funciona para ordenar (do maior para o menor)
     const ativos = personagens
         .filter(p => p.emIniciativa)
         .sort((a, b) => (parseInt(b.ini) || 0) - (parseInt(a.ini) || 0));
@@ -184,7 +185,10 @@ function renderizarCardsIniciativa() {
                     <input type="text" value="${p.pe}" style="background:transparent; border:none; color:#ffff55; width:40px; text-align:center; outline:none; font-weight:bold;" oninput="atualizarDado('${p.id}','pe',this.value)">
                 </div>
             </div>
-            <input type="text" value="${p.ini}" style="background:transparent; border:none; border-bottom:1px solid white; color:white; font-size:20px; width:30px; text-align:center; font-weight:bold; outline:none;" oninput="atualizarDado('${p.id}','ini',this.value)">
+            <input type="text" value="${p.ini}" 
+                   style="background:transparent; border:none; border-bottom:1px solid white; color:white; font-size:20px; width:30px; text-align:center; font-weight:bold; outline:none;" 
+                   oninput="atualizarDado('${p.id}','ini',this.value)" 
+                   onblur="renderizarCardsIniciativa()">
         `;
         container.appendChild(card);
     });
