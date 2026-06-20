@@ -18,6 +18,36 @@ const LISTA_PERICIAS_BASE = [
     { nome: "Tecnologia*", attr: "int" }, { nome: "Vontade", attr: "pre" }
 ];
 
+// Função para abrir o popup
+window.abrirModalPericia = async (nomePericia) => {
+    const modal = document.getElementById('modal-pericia');
+    const titulo = document.getElementById('modal-titulo');
+    const texto = document.getElementById('modal-texto');
+
+    try {
+        // Busca os dados do arquivo separado
+        const response = await fetch('./data/pericias.json');
+        const todasPericias = await response.json();
+        const info = todasPericias[nomePericia];
+
+        if (info) {
+            titulo.innerText = nomePericia;
+            texto.innerHTML = `
+                <p>${info.descricao}</p>
+                <div class="regras-container">${info.regras}</div>
+            `;
+            modal.style.display = 'flex'; // Mostra o modal
+        }
+    } catch (err) {
+        console.error("Erro ao carregar perícia:", err);
+    }
+};
+
+// Função para fechar
+window.fecharModal = () => {
+    document.getElementById('modal-pericia').style.display = 'none';
+};
+
 // Inicialização segura do banco de dados local
 let personagens = [];
 try {
