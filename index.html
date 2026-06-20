@@ -70,14 +70,14 @@
             transform: translate(-50%, -50%); 
         }
 
-        /* Coordenadas Calibradas por Você */
+        /* Coordenadas Calibradas */
         .pos-agi { top: 17%; left: 50%; }
         .pos-int { top: 38%; left: 81%; }
         .pos-vig { top: 75%; left: 72%; }
         .pos-pre { top: 75%; left: 28%; }
         .pos-for { top: 38%; left: 19%; }
 
-        /* --- NOVOS ESTILOS: CAMPOS EXTRA DE STATUS --- */
+        /* --- CAMPOS EXTRA DE STATUS --- */
         .stats-extras-container {
             margin-top: 15px;
             display: flex;
@@ -134,11 +134,11 @@
             outline: none;
         }
 
-        #ext-nex { width: 42px; color: #60a5fa; } /* Azul sutil para o NEX */
+        #ext-nex { width: 42px; color: #60a5fa; } 
         #ext-pe-turno { width: 35px; }
         #ext-deslocamento { width: 80px; }
 
-        /* Barras de Vida, Sanidade e Esforço */
+        /* Barras de Recursos Dinâmicas */
         .resource-bar-container {
             display: flex;
             flex-direction: column;
@@ -161,11 +161,9 @@
             height: 32px;
             border: 1px solid #333;
             box-sizing: border-box;
+            background: #0a0a0a; /* Fundo padrão quando vazia */
+            transition: background 0.1s ease;
         }
-
-        .bar-vida { background-color: #991b1b; }
-        .bar-sanidade { background-color: #6b21a8; }
-        .bar-esforco { background-color: #c2410c; }
 
         .resource-bar button {
             background: transparent;
@@ -176,6 +174,7 @@
             cursor: pointer;
             padding: 0 10px;
             height: 100%;
+            z-index: 2;
         }
 
         .resource-bar button:hover {
@@ -191,6 +190,7 @@
             font-size: 15px;
             width: 90px;
             outline: none;
+            z-index: 2;
         }
 
         /* Estilos dos Cards e Forms (Mantidos) */
@@ -264,34 +264,34 @@
 
             <div class="resource-bar-container">
                 <span class="resource-label">VIDA</span>
-                <div class="resource-bar bar-vida">
-                    <button onclick="ajustarStatus('pv', 'min')">&lt;&lt;</button>
+                <div id="bar-vida" class="resource-bar">
+                    <button onclick="ajustarStatus('pv', -5)">&lt;&lt;</button>
                     <button onclick="ajustarStatus('pv', -1)">&lt;</button>
                     <input type="text" id="bar-display-pv" value="0 / 0" oninput="salvarExtrasDireto('pv', this.value)">
                     <button onclick="ajustarStatus('pv', 1)">&gt;</button>
-                    <button onclick="ajustarStatus('pv', 'max')">&gt;&gt;</button>
+                    <button onclick="ajustarStatus('pv', 5)">&gt;&gt;</button>
                 </div>
             </div>
 
             <div class="resource-bar-container">
                 <span class="resource-label">SANIDADE</span>
-                <div class="resource-bar bar-sanidade">
-                    <button onclick="ajustarStatus('san', 'min')">&lt;&lt;</button>
+                <div id="bar-sanidade" class="resource-bar">
+                    <button onclick="ajustarStatus('san', -5)">&lt;&lt;</button>
                     <button onclick="ajustarStatus('san', -1)">&lt;</button>
                     <input type="text" id="bar-display-san" value="0 / 0" oninput="salvarExtrasDireto('san', this.value)">
                     <button onclick="ajustarStatus('san', 1)">&gt;</button>
-                    <button onclick="ajustarStatus('san', 'max')">&gt;&gt;</button>
+                    <button onclick="ajustarStatus('san', 5)">&gt;&gt;</button>
                 </div>
             </div>
 
             <div class="resource-bar-container">
                 <span class="resource-label">ESFORÇO</span>
-                <div class="resource-bar bar-esforco">
-                    <button onclick="ajustarStatus('pe', 'min')">&lt;&lt;</button>
+                <div id="bar-esforco" class="resource-bar">
+                    <button onclick="ajustarStatus('pe', -5)">&lt;&lt;</button>
                     <button onclick="ajustarStatus('pe', -1)">&lt;</button>
                     <input type="text" id="bar-display-pe" value="0 / 0" oninput="salvarExtrasDireto('pe', this.value)">
                     <button onclick="ajustarStatus('pe', 1)">&gt;</button>
-                    <button onclick="ajustarStatus('pe', 'max')">&gt;&gt;</button>
+                    <button onclick="ajustarStatus('pe', 5)">&gt;&gt;</button>
                 </div>
             </div>
         </div>
