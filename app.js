@@ -60,7 +60,7 @@ window.salvarExtrasDireto = (campo, valor) => {
     }
 };
 
-// --- NOVA FUNÇÃO: Atualiza o preenchimento da barra baseado no valor atual / max ---
+// --- FUNÇÃO CORRIGIDA: Usa backgroundImage com transparência e valores inteiros ---
 function atualizarBarraVisual(campo) {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -70,10 +70,10 @@ function atualizarBarraVisual(campo) {
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
 
-    // Calcula a porcentagem de preenchimento
+    // Cálculo seguro de porcentagem arredondado
     let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
+    pct = Math.round(pct); 
 
-    // Define as cores correspondentes
     let cor = "#991b1b"; // Vida
     let idElemento = "bar-vida";
     
@@ -82,12 +82,12 @@ function atualizarBarraVisual(campo) {
 
     const el = document.getElementById(idElemento);
     if (el) {
-        // Aplica o background linear para criar o efeito cortado idêntico à imagem
-        el.style.background = `linear-gradient(90deg, ${cor} ${pct}%, #0a0a0a ${pct}%)`;
+        // Renderização à prova de falhas: preenche com a cor e deixa o resto transparente revelando o fundo escuro do CSS
+        el.style.backgroundImage = `linear-gradient(to right, ${cor} ${pct}%, transparent ${pct}%)`;
     }
 }
 
-// --- Ajuste dos botões interativos (Atualizado para somar/subtrair e limitar ao max) ---
+// --- Ajuste dos botões interativos ---
 window.ajustarStatus = (campo, delta) => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -99,7 +99,6 @@ window.ajustarStatus = (campo, delta) => {
 
     atual = atual + delta;
 
-    // Garante que não fique negativo e não passe do máximo do personagem
     if (atual < 0) atual = 0;
     if (atual > max) atual = max;
 
@@ -108,7 +107,6 @@ window.ajustarStatus = (campo, delta) => {
     let inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
     document.getElementById(inputId).value = p[campo];
 
-    // Atualiza a proporção da cor de fundo
     atualizarBarraVisual(campo);
 };
 
@@ -145,7 +143,7 @@ window.abrirAbaChar = (idAba) => {
     }
 };
 
-// --- Formulários e Cards ---
+// --- Formulários e Cards (Mantidos) ---
 window.salvarDadosForm = () => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
