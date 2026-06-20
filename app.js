@@ -47,10 +47,10 @@ let origemIniciativa = "raiz";
 
 // Função de segurança auxiliar para garantir ponteiro válido ao personagem selecionado
 function obterPersonagemAtual() {
-    let p = personagens.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personagens.length > 0) {
-        idPersonagemSelecionado = personagens[0].id;
-        p = personagens[0];
+    let p = personajes.find(char => char.id === idPersonagemSelecionado);
+    if (!p && personajes.length > 0) {
+        idPersonagemSelecionado = personajes[0].id;
+        p = personajes[0];
     }
     return p;
 }
@@ -164,7 +164,6 @@ window.alterarExtraPericia = (nomePericia, valorExtra) => {
     
     p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
     
-    // Atualiza dinamicamente o Total (Bônus) na tela sem perder o foco de digitação
     const treino = p.pericias[nomePericia].treino || 0;
     const total = treino + (parseInt(valorExtra) || 0);
     
@@ -190,7 +189,6 @@ function renderizarPericias() {
         const total = treino + extra;
 
         const itemRow = document.createElement('div');
-        // Define a classe de cor com base no valor do treino: 0 (branco), 5 (verde), 10 (azul), 15 (laranja)
         itemRow.className = `pericia-item-row p-treino-${treino}`;
         
         itemRow.innerHTML = `
@@ -198,7 +196,7 @@ function renderizarPericias() {
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5V12L2 7zm20 0v10l-10 5V12l10-5z"/>
             </svg>
             <span class="p-nome">${peri.nome}</span>
-            <span>( ${peri.attr.toUpperCase()} )</span>
+            <span class="p-attr">( ${peri.attr.toUpperCase()} )</span>
             <span id="total-${peri.nome}">( ${total} )</span>
             
             <select class="pericia-select-ficha" onchange="alterarTreinoPericia('${peri.nome}', this.value)">
