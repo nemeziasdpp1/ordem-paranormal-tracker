@@ -326,6 +326,24 @@ window.salvarDadosForm = () => {
     salvarNoLocalStorage(); 
 };
 
+window.excluirPersonagemAtual = () => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+
+    // Confirmação para evitar cliques acidentais
+    const confirmar = confirm(`Tem certeza que deseja excluir o personagem "${p.nome}"? Esta ação não pode ser desfeita.`);
+    if (!confirmar) return;
+
+    // Filtra a lista mantendo apenas os outros personagens
+    personagens = personagens.filter(char => char.id !== p.id);
+
+    // Salva a nova lista limpa no localStorage
+    salvarNoLocalStorage();
+
+    // Redireciona o usuário de volta para a lista de personagens atualizada
+    window.mostrarListaPersonagens();
+};
+
 window.alternarIniciativa = (checked) => { 
     const p = obterPersonagemAtual(); 
     if (p) { 
