@@ -61,7 +61,7 @@
             color: white;
         }
 
-        /* --- Novo Estilo: Ficha de Informações (image_877c9d) --- */
+        /* --- Estilo: Ficha de Informações (Formulário) --- */
         .form-container {
             display: flex;
             flex-direction: column;
@@ -112,7 +112,7 @@
             accent-color: #a855f7;
         }
 
-        /* --- Estilos do Card de Status (Iniciativa Individual) --- */
+        /* --- O Visual Original do Card de Status (Mantido e Protegido) --- */
         .character-card {
             display: flex;
             justify-content: space-between;
@@ -133,7 +133,7 @@
             gap: 15px; 
         }
 
-        .stats-row input {
+        input {
             background: transparent;
             border: none;
             outline: none;
@@ -141,6 +141,7 @@
             font-family: Arial, sans-serif;
         }
 
+        .char-name { color: white; font-size: 18px; width: 150px; }
         .stat-pv { color: #ff5555; font-size: 13px; width: 45px; }
         .stat-san { color: #aa55ff; font-size: 13px; width: 45px; }
         .stat-pe { color: #ffff55; font-size: 13px; width: 45px; }
@@ -150,19 +151,20 @@
             font-size: 26px;
             width: 40px;
             text-align: center;
-            border: none;
-            background: transparent;
-            outline: none;
-            font-weight: bold;
             border-bottom: 2px solid white;
             padding-bottom: 2px;
+        }
+        
+        input:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
     <div id="tela-raiz" class="menu-grid">
-        <button class="menu-btn" onclick="mostrarIniciativaGeral()">Iniciativa</button>
+        <button class="menu-btn" onclick="abrirIniciativa('raiz')">Iniciativa</button>
         <button class="menu-btn" onclick="mostrarListaPersonagens()">Personagens</button>
     </div>
 
@@ -177,7 +179,7 @@
         <h3 id="nome-titulo-personagem" style="margin: 5px 0 12px 0; color: #a855f7; text-align:center;">Nome</h3>
         <div class="menu-grid">
             <button class="menu-btn" onclick="abrirAbaChar('aba-info')">Informações</button>
-            <button class="menu-btn" onclick="abrirAbaChar('aba-ini-individual')">Iniciativa</button>
+            <button class="menu-btn" onclick="abrirIniciativa('menu-char')">Iniciativa</button>
             <button class="menu-btn" onclick="abrirAbaChar('aba-atrib')">Atributos</button>
             <button class="menu-btn" onclick="abrirAbaChar('aba-pericias')">Perícias</button>
             <button class="menu-btn" onclick="abrirAbaChar('aba-combate')">Combate</button>
@@ -187,11 +189,21 @@
         </div>
     </div>
 
-    <div id="tela-iniciativa-geral" class="tela-oculta">
-        <button class="btn-voltar" onclick="voltarParaRaiz()">⬅ Voltar</button>
-        <h3 style="color: #a855f7; margin: 0 0 10px 0;">Ordem de Iniciativa</h3>
-        <div id="lista-iniciativa-geral" style="display: flex; flex-direction: column; gap: 6px;">
+    <div id="aba-iniciativa" class="tela-oculta">
+        <button class="btn-voltar" onclick="voltarDeIniciativa()">⬅ Voltar</button>
+        <div class="character-card">
+            <div class="info-section">
+                <input type="text" class="char-name" id="char-name-display" oninput="salvarDadosIniciativa()">
+                <div class="stats-row">
+                    <input type="text" class="stat-pv" id="char-pv" oninput="salvarDadosIniciativa()">
+                    <input type="text" class="stat-san" id="char-san" oninput="salvarDadosIniciativa()">
+                    <input type="text" class="stat-pe" id="char-pe" oninput="salvarDadosIniciativa()">
+                </div>
             </div>
+            <div>
+                <input type="text" class="stat-ini" id="char-ini" oninput="salvarDadosIniciativa()">
+            </div>
+        </div>
     </div>
 
     <div id="aba-info" class="tela-oculta">
@@ -199,40 +211,23 @@
         <div class="form-container">
             <div class="form-group">
                 <label>PERSONAGEM</label>
-                <input type="text" id="info-nome" oninput="salvarDados()">
+                <input type="text" id="info-nome" oninput="salvarDadosForm()">
             </div>
             <div class="form-group">
                 <label>JOGADOR</label>
-                <input type="text" id="info-jogador" oninput="salvarDados()">
+                <input type="text" id="info-jogador" oninput="salvarDadosForm()">
             </div>
             <div class="form-group">
                 <label>ORIGEM</label>
-                <input type="text" id="info-origem" oninput="salvarDados()">
+                <input type="text" id="info-origem" oninput="salvarDadosForm()">
             </div>
             <div class="form-group">
                 <label>CLASSE</label>
-                <input type="text" id="info-classe" oninput="salvarDados()">
+                <input type="text" id="info-classe" oninput="salvarDadosForm()">
             </div>
             <div class="checkbox-group">
                 <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
                 <label for="info-em-iniciativa">Adicionar à iniciativa</label>
-            </div>
-        </div>
-    </div>
-
-    <div id="aba-ini-individual" class="tela-oculta">
-        <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
-        <div class="character-card">
-            <div class="info-section">
-                <div id="card-nome-display" style="font-weight: bold; font-size: 18px; color: white;">Yuki</div>
-                <div class="stats-row">
-                    <input type="text" class="stat-pv" id="char-pv" oninput="salvarDados()">
-                    <input type="text" class="stat-san" id="char-san" oninput="salvarDados()">
-                    <input type="text" class="stat-pe" id="char-pe" oninput="salvarDados()">
-                </div>
-            </div>
-            <div>
-                <input type="text" class="stat-ini" id="char-ini" oninput="salvarDados()">
             </div>
         </div>
     </div>
