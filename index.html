@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Status do Personagem</title>
+    <title>Tracker Ordem Paranormal</title>
     <style>
-        /* Fundo geral escuro */
+        /* Estilo de fundo geral */
         body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a; 
@@ -13,31 +13,75 @@
             margin: 0;
         }
 
-        /* O "card" que segura as informações */
-        .character-card {
-            display: flex;
-            justify-content: space-between; /* Joga o nome pra esquerda e a iniciativa pra direita */
-            align-items: center;
-            background-color: #111111; /* Fundo um pouco mais escuro pro personagem */
-            padding: 12px 15px;
-            border-radius: 8px;
+        /* Grade do Menu Principal (2 colunas) */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        /* Botões do Menu com o Roxo da Ordem */
+        .menu-btn {
+            background-color: #111;
+            border: 1px solid #a855f7; 
+            color: white;
+            padding: 12px 5px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .menu-btn:hover {
+            background-color: #222;
+            border-color: #c084fc;
+        }
+
+        /* Esconde todas as abas de conteúdo por padrão */
+        .aba-conteudo {
+            display: none;
+        }
+
+        /* Botão para retornar ao menu principal */
+        .btn-voltar {
+            background-color: #222;
+            border: 1px solid #444;
+            color: #aaa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
             margin-bottom: 10px;
         }
 
-        /* Seção da esquerda (Nome em cima, Status embaixo) */
+        .btn-voltar:hover {
+            background-color: #333;
+            color: white;
+        }
+
+        /* --- Estilos do Card de Status (Mantidos) --- */
+        .character-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #111111;
+            padding: 12px 15px;
+            border-radius: 8px;
+        }
+
         .info-section {
             display: flex;
             flex-direction: column;
             gap: 8px; 
         }
 
-        /* Linha dos Status (PV, SAN, PE lado a lado) */
         .stats-row {
             display: flex;
             gap: 15px; 
         }
 
-        /* Reset nas caixas de texto para não parecerem caixas (sem borda e sem fundo) */
         input {
             background: transparent;
             border: none;
@@ -46,42 +90,20 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Cores e Tamanhos Específicos */
-        .char-name {
-            color: white;
-            font-size: 18px;
-            width: 150px;
-        }
+        .char-name { color: white; font-size: 18px; width: 150px; }
+        .stat-pv { color: #ff5555; font-size: 13px; width: 45px; }
+        .stat-san { color: #aa55ff; font-size: 13px; width: 45px; }
+        .stat-pe { color: #ffff55; font-size: 13px; width: 45px; }
 
-        .stat-pv {
-            color: #ff5555; /* Vermelho */
-            font-size: 13px;
-            width: 45px;
-        }
-
-        .stat-san {
-            color: #aa55ff; /* Roxo */
-            font-size: 13px;
-            width: 45px;
-        }
-
-        .stat-pe {
-            color: #ffff55; /* Amarelo */
-            font-size: 13px;
-            width: 45px;
-        }
-
-        /* Iniciativa à direita */
         .stat-ini {
             color: white;
             font-size: 26px;
             width: 40px;
             text-align: center;
-            border-bottom: 2px solid white; /* Cria a linha embaixo do zero */
+            border-bottom: 2px solid white;
             padding-bottom: 2px;
         }
         
-        /* Efeito ao passar o mouse por cima das caixas de texto para saber que dá pra editar */
         input:hover {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 4px;
@@ -90,22 +112,42 @@
 </head>
 <body>
 
-    <div class="character-card">
-        
-        <div class="info-section">
-            <input type="text" class="char-name" id="nome" value="Yuki" placeholder="Nome">
-            
-            <div class="stats-row">
-                <input type="text" class="stat-pv" id="pv" value="31 / 31" title="Vida (PV)">
-                <input type="text" class="stat-san" id="san" value="47 / 47" title="Sanidade (SAN)">
-                <input type="text" class="stat-pe" id="pe" value="41 / 49" title="Pontos de Esforço (PE)">
+    <div id="menu-principal" class="menu-grid">
+        <button class="menu-btn" onclick="abrirAba('aba-info')">Informações</button>
+        <button class="menu-btn" onclick="abrirAba('aba-desc')">Descrição</button>
+        <button class="menu-btn" onclick="abrirAba('aba-atrib')">Atributos</button>
+        <button class="menu-btn" onclick="abrirAba('aba-pericias')">Perícias</button>
+        <button class="menu-btn" onclick="abrirAba('aba-combate')">Combate</button>
+        <button class="menu-btn" onclick="abrirAba('aba-inv')">Inventário</button>
+        <button class="menu-btn" onclick="abrirAba('aba-hab')">Habilidades</button>
+        <button class="menu-btn" onclick="abrirAba('aba-rituais')">Rituais</button>
+    </div>
+
+    <div id="aba-info" class="aba-conteudo">
+        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
+        <div class="character-card">
+            <div class="info-section">
+                <input type="text" class="char-name" id="nome" value="Yuki" placeholder="Nome">
+                <div class="stats-row">
+                    <input type="text" class="stat-pv" id="pv" value="31 / 31">
+                    <input type="text" class="stat-san" id="san" value="47 / 47">
+                    <input type="text" class="stat-pe" id="pe" value="41 / 49">
+                </div>
+            </div>
+            <div>
+                <input type="text" class="stat-ini" id="ini" value="0">
             </div>
         </div>
+    </div>
 
-        <div>
-            <input type="text" class="stat-ini" id="ini" value="0" title="Iniciativa">
-        </div>
+    <div id="aba-desc" class="aba-conteudo">
+        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
+        <p style="font-size: 14px; color: #aaa;">Histórico e detalhes visuais do personagem...</p>
+    </div>
 
+    <div id="aba-atrib" class="aba-conteudo">
+        <button class="btn-voltar" onclick="voltarParaMenu()">⬅ Voltar</button>
+        <p style="font-size: 14px; color: #aaa;">AGI, FOR, INT, PRE, VIG...</p>
     </div>
 
     <script type="module" src="./app.js"></script>
