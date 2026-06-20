@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Tracker Ordem Paranormal</title>
     <style>
+        /* Estilos Base (Mantidos) */
         body {
             font-family: Arial, sans-serif;
             background-color: #1a1a1a; 
@@ -43,13 +44,13 @@
             margin-bottom: 10px;
         }
 
-        /* --- Estilos de Atributos --- */
+        /* --- Estilos de Atributos (Calibrados) --- */
         .atributos-wrapper {
             position: relative;
-            width: 280px;
-            height: 280px;
+            width: 320px; /* Tamanho ajustado para a imagem maior */
+            height: 320px;
             margin: 0 auto;
-            background-image: url('atributos.png'); /* Certifique-se de subir a imagem com este nome */
+            background-image: url('atributos.png'); /* Nome do arquivo no GitHub */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -57,24 +58,25 @@
 
         .input-atrib {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 60px; /* Aumentado para cobrir o texto da imagem */
+            height: 60px;
             background: transparent;
             border: none;
-            color: white;
-            font-size: 24px;
+            color: white; /* Texto branco */
+            font-size: 32px; /* Fonte maior para cobrir o texto da imagem */
             font-weight: bold;
             text-align: center;
             outline: none;
-            transform: translate(-50%, -50%);
+            /* Centraliza a caixa do input no ponto top/left definido */
+            transform: translate(-50%, -50%); 
         }
 
-        /* Coordenadas aproximadas para cada hexágono */
-        .pos-agi { top: 18%; left: 50%; }
-        .pos-int { top: 43%; left: 86%; }
-        .pos-vig { top: 82%; left: 72%; }
-        .pos-pre { top: 82%; left: 28%; }
-        .pos-for { top: 43%; left: 14%; }
+        /* Novas coordenadas calibradas para centralizar */
+        .pos-agi { top: 20%; left: 50%; }
+        .pos-int { top: 45%; left: 85%; }
+        .pos-vig { top: 80%; left: 70%; }
+        .pos-pre { top: 80%; left: 30%; }
+        .pos-for { top: 45%; left: 15%; }
 
         /* Estilos dos Cards e Forms (Mantidos) */
         .form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
