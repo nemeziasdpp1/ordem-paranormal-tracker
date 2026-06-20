@@ -296,10 +296,11 @@ body {
     z-index: 9999;           /* Garante que fique acima de tudo */
 }
 
-.nota-pericia {
-    font-size: 0.75rem; /* Isso reduz o tamanho da fonte */
-    color: #6b7280;     /* Opcional: uma cor cinza para dar destaque menor */
-    display: block;     /* Opcional: pula linha se necessário */
+.pericia-legenda {
+    font-size: 0.75rem; /* Isso deixa o texto menor */
+    color: #555;        /* Uma cor levemente cinza para destacar menos que o texto principal */
+    margin-top: 10px;   /* Adiciona um pequeno espaço em relação ao texto de cima */
+    font-style: italic; /* Opcional: deixa o texto em itálico para parecer uma nota de rodapé */
 }
 
 .modal-conteudo {
