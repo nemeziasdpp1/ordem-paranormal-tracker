@@ -18,31 +18,54 @@ const LISTA_PERICIAS_BASE = [
     { nome: "Tecnologia*", attr: "int" }, { nome: "Vontade", attr: "pre" }
 ];
 
-// NOVO: Carrega os dados salvos do localStorage ou inicia com o padrão se estiver vazio
-let personagens = JSON.parse(localStorage.getItem("ordem_paranormal_personagens")) || [
-    { 
-        id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
-        pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
-        agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
-        nex: "35", peTurno: "7", deslocamento: "12 m / 8 q",
-        pericias: {} 
+// Inicialização segura do banco de dados local
+let personagens = [];
+try {
+    const dadosSalvos = localStorage.getItem("ordem_paranormal_personagens");
+    if (dadosSalvos) {
+        personagens = JSON.parse(dadosSalvos);
     }
-];
+} catch (e) {
+    console.error("Erro ao ler localStorage, reiniciando dados...", e);
+}
 
-let idPersonagemSelecionado = "yuki"; 
-let origemIniciativa = "raiz"; 
-
-// NOVO: Função para persistir as alterações no navegador
-function salvarNoLocalStorage() {
+// Se o banco estiver vazio ou corrompido, reconstrói o padrão com a Yuki de forma limpa
+if (!Array.isArray(personagens) || personagens.length === 0) {
+    personagens = [
+        { 
+            id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
+            pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
+            agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
+            nex: "35", peTurno: "7", deslocamento: "12 m / 8 q",
+            pericias: {} 
+        }
+    ];
     localStorage.setItem("ordem_paranormal_personagens", JSON.stringify(personagens));
 }
 
-// Função de segurança para garantir ponteiro válido ao personagem selecionado
+let idPersonagemSelecionado = personagens[0].id; 
+let origemIniciativa = "raiz"; 
+
+// Função centralizada para salvar dados de forma segura
+function salvarNoLocalStorage() {
+    try {
+        localStorage.setItem("ordem_paranormal_personagens", JSON.stringify(personagens));
+    } catch (e) {
+        console.error("Falha ao salvar no localStorage:", e);
+    }
+}
+
+// Garante um ponteiro e dados válidos para evitar telas pretas/vazias
 function obterPersonagemAtual() {
-    let p = personajes.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personajes.length > 0) {
-        idPersonagemSelecionado = personajes[0].id;
-        p = personajes[0];
+    if (!Array.isArray(personagens) || personagens.length === 0) {
+        personagens = [{ id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false, agi: "3", int: "4", vig: "2", pre: "3", forca: "1", nex: "35", peTurno: "7", deslocamento: "12 m / 8 q", pericias: {} }];
+        idPersonagemSelecionado = "yuki";
+        salvarNoLocalStorage();
+    }
+    let p = personagens.find(char => char.id === idPersonagemSelecionado);
+    if (!p) {
+        idPersonagemSelecionado = personagens[0].id;
+        p = personagens[0];
     }
     return p;
 }
@@ -57,10 +80,12 @@ window.selecionarPersonagem = (id) => {
         if (titulo) titulo.innerText = p.nome;
         const menu = document.getElementById('menu-personagem');
         if (menu) menu.style.display = 'block';
+    } else {
+        window.voltarParaRaiz();
     }
 };
 
-// --- Renderização Dinâmica de Cards de Iniciativa ---
+// --- Renderização de Cards de Iniciativa ---
 function renderizarCardsIniciativa() {
     const container = document.getElementById('lista-iniciativa-cards');
     if (!container) return; 
@@ -94,7 +119,7 @@ function renderizarCardsIniciativa() {
     });
 }
 
-// --- Alternar Modo Edição ---
+// --- Alternar Modo Edição (Atributos) ---
 window.toggleModoEdicao = () => {
     const btn = document.getElementById('btn-toggle-atrib');
     const inputs = document.querySelectorAll('.input-editavel');
@@ -119,15 +144,13 @@ window.toggleModoEdicao = () => {
             input.classList.add('input-travado');
         });
         
-        if (typeof salvarAtributos === 'function') salvarAtributos();
-        if (typeof salvarExtras === 'function') salvarExtras();
-        
-        // SALVA AO TRAVAR AS ALTERAÇÕES
+        salvarAtributos();
+        salvarExtras();
         salvarNoLocalStorage();
     }
 }
 
-// --- Funções de Navegação e Salvamento ---
+// --- Funções de Navegação ---
 window.mostrarListaPersonagens = () => { ocultarTodasTelas(); const el = document.getElementById('tela-lista-personagens'); if (el) el.style.display = 'block'; renderizarListaPersonagens(); };
 window.voltarParaRaiz = () => { ocultarTodasTelas(); const el = document.getElementById('tela-raiz'); if (el) el.style.display = 'grid'; };
 window.voltarParaLista = () => window.mostrarListaPersonagens();
@@ -152,7 +175,7 @@ window.voltarDeIniciativa = () => {
     }
 };
 
-window.salvarAtributos = () => {
+function salvarAtributos() {
     const p = obterPersonagemAtual();
     if (p) {
         const agi = document.getElementById('at-agi'); if (agi) p.agi = agi.value;
@@ -161,54 +184,58 @@ window.salvarAtributos = () => {
         const pre = document.getElementById('at-pre'); if (pre) p.pre = pre.value;
         const forc = document.getElementById('at-for'); if (forc) p.forca = forc.value;
     }
-};
+}
 
-window.salvarExtras = () => {
+function salvarExtras() {
     const p = obterPersonagemAtual();
     if (p) {
         const nex = document.getElementById('ext-nex'); if (nex) p.nex = nex.value.replace('%', '');
         const peTurno = document.getElementById('ext-pe-turno'); if (peTurno) p.peTurno = peTurno.value;
         const desloc = document.getElementById('ext-deslocamento'); if (desloc) p.deslocamento = desloc.value;
     }
-};
+}
 
 window.salvarExtrasDireto = (campo, valor) => {
     const p = obterPersonagemAtual();
     if (p) { 
         p[campo] = valor; 
         atualizarBarraVisual(campo); 
-        salvarNoLocalStorage(); // Salva mudanças diretas
+        salvarNoLocalStorage();
     }
 };
 
 function atualizarBarraVisual(campo) {
     const p = obterPersonagemAtual(); if (!p) return;
-    let valor = p[campo] || "0 / 0";
+    let valor = String(p[campo] || "0 / 0"); // Força conversão para String prevenindo crash de tipo
     let partes = valor.split('/');
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
     let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
     pct = Math.round(pct); 
+    
     let cor = "#991b1b"; let idElemento = "bar-vida";
     if (campo === 'san') { cor = "#6b21a8"; idElemento = "bar-sanidade"; }
     if (campo === 'pe') { cor = "#c2410c"; idElemento = "bar-esforco"; }
+    
     const el = document.getElementById(idElemento);
     if (el) el.style.backgroundImage = `linear-gradient(to right, ${cor} ${pct}%, transparent ${pct}%)`;
 }
 
 window.ajustarStatus = (campo, delta) => {
     const p = obterPersonagemAtual(); if (!p) return;
-    let valorAtual = p[campo] || "0 / 0";
+    let valorAtual = String(p[campo] || "0 / 0");
     let partes = valorAtual.split('/');
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
     atual = atual + delta; if (atual < 0) atual = 0;
+    
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
     let inputId = campo === 'pv' ? 'bar-display-pv' : campo === 'san' ? 'bar-display-san' : 'bar-display-pe';
     const inputEl = document.getElementById(inputId);
     if (inputEl) inputEl.value = p[campo];
+    
     atualizarBarraVisual(campo);
-    salvarNoLocalStorage(); // Salva alterações nos botões de + e -
+    salvarNoLocalStorage();
 };
 
 window.alterarTreinoPericia = (nomePericia, valorTreino) => {
@@ -217,7 +244,7 @@ window.alterarTreinoPericia = (nomePericia, valorTreino) => {
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
     p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
     renderizarPericias(); 
-    salvarNoLocalStorage(); // Salva treino mudado
+    salvarNoLocalStorage();
 };
 
 window.alterarExtraPericia = (nomePericia, valorExtra) => {
@@ -229,8 +256,8 @@ window.alterarExtraPericia = (nomePericia, valorExtra) => {
     const treino = p.pericias[nomePericia].treino || 0;
     const total = treino + valorNumerico;
     const totalElemento = document.getElementById(`total-${nomePericia}`);
-    if (totalElemento) totalElemento.innerText = `(${total})`;
-    salvarNoLocalStorage(); // Salva bônus extra mudado
+    if (totalElemento) totalElemento.innerText = `( ${total} )`;
+    salvarNoLocalStorage();
 };
 
 function renderizarPericias() {
@@ -270,7 +297,8 @@ window.abrirAbaChar = (idAba) => {
         const nome = document.getElementById('info-nome'); if (nome) nome.value = p.nome || "";
         const jogador = document.getElementById('info-jogador'); if (jogador) jogador.value = p.jogador || "";
         const origem = document.getElementById('info-origem'); if (origem) origem.value = p.origem || "";
-        const classe = document.getElementById('info-classe'); if (classe) classe.value = p.classe || "";
+        // CORREÇÃO DO CRASH E OVERWRITE: agora injeta o dado corretamente na tela
+        const classe = document.getElementById('info-classe'); if (classe) classe.value = p.classe || ""; 
         const emIni = document.getElementById('info-em-iniciativa'); if (emIni) emIni.checked = !!p.emIniciativa;
     } else if (idAba === 'aba-atrib') {
         const agi = document.getElementById('at-agi'); if (agi) agi.value = p.agi || "0";
@@ -278,7 +306,7 @@ window.abrirAbaChar = (idAba) => {
         const vig = document.getElementById('at-vig'); if (vig) vig.value = p.vig || "0";
         const pre = document.getElementById('at-pre'); if (pre) pre.value = p.pre || "0";
         const forc = document.getElementById('at-for'); if (forc) forc.value = p.forca || "0";
-        const nex = document.getElementById('ext-nex'); if (nex) nex.value = (p.nex || "0").replace('%', '');
+        const nex = document.getElementById('ext-nex'); if (nex) nex.value = String(p.nex || "0").replace('%', '');
         const peTurno = document.getElementById('ext-pe-turno'); if (peTurno) peTurno.value = p.peTurno || "0";
         const desloc = document.getElementById('ext-deslocamento'); if (desloc) desloc.value = p.deslocamento || "0m";
         const pv = document.getElementById('bar-display-pv'); if (pv) pv.value = p.pv || "0 / 0";
@@ -295,14 +323,14 @@ window.salvarDadosForm = () => {
     const origem = document.getElementById('info-origem'); if (origem) p.origem = origem.value;
     const classe = document.getElementById('info-classe'); if (classe) p.classe = classe.value;
     const titulo = document.getElementById('nome-titulo-personagem'); if (titulo) titulo.innerText = p.nome;
-    salvarNoLocalStorage(); // Salva informações gerais
+    salvarNoLocalStorage(); 
 };
 
 window.alternarIniciativa = (checked) => { 
     const p = obterPersonagemAtual(); 
     if (p) { 
         p.emIniciativa = checked; 
-        salvarNoLocalStorage(); // Salva mudança na lista de iniciativa
+        salvarNoLocalStorage(); 
     } 
 };
 
@@ -310,7 +338,7 @@ window.atualizarDado = (id, campo, valor) => {
     const p = personagens.find(c => c.id === id); 
     if (p) { 
         p[campo] = valor; 
-        salvarNoLocalStorage(); // Salva alterações digitadas direto nos cards de iniciativa
+        salvarNoLocalStorage(); 
     } 
 };
 
@@ -333,7 +361,7 @@ function renderizarListaPersonagens() {
             id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false,
             nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {}
         }); 
-        salvarNoLocalStorage(); // Salva ao criar um novo personagem
+        salvarNoLocalStorage(); 
         renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
