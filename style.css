@@ -1,6 +1,4 @@
-/* style.css */
-
-/* Estilos Base */
+/* --- Estilos Base --- */
 body {
     font-family: Arial, sans-serif;
     background-color: #0c0c0c; 
@@ -279,16 +277,60 @@ body {
     font-weight: bold;
 }
 
-.pericia-legenda {
-    font-size: 10px;
-    color: #666;
-    text-align: center;
-    margin-top: 15px;
-    font-style: italic;
-    line-height: 14px;
+/* --- MODAL DE PERÍCIAS (Corrigido para Centralizar) --- */
+#modal-pericia {
+    position: fixed; /* Fixa na tela inteira */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); /* Fundo escurecido */
+    display: none; /* Oculto por padrão */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    z-index: 9999;           /* Garante que fique acima de tudo */
 }
 
-/* Outros Componentes Ficha */
+.modal-conteudo {
+    background: #1a1a1a;
+    color: #e0e0e0;
+    padding: 20px;
+    border-radius: 8px;
+    width: 85%;
+    max-width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid #444;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+#modal-titulo { 
+    font-size: 18px; 
+    margin-bottom: 15px; 
+    color: #a855f7; 
+    text-align: center;
+    font-weight: bold;
+}
+
+.regras-container { 
+    font-size: 13px; 
+    line-height: 1.5; 
+    color: #ccc;
+}
+
+.btn-fechar-modal {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* --- Componentes Extras --- */
 .form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
 .form-group { display: flex; align-items: center; border-bottom: 1px solid #fff; padding-bottom: 3px; }
 .form-group label { font-size: 10px; color: #888; width: 100px; }
@@ -297,23 +339,10 @@ body {
 
 .character-card { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; border-radius: 8px; }
 .stats-row { display: flex; gap: 10px; }
-.stat-pv { color: #ff5555; width: 45px; font-weight: bold; background: transparent; border: none; }
-.stat-san { color: #aa55ff; width: 45px; font-weight: bold; background: transparent; border: none; }
-.stat-pe { color: #ffff55; width: 45px; font-weight: bold; background: transparent; border: none; }
-.stat-ini { color: white; font-size: 26px; width: 40px; text-align: center; border: none; border-bottom: 2px solid white; background: transparent; }
 
-/* --- Customização do Travamento de Inputs --- */
-.input-travado {
-    pointer-events: none !important;
-    user-select: none !important;
-    outline: none !important;
-}
-
-.input-editavel:not(.input-travado) {
-    background: rgba(168, 85, 247, 0.2) !important;
-    border-radius: 4px !important;
-    box-shadow: 0 0 5px #a855f7 !important;
-}
+/* Travamento de Inputs */
+.input-travado { pointer-events: none !important; user-select: none !important; }
+.input-editavel:not(.input-travado) { background: rgba(168, 85, 247, 0.2) !important; border-radius: 4px !important; }
 
 /* Botão Vermelho de Excluir */
 .btn-excluir {
@@ -326,11 +355,6 @@ body {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: background 0.2s;
 }
-.btn-excluir:hover {
-    background-color: #b91c1c;
-}
+.btn-excluir:hover { background-color: #b91c1c; }
