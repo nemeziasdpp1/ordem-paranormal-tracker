@@ -7,7 +7,7 @@
         /* Estilos Base */
         body {
             font-family: Arial, sans-serif;
-            background-color: #1a1a1a; 
+            background-color: #0c0c0c; 
             color: white;
             padding: 10px;
             margin: 0;
@@ -34,7 +34,7 @@
         }
 
         .btn-voltar {
-            background-color: #222;
+            background-color: #1a1a1a;
             border: 1px solid #444;
             color: #aaa;
             padding: 5px 10px;
@@ -44,7 +44,7 @@
             margin-bottom: 10px;
         }
 
-        /* --- Estilos de Atributos COMPACTOS --- */
+        /* --- Estilos de Atributos --- */
         .atributos-wrapper {
             position: relative;
             width: 240px; 
@@ -123,7 +123,6 @@
             box-sizing: border-box;
         }
 
-        /* Container Customizado do NEX */
         .nex-container {
             display: inline-flex;
             align-items: center;
@@ -158,7 +157,7 @@
         #ext-pe-turno { width: 35px; height: 27px; }
         #ext-deslocamento { width: 80px; height: 27px; }
 
-        /* Barras de Recursos Dinâmicas */
+        /* Barras de Recursos */
         .resource-bar-container {
             display: flex;
             flex-direction: column;
@@ -196,10 +195,7 @@
             z-index: 2;
         }
 
-        .resource-bar button:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
+        .resource-bar button:hover { background: rgba(255, 255, 255, 0.1); }
         .resource-bar input {
             background: transparent;
             border: none;
@@ -212,81 +208,87 @@
             z-index: 2;
         }
 
-        /* --- ESTILOS DE PERÍCIAS --- */
-        .pericias-lista {
-            max-height: 430px;
+        /* --- TELA DE PERÍCIAS ESTILO OFICIAL --- */
+        .pericias-wrapper {
+            max-height: 440px;
             overflow-y: auto;
             padding-right: 4px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
         }
 
-        /* Customização da barra de rolagem */
-        .pericias-lista::-webkit-scrollbar { width: 4px; }
-        .pericias-lista::-webkit-scrollbar-thumb { background: #444; border-radius: 2px; }
+        .pericias-wrapper::-webkit-scrollbar { width: 4px; }
+        .pericias-wrapper::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
 
-        .pericia-row {
-            display: flex;
-            align-items: center;
-            background: #111;
-            padding: 6px 8px;
-            border-radius: 4px;
-            border-left: 3px solid #444;
-            gap: 6px;
-        }
-        
-        /* Cor de destaque para quando a perícia for treinada */
-        .pericia-row.treinada { border-left-color: #a855f7; background: #15101a; }
-
-        .pericia-info {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pericia-nome {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .pericia-dados {
-            font-size: 10px;
+        /* Grid de Cabeçalho e Linhas */
+        .pericia-header-row {
+            display: grid;
+            grid-template-columns: 18px 95px 55px 48px 40px 40px;
+            gap: 2px;
+            font-size: 9px;
             color: #888;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+            text-align: center;
         }
+        .pericia-header-row span:nth-child(2) { text-align: left; }
 
-        .pericia-select {
-            background: #222;
-            color: white;
-            border: 1px solid #444;
-            font-size: 11px;
-            padding: 3px;
-            border-radius: 3px;
-            outline: none;
-            width: 55px;
+        .pericia-item-row {
+            display: grid;
+            grid-template-columns: 18px 95px 55px 48px 40px 40px;
+            gap: 2px;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 12px;
+            text-align: center;
         }
+        .pericia-item-row .p-nome { text-align: left; font-weight: bold; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .pericia-item-row svg { display: block; margin: 0 auto; color: #666; }
 
-        .pericia-bonus-extra {
-            background: #222;
-            color: white;
-            border: 1px solid #444;
+        /* Cores Dinâmicas pelo Grau de Treinamento */
+        .p-treino-0 { color: #ffffff; }
+        .p-treino-5 { color: #22c55e; }  /* Verde Treinado */
+        .p-treino-10 { color: #3b82f6; } /* Azul Veterano */
+        .p-treino-15 { color: #f97316; } /* Laranja Expert */
+
+        /* Inputs em Formato de Linha de Ficha Clássica */
+        .pericia-select-ficha {
+            background: transparent;
+            color: inherit;
+            border: none;
+            border-bottom: 1px solid currentColor;
             font-size: 11px;
             text-align: center;
-            width: 28px;
-            padding: 3px 0;
-            border-radius: 3px;
+            width: 35px;
             outline: none;
-        }
-
-        .pericia-total {
-            font-size: 12px;
+            cursor: pointer;
             font-weight: bold;
-            width: 32px;
-            text-align: right;
-            color: #a855f7;
+        }
+        .pericia-select-ficha option { background: #111; color: white; }
+
+        .pericia-input-ficha {
+            background: transparent;
+            color: inherit;
+            border: none;
+            border-bottom: 1px solid currentColor;
+            font-size: 11px;
+            text-align: center;
+            width: 30px;
+            outline: none;
+            font-weight: bold;
         }
 
-        /* Estilos dos Cards e Forms (Mantidos) */
+        .pericia-legenda {
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            margin-top: 15px;
+            font-style: italic;
+            line-height: 14px;
+        }
+
+        /* Outros Componentes Ficha */
         .form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
         .form-group { display: flex; align-items: center; border-bottom: 1px solid #fff; padding-bottom: 3px; }
         .form-group label { font-size: 10px; color: #888; width: 100px; }
@@ -397,7 +399,22 @@
 
     <div id="aba-pericias" class="tela-oculta">
         <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
-        <div id="lista-pericias-container" class="pericias-lista"></div>
+        
+        <div class="pericias-wrapper">
+            <div class="pericia-header-row">
+                <span></span>
+                <span>Perícia</span>
+                <span>Dados</span>
+                <span>Bônus</span>
+                <span>Treino</span>
+                <span>Outros</span>
+            </div>
+            <div id="lista-pericias-container"></div>
+            
+            <div class="pericia-legenda">
+                + Penalidade de carga. &nbsp;&nbsp; * Somente treinada.
+            </div>
+        </div>
     </div>
 
     <div id="aba-iniciativa" class="tela-oculta">
