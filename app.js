@@ -5,7 +5,7 @@ let personagens = [
         id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
         pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
         agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
-        nex: "35%", peTurno: "7", deslocamento: "12 m / 8 q"
+        nex: "35", peTurno: "7", deslocamento: "12 m / 8 q"
     }
 ];
 
@@ -44,9 +44,9 @@ window.salvarAtributos = () => {
 };
 
 window.salvarExtras = () => {
-    const p = personagens.find(char => char.id === idPersonagemSelecionado);
+    const p =       personagens.find(char => char.id === idPersonagemSelecionado);
     if (p) {
-        p.nex = document.getElementById('ext-nex').value;
+        p.nex = document.getElementById('ext-nex').value.replace('%', '');
         p.peTurno = document.getElementById('ext-pe-turno').value;
         p.deslocamento = document.getElementById('ext-deslocamento').value;
     }
@@ -60,7 +60,6 @@ window.salvarExtrasDireto = (campo, valor) => {
     }
 };
 
-// --- FUNÇÃO CORRIGIDA: Usa backgroundImage com transparência e valores inteiros ---
 function atualizarBarraVisual(campo) {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -70,11 +69,11 @@ function atualizarBarraVisual(campo) {
     let atual = parseInt(partes[0]) || 0;
     let max = partes[1] ? (parseInt(partes[1]) || 0) : atual;
 
-    // Cálculo seguro de porcentagem arredondado
+    // O Math.min(100, ...) garante que se o valor for maior que o máximo, a barra gráfica apenas fique 100% cheia sem quebrar o CSS
     let pct = max > 0 ? Math.min(100, Math.max(0, (atual / max) * 100)) : 0;
     pct = Math.round(pct); 
 
-    let cor = "#991b1b"; // Vida
+    let cor = "#991b1b"; 
     let idElemento = "bar-vida";
     
     if (campo === 'san') { cor = "#6b21a8"; idElemento = "bar-sanidade"; }
@@ -82,12 +81,10 @@ function atualizarBarraVisual(campo) {
 
     const el = document.getElementById(idElemento);
     if (el) {
-        // Renderização à prova de falhas: preenche com a cor e deixa o resto transparente revelando o fundo escuro do CSS
         el.style.backgroundImage = `linear-gradient(to right, ${cor} ${pct}%, transparent ${pct}%)`;
     }
 }
 
-// --- Ajuste dos botões interativos ---
 window.ajustarStatus = (campo, delta) => {
     const p = personagens.find(char => char.id === idPersonagemSelecionado);
     if (!p) return;
@@ -99,8 +96,8 @@ window.ajustarStatus = (campo, delta) => {
 
     atual = atual + delta;
 
+    // Mantém o limite mínimo em 0, mas removeu a trava do limite máximo (atual > max)
     if (atual < 0) atual = 0;
-    if (atual > max) atual = max;
 
     p[campo] = partes[1] ? `${atual} / ${max}` : `${atual}`;
     
@@ -129,14 +126,13 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-pre').value = p.pre;
         document.getElementById('at-for').value = p.forca;
         
-        document.getElementById('ext-nex').value = p.nex || "0%";
+        document.getElementById('ext-nex').value = (p.nex || "0").replace('%', '');
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
         document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
         document.getElementById('bar-display-san').value = p.san || "0 / 0";
         document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
 
-        // Força o preenchimento correto das cores ao abrir a aba
         atualizarBarraVisual('pv');
         atualizarBarraVisual('san');
         atualizarBarraVisual('pe');
@@ -199,7 +195,7 @@ function renderizarListaPersonagens() {
     bNovo.onclick = () => { 
         personagens.push({ 
             id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false,
-            nex: "0%", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10"
+            nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10"
         }); 
         renderizarListaPersonagens(); 
     };
