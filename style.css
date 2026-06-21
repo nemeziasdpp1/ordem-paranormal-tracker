@@ -93,7 +93,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 75px; /* Define uma largura padrão para os 3 blocos ficarem iguais */
+    width: 75px; 
 }
 
 .label-stack {
@@ -127,7 +127,7 @@ body {
     background: #0a0a0a;
     border: 1px solid #ffffff;
     border-radius: 2px;
-    padding: 0; /* Removido para o select preencher todo o espaço e o clique funcionar melhor */
+    padding: 0; 
     box-sizing: border-box;
     height: 27px;
     width: 100%;
@@ -147,7 +147,6 @@ body {
     padding: 0 5px; 
 }
 
-/* Deixa o fundo do menu suspenso preto para leitura clara */
 #ext-nex option { 
     background-color: #0c0c0c; 
     color: white; 
@@ -380,7 +379,7 @@ body {
 
 
 /* ==========================================================================
-   --- NOVO LAYOUT DO MODAL DE ADICIONAR HABILIDADES (CORRIGIDO) ---
+   --- SECÇÃO DO MODAL DE HABILIDADES REESCRITA E CORRIGIDA ---
    ========================================================================== */
 
 /* Layout Geral do Fundo */
@@ -402,17 +401,18 @@ body {
     background: #131314; 
     width: 90%; 
     max-width: 500px; 
-    max-height: 85vh; /* Impede o modal de ultrapassar a altura da viewport */
+    height: 85vh; /* Força uma altura fixa baseada na tela para o scroll interno funcionar */
+    max-height: 85vh; 
     border-radius: 8px; 
     border: 1px solid #2e2e30; 
     display: flex; 
-    flex-direction: column; /* Organiza em formato de lista vertical controlada */
+    flex-direction: column; 
     padding: 15px; 
-    overflow: hidden; /* Corta transbordamentos, forçando o scroll na lista */
+    overflow: hidden; 
     box-sizing: border-box;
 }
 
-/* Cabeçalho do Modal - Travado contra esmagamento */
+/* Cabeçalho do Modal */
 .modal-hab-header {
     display: flex; 
     justify-content: space-between; 
@@ -421,7 +421,7 @@ body {
     font-weight: bold; 
     font-size: 16px; 
     margin-bottom: 15px;
-    flex-shrink: 0; /* Impede que seja encolhido */
+    flex-shrink: 0; /* Impede o cabeçalho de encolher */
 }
 
 .modal-hab-header .close-btn {
@@ -432,7 +432,7 @@ body {
     cursor: pointer;
 }
 
-/* Abas Principais (Abas de Classe) - Travadas contra esmagamento */
+/* Abas Principais (Combatente, Especialista...) */
 .modal-hab-tabs-row {
     display: flex; 
     gap: 12px; 
@@ -440,7 +440,14 @@ body {
     padding-bottom: 5px; 
     overflow-x: auto; 
     margin-bottom: 10px;
-    flex-shrink: 0; /* Impede que seja encolhido */
+    flex-shrink: 0; /* Impede as abas de encolherem */
+    
+    /* Remove a barra de rolagem cinza horrível do Windows/Chrome */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.modal-hab-tabs-row::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Opera */
 }
 
 .tab-principal-item {
@@ -468,14 +475,21 @@ body {
     background: #a855f7;
 }
 
-/* Sub-filtros (Pills / Trilhas) - Travados contra esmagamento */
+/* Sub-filtros / Pills (Aniquilador, Guerreiro...) */
 .modal-hab-pills-row {
     display: flex; 
     gap: 6px; 
     overflow-x: auto; 
     padding: 5px 0; 
     margin-bottom: 12px;
-    flex-shrink: 0; /* Impede que seja encolhido */
+    flex-shrink: 0; /* Impede os filtros de encolherem */
+    
+    /* Remove a barra de rolagem cinza horrível do Windows/Chrome */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+.modal-hab-pills-row::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Opera */
 }
 
 .pill-filtro-item {
@@ -494,11 +508,11 @@ body {
     border-color: #a855f7;
 }
 
-/* Caixa de Busca - Travada contra esmagamento */
+/* Caixa de Busca */
 .search-container {
     position: relative; 
     margin-bottom: 12px;
-    flex-shrink: 0; /* Impede que seja encolhido */
+    flex-shrink: 0; /* Impede a barra de busca de encolher */
 }
 
 .search-container input {
@@ -521,37 +535,38 @@ body {
     font-size: 12px;
 }
 
-/* Lista Dinâmica de Habilidades - assume o Scroll Isolado */
+/* Lista Dinâmica de Habilidades (Scroll Interno) */
 .modal-hab-lista {
     display: flex; 
     flex-direction: column; 
     gap: 6px; 
-    overflow-y: auto; /* Adiciona scroll de forma isolada nesta área */
-    flex: 1; /* Ocupa dinamicamente todo o espaço restante inferior do modal */
-    padding-right: 4px; /* Pequeno recuo para afastar os cards da barra de scroll */
+    overflow-y: auto; /* Força o scroll vertical unicamente aqui */
+    flex-grow: 1; /* Faz a lista herdar e preencher todo o espaço restante do modal */
+    padding-right: 4px; 
 }
 
-/* Customização da barra de scroll interna do Modal (Design Escuro) */
+/* Estilização da barra de rolagem vertical da lista (Estilo Clean Dark) */
 .modal-hab-lista::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
 }
 .modal-hab-lista::-webkit-scrollbar-track {
     background: #131314;
 }
 .modal-hab-lista::-webkit-scrollbar-thumb {
     background: #2e2e30;
-    border-radius: 2px;
+    border-radius: 10px;
 }
 .modal-hab-lista::-webkit-scrollbar-thumb:hover {
     background: #a855f7;
 }
 
-/* Cards Accordion de Habilidade */
+/* Cards de Habilidade */
 .card-hab {
     background: #1a1a1b; 
     border-radius: 4px; 
     border: 1px solid #2e2e30; 
     overflow: hidden;
+    flex-shrink: 0; /* SOLUÇÃO DO SEU PROBLEMA: Impede que os cards sejam esmagados a zero! */
 }
 
 .card-hab-header {
