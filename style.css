@@ -427,7 +427,7 @@ body {
 }
 .search-container input {
     width: 100%; background: #09090a; border: 1px solid #2e2e30; border-radius: 4px;
-    padding: 6px 10px 6px 30px; color: white; font-size: 12px; outline: none; box-sizing: border-box;
+    padding: 6px 10px 6px 10px; color: white; font-size: 12px; outline: none; box-sizing: border-box;
 }
 .search-container .search-icon {
     position: absolute; left: 8px; top: 6px; color: #666; font-size: 12px;
