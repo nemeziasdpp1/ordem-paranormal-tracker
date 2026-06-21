@@ -1,0 +1,33 @@
+{
+  "Combatente": {
+    "Poderes de Combatente": [
+      {
+        "id": "armamento_pesado",
+        "nome": "Armamento Pesado",
+        "descricao": "Você recebe proficiência com armas pesadas."
+      },
+      {
+        "id": "artista_marcial",
+        "nome": "Artista Marcial",
+        "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
+      }
+    ],
+    "Aniquilador": [],
+    "Comandante de Campo": [],
+    "Guerreiro": [],
+    "Operações Especiais": [],
+    "Tropa de Choque": []
+  },
+  "Especialista": {
+    "Poderes de Especialista": [
+      {
+        "id": "ecletico",
+        "nome": "Eclético",
+        "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."
+      }
+    ]
+  },
+  "Ocultista": {},
+  "Origens": {},
+  "Poderes Paranormais": {}
+}
