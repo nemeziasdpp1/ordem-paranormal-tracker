@@ -192,7 +192,8 @@ window.voltarParaLista = () => window.mostrarListaPersonagens();
 window.voltarParaMenuChar = () => { ocultarTodasTelas(); document.getElementById('menu-personagem').style.display = 'block'; };
 
 function ocultarTodasTelas() {
-    ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais'].forEach(id => {
+    // ABA-ORIGENS ADICIONADA AQUI ↓
+    ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais', 'aba-origens'].forEach(id => {
         const el = document.getElementById(id); if (el) el.style.display = 'none';
     });
 }
@@ -282,6 +283,78 @@ function renderizarPericias() {
         container.appendChild(itemRow);
     });
 }
+
+// --- Origens (NOVA SEÇÃO) ---
+window.abrirOrigens = () => {
+    ocultarTodasTelas();
+    document.getElementById('aba-origens').style.display = 'block';
+    renderizarOrigens();
+};
+
+async function renderizarOrigens() {
+    const container = document.getElementById('lista-origens-container');
+    if (!container) return;
+    
+    try {
+        const response = await fetch('./data/origens.json');
+        const todasOrigens = await response.json();
+        
+        container.innerHTML = ''; 
+        
+        Object.keys(todasOrigens).forEach(nome => {
+            const item = document.createElement('div');
+            item.className = 'pericia-item-row';
+            item.style.padding = "10px";
+            item.style.background = "#222";
+            item.style.borderRadius = "4px";
+            item.style.display = "flex";
+            item.style.justifyContent = "space-between";
+            item.style.marginBottom = "5px";
+            
+            item.innerHTML = `
+                <span onclick="abrirModalOrigem('${nome}')" style="cursor:pointer; color:white; font-weight:bold;">${nome}</span>
+                <button class="menu-btn" onclick="selecionarOrigem('${nome}')" style="font-size:10px; padding:2px 8px;">Escolher</button>
+            `;
+            container.appendChild(item);
+        });
+    } catch (err) {
+        container.innerHTML = `<p style="color:red; text-align:center;">Erro ao carregar origens.</p>`;
+        console.error("Erro ao carregar origens:", err);
+    }
+}
+
+window.abrirModalOrigem = async (nomeOrigem) => {
+    const modal = document.getElementById('modal-pericia');
+    const titulo = document.getElementById('modal-titulo');
+    const texto = document.getElementById('modal-texto');
+    
+    try {
+        const response = await fetch('./data/origens.json');
+        const todasOrigens = await response.json();
+        const info = todasOrigens[nomeOrigem];
+        
+        if (info) {
+            titulo.innerText = nomeOrigem;
+            texto.innerHTML = `<p>${info.descricao}</p><div class="regras-container">${info.regras}</div>`;
+            modal.style.display = 'flex';
+        }
+    } catch (err) {
+        console.error("Erro ao carregar modal de origem:", err);
+    }
+};
+
+window.selecionarOrigem = async (nome) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+    p.origem = nome;
+    
+    // Atualiza o input visual se ele existir na aba info
+    const inputOrigem = document.getElementById('info-origem');
+    if (inputOrigem) inputOrigem.value = nome;
+    
+    await salvarNaSala();
+    window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
+};
 
 // --- Funções de Edição e Salvar ---
 window.toggleModoEdicao = async () => {
