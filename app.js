@@ -284,7 +284,8 @@ function renderizarPericias() {
     });
 }
 
-// --- Origens (NOVA SEÇÃO) ---
+
+// --- Origens ---
 window.abrirOrigens = () => {
     ocultarTodasTelas();
     document.getElementById('aba-origens').style.display = 'block';
@@ -346,13 +347,66 @@ window.abrirModalOrigem = async (nomeOrigem) => {
 window.selecionarOrigem = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
+
+    try {
+        // 1. Carrega o JSON para saber quais perícias essa origem concede
+        const response = await fetch('./data/origens.json');
+        const todasOrigens = await response.json();
+        const origemData = todasOrigens[nome];
+
+        if (origemData) {
+            // Garante que a lista de perícias automáticas antigas exista na ficha para não dar erro
+            if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
+
+            // 2. LIMPA AS PERÍCIAS DA ORIGEM ANTERIOR (Evita acumular perícias se ele mudar de ideia)
+            p.periciasOrigemAntiga.forEach(periciaAntiga => {
+                if (p.pericias && p.pericias[periciaAntiga]) {
+                    // Remove os 5 pontos de bônus retornando ao valor base
+                    p.pericias[periciaAntiga].bonus = (p.pericias[periciaAntiga].bonus || 5) - 5;
+                }
+            });
+            p.periciasOrigemAntiga = []; // Reseta a lista de controle
+
+            // 3. SE FOR AMNÉSICO: Avisa o jogador e para por aqui
+            if (origemData.pericias.length === 0) {
+                alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
+            } else {
+                // 4. APLICA AS NOVAS PERÍCIAS (+5)
+                origemData.pericias.forEach(novaPericia => {
+                    if (p.pericias) {
+                        // Se a perícia ainda não existir na ficha por segurança, criamos o objeto dela
+                        if (!p.pericias[novaPericia]) p.pericias[novaPericia] = { bonus: 0, outros: 0 };
+                        
+                        // Soma +5 no bônus/treino da perícia
+                        p.pericias[novaPericia].bonus = (p.pericias[novaPericia].bonus || 0) + 5;
+                        
+                        // Salva nesta lista para sabermos remover se ele trocar de origem depois
+                        p.periciasOrigemAntiga.push(novaPericia);
+                    }
+                });
+            }
+        }
+    } catch (err) {
+        console.error("Erro ao processar perícias da origem:", err);
+    }
+
+    // Atualiza o nome da origem no personagem
     p.origem = nome;
     
     // Atualiza o input visual se ele existir na aba info
     const inputOrigem = document.getElementById('info-origem');
     if (inputOrigem) inputOrigem.value = nome;
     
+    // Salva as alterações na sala/banco de dados
     await salvarNaSala();
+    
+    // Recarrega a listagem visual das perícias para que o +5 apareça na tela imediatamente
+    if (typeof renderizarPericias === "function") {
+        renderizarPericias();
+    } else if (typeof atualizarInterface === "function") {
+        atualizarInterface(); 
+    }
+
     window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
 };
 
@@ -385,7 +439,7 @@ window.salvarAtributos = async () => {
     p.int = document.getElementById('at-int').value;
     p.vig = document.getElementById('at-vig').value;
     p.pre = document.getElementById('at-pre').value;
-    p.forca = document.getElementById('at-for').value;
+    p.for = document.getElementById('at-for').value;
     p.defEquip = document.getElementById('def-equip').value;
     p.defOutros = document.getElementById('def-outros').value;
     p.defProtecao = document.getElementById('def-protecao').value;
