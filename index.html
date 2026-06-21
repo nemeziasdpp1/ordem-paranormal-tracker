@@ -47,32 +47,32 @@
         </div>
 
         <div class="stats-extras-container">
-            <div class="row-nex-pe">
+            <div class="row-top-stats">
+                
                 <div class="stat-box-stack nex-group">
-                    <span class="label-stat-fixed">NEX</span>
-                    <div class="nex-input-group input-travado">
-                        <select id="ext-nex" onchange="atualizarNex(this.value)" disabled>
+                    <div class="nex-container input-travado">
+                        <select id="ext-nex" class="input-editavel" onchange="atualizarNex(this.value)" disabled style="background:transparent; border:none; color:white; font-weight:bold; font-size:13px; outline:none; text-align:center;">
                         </select>
                         <span class="nex-fixed-symbol">%</span>
                     </div>
+                    <span class="label-stack">NEX</span>
                 </div>
 
                 <div class="stat-box-stack pe-group">
                     <input type="number" id="ext-pe-turno" class="input-box-style input-travado input-editavel" value="0" readonly oninput="salvarExtras()">
                     <span class="label-stack">PE / TURNO</span>
                 </div>
-            </div>
 
-            <div class="row-deslocamento">
                 <div class="stat-box-stack desloc-group">
-                    <div class="desloc-input-group input-travado">
-                        <input type="number" id="ext-deslocamento-m" class="input-editavel" step="0.5" value="0" readonly oninput="atualizarDeslocamentoMetro(this.value)">
-                        <span class="desloc-text-fixed">m /</span>
-                        <input type="number" id="ext-deslocamento-q" class="input-editavel" value="0" readonly oninput="atualizarDeslocamentoQuadrado(this.value)">
-                        <span class="desloc-text-fixed">q</span>
+                    <div class="nex-container input-travado" style="width: 90px; justify-content: center; padding: 0;">
+                        <input type="number" id="ext-deslocamento-m" class="input-editavel" step="0.5" value="0" readonly oninput="atualizarDeslocamentoMetro(this.value)" style="width: 25px; background: transparent; border: none; color: white; text-align: center; font-weight: bold; font-size: 13px; outline: none; padding: 0;">
+                        <span class="desloc-text-fixed" style="font-size: 13px; color: white; font-weight: bold; margin: 0 2px;">m /</span>
+                        <input type="number" id="ext-deslocamento-q" class="input-editavel" value="0" readonly oninput="atualizarDeslocamentoQuadrado(this.value)" style="width: 20px; background: transparent; border: none; color: white; text-align: center; font-weight: bold; font-size: 13px; outline: none; padding: 0;">
+                        <span class="desloc-text-fixed" style="font-size: 13px; color: white; font-weight: bold; margin-left: 2px;">q</span>
                     </div>
                     <span class="label-stack">DESLOCAMENTO</span>
                 </div>
+
             </div>
         </div>
 
