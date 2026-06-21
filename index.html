@@ -174,7 +174,11 @@
         <div class="form-container">
             <div class="form-group"><label>PERSONAGEM</label><input type="text" id="info-nome" oninput="salvarDadosForm()"></div>
             <div class="form-group"><label>JOGADOR</label><input type="text" id="info-jogador" oninput="salvarDadosForm()"></div>
-            <div class="form-group"><label>ORIGEM</label><input type="text" id="info-origem" oninput="salvarDadosForm()"></div>
+            <div class="form-group"><label onclick="window.abrirOrigens()" style="cursor: pointer; color: #888; text-decoration: underline;">
+        ORIGEM (Clique aqui)
+    </label>
+    <input type="text" id="info-origem" class="input-editavel" readonly>
+</div>
             <div class="form-group"><label>CLASSE</label><input type="text" id="info-classe" oninput="salvarDadosForm()"></div>
             <div class="checkbox-group">
                 <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
@@ -183,7 +187,12 @@
             <button class="btn-excluir" onclick="excluirPersonagemAtual()">Excluir Personagem</button>
         </div>
     </div>
-
+    <div id="aba-origens" class="tela" style="display:none; padding: 10px;">
+    <button class="menu-btn" onclick="window.abrirAbaChar('aba-info')">← Voltar</button>
+    <h3 style="text-align:center; color:white;">Escolher Origem</h3>
+    <div id="lista-origens-container" style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+        </div>
+</div>
     <div id="aba-combate" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
     <div id="aba-inv" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
     <div id="aba-hab" class="tela-oculta"><button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button></div>
