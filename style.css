@@ -378,75 +378,210 @@ body {
 }
 .btn-excluir:hover { background-color: #b91c1c; }
 
-/* Layout do Modal */
+
+/* ==========================================================================
+   --- NOVO LAYOUT DO MODAL DE ADICIONAR HABILIDADES (CORRIGIDO) ---
+   ========================================================================== */
+
+/* Layout Geral do Fundo */
 .modal-hab-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75); display: flex; align-items: center; justify-content: center; z-index: 10000;
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 10000;
 }
+
+/* Container do Modal Principal */
 .modal-hab-content {
-    background: #131314; width: 90%; max-width: 500px; max-height: 85vh;
-    border-radius: 8px; border: 1px solid #2e2e30; display: flex; flex-direction: column; padding: 15px; overflow: hidden;
+    background: #131314; 
+    width: 90%; 
+    max-width: 500px; 
+    max-height: 85vh; /* Impede o modal de ultrapassar a altura da viewport */
+    border-radius: 8px; 
+    border: 1px solid #2e2e30; 
+    display: flex; 
+    flex-direction: column; /* Organiza em formato de lista vertical controlada */
+    padding: 15px; 
+    overflow: hidden; /* Corta transbordamentos, forçando o scroll na lista */
+    box-sizing: border-box;
 }
+
+/* Cabeçalho do Modal - Travado contra esmagamento */
 .modal-hab-header {
-    display: flex; justify-content: space-between; align-items: center;
-    color: white; font-weight: bold; font-size: 16px; margin-bottom: 15px;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    color: white; 
+    font-weight: bold; 
+    font-size: 16px; 
+    margin-bottom: 15px;
+    flex-shrink: 0; /* Impede que seja encolhido */
 }
+
 .modal-hab-header .close-btn {
-    background: transparent; border: none; color: #aaa; font-size: 20px; cursor: pointer;
+    background: transparent; 
+    border: none; 
+    color: #aaa; 
+    font-size: 20px; 
+    cursor: pointer;
 }
 
-/* Abas Principais */
+/* Abas Principais (Abas de Classe) - Travadas contra esmagamento */
 .modal-hab-tabs-row {
-    display: flex; gap: 12px; border-bottom: 1px solid #2e2e30; padding-bottom: 5px; overflow-x: auto; margin-bottom: 10px;
+    display: flex; 
+    gap: 12px; 
+    border-bottom: 1px solid #2e2e30; 
+    padding-bottom: 5px; 
+    overflow-x: auto; 
+    margin-bottom: 10px;
+    flex-shrink: 0; /* Impede que seja encolhido */
 }
+
 .tab-principal-item {
-    color: #888; cursor: pointer; font-size: 12px; font-weight: 500; padding: 4px 2px; white-space: nowrap; position: relative;
+    color: #888; 
+    cursor: pointer; 
+    font-size: 12px; 
+    font-weight: 500; 
+    padding: 4px 2px; 
+    white-space: nowrap; 
+    position: relative;
 }
+
 .tab-principal-item.active {
-    color: #a855f7; font-weight: bold;
+    color: #a855f7; 
+    font-weight: bold;
 }
+
 .tab-principal-item.active::after {
-    content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 2px; background: #a855f7;
+    content: ''; 
+    position: absolute; 
+    bottom: -6px; 
+    left: 0; 
+    width: 100%; 
+    height: 2px; 
+    background: #a855f7;
 }
 
-/* Sub-filtros (Pills) */
+/* Sub-filtros (Pills / Trilhas) - Travados contra esmagamento */
 .modal-hab-pills-row {
-    display: flex; gap: 6px; overflow-x: auto; padding: 5px 0; margin-bottom: 12px;
+    display: flex; 
+    gap: 6px; 
+    overflow-x: auto; 
+    padding: 5px 0; 
+    margin-bottom: 12px;
+    flex-shrink: 0; /* Impede que seja encolhido */
 }
+
 .pill-filtro-item {
-    background: #1a1a1b; color: white; border: 1px solid #333; padding: 4px 10px;
-    border-radius: 12px; font-size: 11px; cursor: pointer; white-space: nowrap;
+    background: #1a1a1b; 
+    color: white; 
+    border: 1px solid #333; 
+    padding: 4px 10px;
+    border-radius: 12px; 
+    font-size: 11px; 
+    cursor: pointer; 
+    white-space: nowrap;
 }
+
 .pill-filtro-item.active {
-    background: #a855f7; border-color: #a855f7;
+    background: #a855f7; 
+    border-color: #a855f7;
 }
 
-/* Caixa de Busca */
+/* Caixa de Busca - Travada contra esmagamento */
 .search-container {
-    position: relative; margin-bottom: 12px;
-}
-.search-container input {
-    width: 100%; background: #09090a; border: 1px solid #2e2e30; border-radius: 4px;
-    padding: 6px 10px 6px 10px; color: white; font-size: 12px; outline: none; box-sizing: border-box;
-}
-.search-container .search-icon {
-    position: absolute; left: 8px; top: 6px; color: #666; font-size: 12px;
+    position: relative; 
+    margin-bottom: 12px;
+    flex-shrink: 0; /* Impede que seja encolhido */
 }
 
-/* Listas e Cards Accordion */
+.search-container input {
+    width: 100%; 
+    background: #09090a; 
+    border: 1px solid #2e2e30; 
+    border-radius: 4px;
+    padding: 6px 10px 6px 10px; 
+    color: white; 
+    font-size: 12px; 
+    outline: none; 
+    box-sizing: border-box;
+}
+
+.search-container .search-icon {
+    position: absolute; 
+    left: 8px; 
+    top: 6px; 
+    color: #666; 
+    font-size: 12px;
+}
+
+/* Lista Dinâmica de Habilidades - assume o Scroll Isolado */
 .modal-hab-lista {
-    display: flex; flex-direction: column; gap: 6px; overflow-y: auto; flex-grow: 1;
+    display: flex; 
+    flex-direction: column; 
+    gap: 6px; 
+    overflow-y: auto; /* Adiciona scroll de forma isolada nesta área */
+    flex: 1; /* Ocupa dinamicamente todo o espaço restante inferior do modal */
+    padding-right: 4px; /* Pequeno recuo para afastar os cards da barra de scroll */
 }
+
+/* Customização da barra de scroll interna do Modal (Design Escuro) */
+.modal-hab-lista::-webkit-scrollbar {
+    width: 4px;
+}
+.modal-hab-lista::-webkit-scrollbar-track {
+    background: #131314;
+}
+.modal-hab-lista::-webkit-scrollbar-thumb {
+    background: #2e2e30;
+    border-radius: 2px;
+}
+.modal-hab-lista::-webkit-scrollbar-thumb:hover {
+    background: #a855f7;
+}
+
+/* Cards Accordion de Habilidade */
 .card-hab {
-    background: #1a1a1b; border-radius: 4px; border: 1px solid #2e2e30; overflow: hidden;
+    background: #1a1a1b; 
+    border-radius: 4px; 
+    border: 1px solid #2e2e30; 
+    overflow: hidden;
 }
+
 .card-hab-header {
-    display: flex; justify-content: space-between; align-items: center; padding: 10px; cursor: pointer; color: white;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px; 
+    cursor: pointer; 
+    color: white;
 }
+
 .card-hab-corpo {
-    padding: 10px; border-top: 1px solid #2e2e30; background: #131314; font-size: 12px; color: #ccc; line-height: 1.4;
+    padding: 10px; 
+    border-top: 1px solid #2e2e30; 
+    background: #131314; 
+    font-size: 12px; 
+    color: #ccc; 
+    line-height: 1.4;
 }
+
 .btn-add-box {
-    background: #a855f7; border: none; color: white; width: 22px; height: 22px;
-    display: flex; align-items: center; justify-content: center; border-radius: 4px; cursor: pointer; font-weight: bold;
+    background: #a855f7; 
+    border: none; 
+    color: white; 
+    width: 22px; 
+    height: 22px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    font-weight: bold;
 }
