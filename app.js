@@ -39,7 +39,7 @@ OBR.onReady(async () => {
             id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
             pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
             agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
-            nex: "35", peTurno: "7", deslocamento: "12 m / 8 q", pericias: {} 
+            nex: "35", peTurno: "7", deslocamentoMetro: 9, deslocamentoQuadrado: 6, pericias: {} 
         }];
         await salvarNaSala();
     }
@@ -76,6 +76,29 @@ window.atualizarNex = async (novoNex) => {
     if (inputPe) {
         inputPe.value = p.peTurno;
     }
+    await salvarNaSala();
+};
+
+// --- Lógica de Deslocamento ---
+window.atualizarDeslocamentoMetro = async (valorMetro) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+    const metros = parseFloat(valorMetro) || 0;
+    p.deslocamentoMetro = metros;
+    p.deslocamentoQuadrado = Math.floor(metros / 1.5);
+    const inputQ = document.getElementById('ext-deslocamento-q');
+    if (inputQ) inputQ.value = p.deslocamentoQuadrado;
+    await salvarNaSala();
+};
+
+window.atualizarDeslocamentoQuadrado = async (valorQuadrado) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+    const quadrados = parseInt(valorQuadrado) || 0;
+    p.deslocamentoQuadrado = quadrados;
+    p.deslocamentoMetro = quadrados * 1.5;
+    const inputM = document.getElementById('ext-deslocamento-m');
+    if (inputM) inputM.value = p.deslocamentoMetro;
     await salvarNaSala();
 };
 
@@ -262,7 +285,8 @@ window.salvarExtras = async () => {
     const p = obterPersonagemAtual(); if (!p) return;
     p.nex = document.getElementById('ext-nex').value; 
     p.peTurno = document.getElementById('ext-pe-turno').value;
-    p.deslocamento = document.getElementById('ext-deslocamento').value;
+    p.deslocamentoMetro = parseFloat(document.getElementById('ext-deslocamento-m').value) || 0;
+    p.deslocamentoQuadrado = parseInt(document.getElementById('ext-deslocamento-q').value) || 0;
     await salvarNaSala();
 };
 
@@ -320,12 +344,13 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-pre').value = p.pre || "0";
         document.getElementById('at-for').value = p.forca || "0";
         
-        // Novo seletor NEX
         const selectNex = document.getElementById('ext-nex');
         if (selectNex) selectNex.innerHTML = gerarOpcoesNex(p.nex || 0);
         
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
-        document.getElementById('ext-deslocamento').value = p.deslocamento || "0m";
+        document.getElementById('ext-deslocamento-m').value = p.deslocamentoMetro || "9";
+        document.getElementById('ext-deslocamento-q').value = p.deslocamentoQuadrado || "6";
+        
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
         document.getElementById('bar-display-san').value = p.san || "0 / 0";
         document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
@@ -370,7 +395,7 @@ window.renderizarListaPersonagens = () => {
     });
     const bNovo = document.createElement('button'); bNovo.className = 'menu-btn'; bNovo.innerText = '+ Novo';
     bNovo.onclick = async () => { 
-        personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false, nex: "0", peTurno: "0", deslocamento: "9m", pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {} }); 
+        personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false, nex: "0", peTurno: "0", deslocamentoMetro: 9, deslocamentoQuadrado: 6, pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {} }); 
         await salvarNaSala(); renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
