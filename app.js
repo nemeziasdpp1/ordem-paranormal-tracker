@@ -414,6 +414,207 @@ window.selecionarOrigem = async (nome) => {
     window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
 };
 
+// --- Gerenciamento da Aba de Habilidades na Ficha ---
+window.abrirAbaHabilidadesFicha = () => {
+    ocultarTodasTelas();
+    document.getElementById('aba-hab').style.display = 'block';
+    window.renderizarHabilidadesPersonagem();
+};
+
+window.renderizarHabilidadesPersonagem = () => {
+    const container = document.getElementById('lista-habilidades-personagem');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const p = obterPersonagemAtual();
+    if (!p) return;
+    if (!p.habilidades) p.habilidades = [];
+
+    if (p.habilidades.length === 0) {
+        container.innerHTML = '<p style="text-align:center; font-size:12px; color:#666;">Nenhuma habilidade adicionada.</p>';
+        return;
+    }
+
+    p.habilidades.forEach((hab, index) => {
+        const expandida = idsHabilidadesExpandidas.has(`pers_${index}`);
+        const card = document.createElement('div');
+        card.className = 'card-hab';
+        
+        card.innerHTML = `
+            <div class="card-hab-header" onclick="window.toggleExpandirHabilidade('pers_${index}')">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
+                    <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
+                </div>
+            </div>
+            ${expandida ? `
+                <div class="card-hab-corpo">
+                    <p style="margin: 0 0 10px 0;">${hab.descricao}</p>
+                    <div style="display:flex; justify-content:space-between; font-size:11px;">
+                        <span onclick="window.removerHabilidadePersonagem(${index})" style="color:#ef4444; cursor:pointer;">Remover</span>
+                        <span style="color:#22c55e; cursor:pointer;">Editar</span>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+        container.appendChild(card);
+    });
+};
+
+window.toggleExpandirHabilidade = (idUnico) => {
+    if (idsHabilidadesExpandidas.has(idUnico)) {
+        idsHabilidadesExpandidas.delete(idUnico);
+    } else {
+        idsHabilidadesExpandidas.add(idUnico);
+    }
+    window.renderizarHabilidadesPersonagem();
+    window.renderizarListaBiblioteca(); // Mantém ambos atualizados se necessário
+};
+
+window.removerHabilidadePersonagem = async (index) => {
+    const p = obterPersonagemAtual();
+    if (!p || !p.habilidades) return;
+    p.habilidades.splice(index, 1);
+    await salvarNaSala();
+    window.renderizarHabilidadesPersonagem();
+};
+
+// --- Gerenciamento do Modal de Busca e Seleção ---
+window.abrirModalAdicionarHabilidades = async () => {
+    try {
+        const response = await fetch('./data/habilidades.json');
+        bibliotecaHabilidades = await response.json();
+        
+        // Define as abas padrão iniciais baseadas no JSON carregado
+        const classes = Object.keys(bibliotecaHabilidades);
+        abaModalHabAtiva = classes[0] || "Combatente";
+        
+        const subCategorias = Object.keys(bibliotecaHabilidades[abaModalHabAtiva] || {});
+        subFiltroModalHabAtivo = subCategorias[0] || "";
+
+        document.getElementById('busca-habilidade-input').value = '';
+        document.getElementById('modal-selecao-habilidades').style.display = 'flex';
+        
+        window.renderizarAbasPrincipaisModal();
+        window.renderizarSubFiltrosModal();
+        window.renderizarListaBiblioteca();
+    } catch (err) {
+        console.error("Erro ao carregar biblioteca de habilidades:", err);
+    }
+};
+
+window.fecharModalHabilidades = () => {
+    document.getElementById('modal-selecao-habilidades').style.display = 'none';
+};
+
+window.renderizarAbasPrincipaisModal = () => {
+    const container = document.getElementById('modal-hab-abas-principais');
+    if (!container) return;
+    container.innerHTML = '';
+
+    Object.keys(bibliotecaHabilidades).forEach(classe => {
+        const tab = document.createElement('div');
+        tab.className = `tab-principal-item ${classe === abaModalHabAtiva ? 'active' : ''}`;
+        tab.innerText = classe;
+        tab.onclick = () => {
+            abaModalHabAtiva = classe;
+            const subS = Object.keys(bibliotecaHabilidades[classe] || {});
+            subFiltroModalHabAtivo = subS[0] || "";
+            window.renderizarAbasPrincipaisModal();
+            window.renderizarSubFiltrosModal();
+            window.renderizarListaBiblioteca();
+        };
+        container.appendChild(tab);
+    });
+};
+
+window.renderizarSubFiltrosModal = () => {
+    const container = document.getElementById('modal-hab-subfiltros');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const subs = Object.keys(bibliotecaHabilidades[abaModalHabAtiva] || {});
+    // Se a aba não possuir sub-filtros, esconde a fileira
+    if (subs.length <= 1 && subs[0] === undefined) {
+        container.style.display = 'none';
+        return;
+    }
+    container.style.display = 'flex';
+
+    subs.forEach(sub => {
+        const pill = document.createElement('div');
+        pill.className = `pill-filtro-item ${sub === subFiltroModalHabAtivo ? 'active' : ''}`;
+        pill.innerText = sub;
+        pill.onclick = () => {
+            subFiltroModalHabAtivo = sub;
+            window.renderizarSubFiltrosModal();
+            window.renderizarListaBiblioteca();
+        };
+        container.appendChild(pill);
+    });
+};
+
+window.renderizarListaBiblioteca = () => {
+    const container = document.getElementById('lista-biblioteca-habilidades');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const listaOriginal = (bibliotecaHabilidades[abaModalHabAtiva] && bibliotecaHabilidades[abaModalHabAtiva][subFiltroModalHabAtivo]) || [];
+    const termoBusca = document.getElementById('busca-habilidade-input').value.toLowerCase();
+
+    const listaFiltrada = listaOriginal.filter(h => 
+        h.nome.toLowerCase().includes(termoBusca) || h.descricao.toLowerCase().includes(termoBusca)
+    );
+
+    if (listaFiltrada.length === 0) {
+        container.innerHTML = '<p style="text-align:center; font-size:12px; color:#666;">Nenhuma habilidade encontrada.</p>';
+        return;
+    }
+
+    listaFiltrada.forEach(hab => {
+        const expandida = idsHabilidadesExpandidas.has(`bib_${hab.id}`);
+        const card = document.createElement('div');
+        card.className = 'card-hab';
+
+        card.innerHTML = `
+            <div class="card-hab-header">
+                <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex-grow:1;" onclick="window.toggleExpandirHabilidade('bib_${hab.id}')">
+                    <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
+                    <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
+                </div>
+                <button class="btn-add-box" onclick="window.adicionarHabilidadeAoPersonagem('${hab.id}')">+</button>
+            </div>
+            ${expandida ? `<div class="card-hab-corpo">${hab.descricao}</div>` : ''}
+        `;
+        container.appendChild(card);
+    });
+};
+
+window.filtrarHabilidadesModal = () => {
+    window.renderizarListaBiblioteca();
+};
+
+window.adicionarHabilidadeAoPersonagem = async (idHab) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+    if (!p.habilidades) p.habilidades = [];
+
+    const listaOriginal = (bibliotecaHabilidades[abaModalHabAtiva] && bibliotecaHabilidades[abaModalHabAtiva][subFiltroModalHabAtivo]) || [];
+    const habEncontrada = listaOriginal.find(h => h.id === idHab);
+
+    if (habEncontrada) {
+        // Evita duplicados idênticos por segurança
+        if (p.habilidades.some(h => h.id === idHab)) {
+            alert("O personagem já possui esta habilidade.");
+            return;
+        }
+
+        p.habilidades.push({ ...habEncontrada });
+        await salvarNaSala();
+        window.renderizarHabilidadesPersonagem();
+        window.fecharModalHabilidades();
+    }
+};
 
 // --- Funções de Edição e Salvar ---
 window.toggleModoEdicao = async () => {
