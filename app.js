@@ -355,14 +355,14 @@ window.selecionarOrigem = async (nome) => {
         const origemData = todasOrigens[nome];
 
         if (origemData) {
-            // Garante que a lista de perícias automáticas antigas exista na ficha para não dar erro
+            // Garante que a lista de perícias automáticas antigas exista na ficha
             if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
 
-            // 2. LIMPA AS PERÍCIAS DA ORIGEM ANTERIOR (Evita acumular perícias se ele mudar de ideia)
+            // 2. LIMPA AS PERÍCIAS DA ORIGEM ANTERIOR
+            // Zera o 'treino' das perícias que tinham sido marcadas anteriormente
             p.periciasOrigemAntiga.forEach(periciaAntiga => {
                 if (p.pericias && p.pericias[periciaAntiga]) {
-                    // Remove os 5 pontos de bônus retornando ao valor base
-                    p.pericias[periciaAntiga].bonus = (p.pericias[periciaAntiga].bonus || 5) - 5;
+                    p.pericias[periciaAntiga].treino = 0;
                 }
             });
             p.periciasOrigemAntiga = []; // Reseta a lista de controle
@@ -371,16 +371,18 @@ window.selecionarOrigem = async (nome) => {
             if (origemData.pericias.length === 0) {
                 alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
             } else {
-                // 4. APLICA AS NOVAS PERÍCIAS (+5)
+                // 4. APLICA AS NOVAS PERÍCIAS (Definindo treino como 5)
                 origemData.pericias.forEach(novaPericia => {
                     if (p.pericias) {
-                        // Se a perícia ainda não existir na ficha por segurança, criamos o objeto dela
-                        if (!p.pericias[novaPericia]) p.pericias[novaPericia] = { bonus: 0, outros: 0 };
+                        // Se a perícia ainda não existir, cria com treino 0 e extra 0
+                        if (!p.pericias[novaPericia]) {
+                            p.pericias[novaPericia] = { treino: 0, extra: 0 };
+                        }
                         
-                        // Soma +5 no bônus/treino da perícia
-                        p.pericias[novaPericia].bonus = (p.pericias[novaPericia].bonus || 0) + 5;
+                        // Define o treino como 5
+                        p.pericias[novaPericia].treino = 5;
                         
-                        // Salva nesta lista para sabermos remover se ele trocar de origem depois
+                        // Salva nesta lista para sabermos o que limpar se ele trocar de origem depois
                         p.periciasOrigemAntiga.push(novaPericia);
                     }
                 });
@@ -400,12 +402,13 @@ window.selecionarOrigem = async (nome) => {
     // Salva as alterações na sala/banco de dados
     await salvarNaSala();
     
-    // Recarrega a listagem visual das perícias para que o +5 apareça na tela imediatamente
+    // Recarrega a listagem visual das perícias para que o valor '5' apareça no dropdown
     if (typeof renderizarPericias === "function") {
         renderizarPericias();
     } else if (typeof atualizarInterface === "function") {
         atualizarInterface(); 
     }
+};
 
     window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
 };
