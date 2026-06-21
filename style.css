@@ -82,7 +82,6 @@ body {
     margin-right: auto;
 }
 
-/* ALTERADO AQUI: mudei para space-around e ajustei o gap para distribuir os 3 blocos melhor nos seus 240px */
 .row-top-stats {
     display: flex;
     justify-content: space-around; 
@@ -94,9 +93,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 75px; /* Define uma largura padrão para os 3 blocos ficarem iguais */
 }
 
-/* ALTERADO AQUI: adicionei text-transform uppercase para ficar igual à imagem */
 .label-stack {
     font-size: 9px;
     color: #888;
@@ -118,32 +117,44 @@ body {
     border-radius: 2px;
     outline: none;
     box-sizing: border-box;
+    width: 100%;
 }
 
-/* Mantido intacto caso você volte a usar o formato antigo */
+/* Estilos Específicos para o NEX (Container e Select) */
 .nex-container {
     display: inline-flex;
     align-items: center;
     background: #0a0a0a;
     border: 1px solid #ffffff;
     border-radius: 2px;
-    padding: 5px;
+    padding: 0; /* Removido para o select preencher todo o espaço e o clique funcionar melhor */
     box-sizing: border-box;
     height: 27px;
+    width: 100%;
 }
 
-.nex-fixed-symbol {
-    font-size: 13px;
-    color: white;
-    font-weight: bold;
-    margin-left: 1px;
-    user-select: none;
+#ext-nex { 
+    width: 100%; 
+    height: 100%; 
+    background: transparent; 
+    border: none; 
+    color: white; 
+    text-align: center; 
+    font-weight: bold; 
+    font-size: 13px; 
+    outline: none; 
+    cursor: pointer; 
+    padding: 0 5px; 
 }
 
-/* ALTERADO AQUI: Ajustei as larguras apenas para ficarem do mesmo tamanho no layout de blocos */
-#ext-nex { width: 50px; height: 27px; background: #0a0a0a; border: 1px solid #ffffff; padding: 5px; }
-#ext-pe-turno { width: 50px; height: 27px; }
-#ext-deslocamento { width: 90px; height: 27px; }
+/* Deixa o fundo do menu suspenso preto para leitura clara */
+#ext-nex option { 
+    background-color: #0c0c0c; 
+    color: white; 
+}
+
+#ext-pe-turno { width: 100%; height: 27px; box-sizing: border-box; }
+#ext-deslocamento { width: 100%; height: 27px; box-sizing: border-box; }
 
 /* Barras de Recursos */
 .resource-bar-container {
@@ -346,7 +357,7 @@ body {
 .character-card { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; border-radius: 8px; }
 .stats-row { display: flex; gap: 10px; }
 
-/* Travamento de Inputs - ALTERADO AQUI */
+/* Travamento de Inputs */
 .input-travado { 
     user-select: none !important; 
 }
