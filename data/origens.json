@@ -1,0 +1,10 @@
+{
+    "Agente de Saúde": {
+        "descricao": "Você era um profissional da saúde como um enfermeiro, médico, etc.",
+        "regras": "<b>Perícias treinadas:</b> Intuição e Medicina.<br><b>Técnica Medicinal:</b> Sempre que cura, adiciona seu Intelecto no total de PV curados."
+    },
+    "Acadêmico": {
+        "descricao": "Você dedicou sua vida aos estudos e livros.",
+        "regras": "<b>Perícias treinadas:</b> Investigação e Atualidades.<br><b>Estudioso:</b> Você recebe +2 em testes de INT."
+    }
+}
