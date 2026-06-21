@@ -50,7 +50,7 @@ window.calcularDefesas = () => {
 
     const defesaBase = 10 + agi + equip + outros;
     const esquivaTotal = defesaBase + reflexos;
-    const bloqueioTotal = defesaBase + fortitude;
+    const bloqueioTotal = fortitude;
 
     const elDef = document.getElementById('defesa-total');
     const elBloq = document.getElementById('bloqueio-total');
