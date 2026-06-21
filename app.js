@@ -25,6 +25,10 @@ const LISTA_PERICIAS_BASE = [
 let personagens = [];
 let idPersonagemSelecionado = null;
 let origemIniciativa = "raiz";
+let bibliotecaHabilidades = {};
+let abaModalHabAtiva = "";
+let subFiltroModalHabAtivo = "";
+let idsHabilidadesExpandidas = new Set();
 
 // --- NOVA LÓGICA DE DEFESA ---
 window.calcularDefesas = () => {
