@@ -253,21 +253,36 @@ function renderizarPericias() {
 window.toggleModoEdicao = async () => {
     const btn = document.getElementById('btn-toggle-atrib');
     const inputs = document.querySelectorAll('.input-editavel');
+    const selectNex = document.getElementById('ext-nex');
+
     if (btn.innerHTML.includes('Editar')) {
-        btn.innerHTML = 'Salvar'; btn.style.borderColor = '#22c55e'; btn.style.color = '#22c55e';
+        btn.innerHTML = 'Salvar'; 
+        btn.style.borderColor = '#22c55e'; 
+        btn.style.color = '#22c55e';
+        
+        // Libera inputs de texto e número
         inputs.forEach(i => { 
             i.removeAttribute('readonly'); 
-            i.removeAttribute('disabled'); 
             i.classList.remove('input-travado'); 
         });
+        // Libera o Select
+        if(selectNex) selectNex.removeAttribute('disabled');
+        
     } else {
-        btn.innerHTML = 'Editar'; btn.style.borderColor = '#444'; btn.style.color = '#aaa';
+        btn.innerHTML = 'Editar'; 
+        btn.style.borderColor = '#444'; 
+        btn.style.color = '#aaa';
+        
+        // Trava inputs
         inputs.forEach(i => { 
             i.setAttribute('readonly', 'true'); 
-            i.setAttribute('disabled', 'true'); 
             i.classList.add('input-travado'); 
         });
-        await salvarAtributos(); await salvarExtras();
+        // Trava o Select
+        if(selectNex) selectNex.setAttribute('disabled', 'true');
+        
+        await salvarAtributos(); 
+        await salvarExtras();
     }
 };
 
@@ -278,6 +293,12 @@ window.salvarAtributos = async () => {
     p.vig = document.getElementById('at-vig').value;
     p.pre = document.getElementById('at-pre').value;
     p.forca = document.getElementById('at-for').value;
+    // Campos da defesa
+    p.defEquip = document.getElementById('def-equip').value;
+    p.defOutros = document.getElementById('def-outros').value;
+    p.defProtecao = document.getElementById('def-protecao').value;
+    p.defResistencias = document.getElementById('def-resistencias').value;
+    p.defProficiencias = document.getElementById('def-proficiencias').value;
     await salvarNaSala();
 };
 
@@ -343,6 +364,13 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-vig').value = p.vig || "0";
         document.getElementById('at-pre').value = p.pre || "0";
         document.getElementById('at-for').value = p.forca || "0";
+        
+        // Defesa
+        document.getElementById('def-equip').value = p.defEquip || "0";
+        document.getElementById('def-outros').value = p.defOutros || "0";
+        document.getElementById('def-protecao').value = p.defProtecao || "";
+        document.getElementById('def-resistencias').value = p.defResistencias || "";
+        document.getElementById('def-proficiencias').value = p.defProficiencias || "";
         
         const selectNex = document.getElementById('ext-nex');
         if (selectNex) selectNex.innerHTML = gerarOpcoesNex(p.nex || 0);
