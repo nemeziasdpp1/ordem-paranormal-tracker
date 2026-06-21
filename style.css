@@ -82,9 +82,10 @@ body {
     margin-right: auto;
 }
 
+/* ALTERADO AQUI: mudei para space-around e ajustei o gap para distribuir os 3 blocos melhor nos seus 240px */
 .row-top-stats {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around; 
     align-items: flex-start;
     gap: 5px;
 }
@@ -95,6 +96,7 @@ body {
     align-items: center;
 }
 
+/* ALTERADO AQUI: adicionei text-transform uppercase para ficar igual à imagem */
 .label-stack {
     font-size: 9px;
     color: #888;
@@ -102,6 +104,7 @@ body {
     text-align: center;
     margin-top: 4px;
     letter-spacing: 0.5px;
+    text-transform: uppercase; 
 }
 
 .input-box-style {
@@ -117,6 +120,7 @@ body {
     box-sizing: border-box;
 }
 
+/* Mantido intacto caso você volte a usar o formato antigo */
 .nex-container {
     display: inline-flex;
     align-items: center;
@@ -128,18 +132,6 @@ body {
     height: 27px;
 }
 
-#ext-nex {
-    background: transparent;
-    border: none;
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    font-size: 13px;
-    width: 24px;
-    outline: none;
-    padding: 0;
-}
-
 .nex-fixed-symbol {
     font-size: 13px;
     color: white;
@@ -148,8 +140,10 @@ body {
     user-select: none;
 }
 
-#ext-pe-turno { width: 35px; height: 27px; }
-#ext-deslocamento { width: 80px; height: 27px; }
+/* ALTERADO AQUI: Ajustei as larguras apenas para ficarem do mesmo tamanho no layout de blocos */
+#ext-nex { width: 50px; height: 27px; background: #0a0a0a; border: 1px solid #ffffff; padding: 5px; }
+#ext-pe-turno { width: 50px; height: 27px; }
+#ext-deslocamento { width: 90px; height: 27px; }
 
 /* Barras de Recursos */
 .resource-bar-container {
@@ -354,7 +348,6 @@ body {
 
 /* Travamento de Inputs - ALTERADO AQUI */
 .input-travado { 
-    /* pointer-events removido para permitir cliques */
     user-select: none !important; 
 }
 .input-editavel:not(.input-travado) { background: rgba(168, 85, 247, 0.2) !important; border-radius: 4px !important; }
