@@ -2,15 +2,125 @@
   "Combatente": {
     "Poderes de Combatente": [
       {
-        "id": "armamento_pesado",
-        "nome": "Armamento Pesado",
-        "descricao": "Você recebe proficiência com armas pesadas."
-      },
-      {
-        "id": "artista_marcial",
-        "nome": "Artista Marcial",
-        "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
-      }
+    "nome": "Armamento Pesado",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você recebe proficiência com armas pesadas. Pré-requisito: For 2."
+  },
+  {
+    "nome": "Artista Marcial",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
+  },
+  {
+    "nome": "Ataque de Oportunidade",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Sempre que um ser sair voluntariamente de um espaço adjacente ao seu, você pode gastar uma reação e 1 PE para fazer um ataque corpo a corpo contra ele."
+  },
+  {
+    "nome": "Ataque Especial",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Quando faz um ataque, você pode gastar 2 PE para receber +5 no teste de ataque ou na rolagem de dano. Conforme avança de NEX, você pode gastar +1 PE para receber mais bônus de +5. Você pode aplicar cada bônus de +5 em ataque ou dano. Por exemplo, em NEX 55%, você pode gastar 4 PE para receber +5 no teste de ataque e +10 na rolagem de dano."
+  },
+  {
+    "nome": "Combate Defensivo",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Quando usa a ação agredir, você pode combater defensivamente. Se fizer isso, até seu próximo turno, sofre –1d20 em todos os testes de ataque, mas recebe +5 na Defesa. Pré-requisito: Int 2."
+  },
+  {
+    "nome": "Combater com Duas Armas",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Se estiver empunhando duas armas (e pelo menos uma for leve) e fizer a ação agredir, você pode fazer dois ataques, um com cada arma. Se fizer isso, sofre –1d20 em todos os testes de ataque até o seu próximo turno. Pré-requisitos: Agi 3, treinado em Luta ou Pontaria."
+  },
+  {
+    "nome": "Golpe Demolidor",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Quando usa a manobra quebrar ou ataca um objeto, você pode gastar 1 PE para causar dois dados de dano extra do mesmo tipo de sua arma. Pré-requisitos: For 2, treinado em Luta."
+  },
+  {
+    "nome": "Golpe Pesado",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "O dano de suas armas corpo a corpo aumenta em mais um dado do mesmo tipo."
+  },
+  {
+    "nome": "Incansável",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Uma vez por cena, você pode gastar 2 PE para fazer uma ação de investigação adicional, mas deve usar Força ou Agilidade como atributo-base do teste."
+  },
+  {
+    "nome": "Presteza Atlética",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Quando faz um teste de facilitar a investigação, você pode gastar 1 PE para usar Força ou Agilidade no lugar do atributo-base da perícia. Se passar no teste, o próximo aliado que usar seu bônus também recebe +1d20 no teste."
+  },
+  {
+    "nome": "Proteção Pesada",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você recebe proficiência com Proteções Pesadas. Pré-requisito: NEX 30%."
+  },
+  {
+    "nome": "Reflexos Defensivos",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você recebe +2 em Defesa e em testes de resistência. Pré-requisitos: Agi 2."
+  },
+  {
+    "nome": "Saque Rápido",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você pode sacar ou guardar itens como uma ação livre (em vez de ação de movimento). Além disso, caso esteja usando a regra opcional de contagem de munição, uma vez por rodada pode recarregar uma arma de disparo como uma ação livre. Pré-requisito: treinado em Iniciativa."
+  },
+  {
+    "nome": "Segurar o Gatilho",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Sempre que acerta um ataque com uma arma de fogo, pode fazer outro ataque com a mesma arma contra o mesmo alvo, pagando 2 PE por cada ataque já realizado no turno. Ou seja, pode fazer o primeiro ataque extra gastando 2 PE e, se acertar, pode fazer um segundo ataque extra gastando mais 4 PE e assim por diante, até errar um ataque ou atingir o limite de seus PE por rodada. Pré-requisito: NEX 60%."
+  },
+  {
+    "nome": "Sentido Tático",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você pode gastar uma ação de movimento e 2 PE para analisar o ambiente. Se fizer isso, recebe um bônus em Defesa e em testes de resistência igual ao seu Intelecto até o final da cena. Pré-requisitos: treinado em Percepção e Tática."
+  },
+  {
+    "nome": "Tanque de Guerra",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Se estiver usando uma proteção pesada, a Defesa e a resistência a dano que ela fornece aumentam em +2. Pré-requisito: Proteção Pesada."
+  },
+  {
+    "nome": "Tiro Certeiro",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Se estiver usando uma arma de disparo, você soma sua Agilidade nas rolagens de dano e ignora a penalidade contra alvos envolvidos em combate corpo a corpo (mesmo se não usar a ação mirar). Pré-requisito: treinado em Pontaria."
+  },
+  {
+    "nome": "Tiro de Cobertura",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Você pode gastar uma ação padrão e 1 PE para disparar uma arma de fogo na direção de um personagem no alcance da arma apenas para forçá-lo a se proteger. Faça um teste de Pontaria contra a Vontade do alvo. Se vencer, até o início do seu próximo turno o alvo não pode sair do lugar onde está e sofre –5 em testes de ataque. A critério do mestre, o alvo recebe +5 no teste de Vontade se estiver em um lugar extremamente perigoso, como uma casa em chamas ou um barco afundando. Este é um efeito de medo."
+  },
+  {
+    "nome": "Transcender",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."
+  },
+  {
+    "nome": "Treinamento em Perícia",
+    "categoria": "Combatente",
+    "subcategoria": "Poderes de Combatente",
+    "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert. Você pode escolher este poder várias vezes."
+  }
     ],
     "Aniquilador": [],
     "Comandante de Campo": [],
