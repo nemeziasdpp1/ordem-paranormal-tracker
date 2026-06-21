@@ -560,6 +560,28 @@ body {
     background: #a855f7;
 }
 
+/* Contêineres de navegação */
+#modal-hab-abas-principais, 
+#modal-hab-subfiltros {
+    display: flex;           /* Coloca tudo em uma linha */
+    overflow-x: auto;        /* Ativa o scroll horizontal quando o conteúdo exceder a largura */
+    white-space: nowrap;     /* Impede que os itens pulem de linha */
+    gap: 10px;               /* Espaçamento entre os botões */
+    padding-bottom: 8px;     /* Espaço para a barra de scroll não ficar grudada nos botões */
+}
+
+/* Opcional: Estilizar a barra de scroll para ficar bonita */
+#modal-hab-abas-principais::-webkit-scrollbar,
+#modal-hab-subfiltros::-webkit-scrollbar {
+    height: 6px;             /* Altura da barra horizontal */
+}
+
+#modal-hab-abas-principais::-webkit-scrollbar-thumb,
+#modal-hab-subfiltros::-webkit-scrollbar-thumb {
+    background: #555;        /* Cor da barra */
+    border-radius: 4px;      /* Bordas arredondadas */
+}
+
 /* Cards de Habilidade */
 .card-hab {
     background: #1a1a1b; 
