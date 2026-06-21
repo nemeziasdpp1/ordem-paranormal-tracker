@@ -26,6 +26,41 @@ let personagens = [];
 let idPersonagemSelecionado = null;
 let origemIniciativa = "raiz";
 
+// --- NOVA LÓGICA DE DEFESA ---
+window.calcularDefesas = () => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+
+    // Pega inputs da tela (ou fallback para o objeto p)
+    const elAgi = document.getElementById('at-agi');
+    const elEquip = document.getElementById('def-equip');
+    const elOutros = document.getElementById('def-outros');
+
+    const agi = parseInt(elAgi?.value || p.agi || 0);
+    const equip = parseInt(elEquip?.value || p.defEquip || 0);
+    const outros = parseInt(elOutros?.value || p.defOutros || 0);
+
+    const getPericiaTotal = (nome) => {
+        if (!p.pericias || !p.pericias[nome]) return 0;
+        return (parseInt(p.pericias[nome].treino) || 0) + (parseInt(p.pericias[nome].extra) || 0);
+    };
+
+    const reflexos = getPericiaTotal("Reflexos");
+    const fortitude = getPericiaTotal("Fortitude");
+
+    const defesaBase = 10 + agi + equip + outros;
+    const esquivaTotal = defesaBase + reflexos;
+    const bloqueioTotal = defesaBase + fortitude;
+
+    const elDef = document.getElementById('defesa-total');
+    const elBloq = document.getElementById('bloqueio-total');
+    const elEsq = document.getElementById('esquiva-total');
+
+    if (elDef) elDef.innerText = defesaBase;
+    if (elBloq) elBloq.innerText = bloqueioTotal;
+    if (elEsq) elEsq.innerText = esquivaTotal;
+};
+
 // --- Inicialização com OBR ---
 OBR.onReady(async () => {
     OBR.action.setWidth(320);
@@ -68,14 +103,10 @@ window.gerarOpcoesNex = (valorAtual) => {
 window.atualizarNex = async (novoNex) => {
     const p = obterPersonagemAtual();
     if (!p) return;
-
     p.nex = novoNex;
     p.peTurno = Math.floor(parseInt(novoNex) / 5);
-    
     const inputPe = document.getElementById('ext-pe-turno');
-    if (inputPe) {
-        inputPe.value = p.peTurno;
-    }
+    if (inputPe) inputPe.value = p.peTurno;
     await salvarNaSala();
 };
 
@@ -109,9 +140,10 @@ async function salvarNaSala() {
 
 // --- Atualizador de UI ---
 function atualizarInterfaceSincronizada() {
-    if (document.getElementById('aba-iniciativa').style.display === 'block') renderizarCardsIniciativa();
-    if (document.getElementById('aba-pericias').style.display === 'block') renderizarPericias();
-    if (document.getElementById('tela-lista-personagens').style.display === 'block') renderizarListaPersonagens();
+    if (document.getElementById('aba-iniciativa')?.style.display === 'block') renderizarCardsIniciativa();
+    if (document.getElementById('aba-pericias')?.style.display === 'block') renderizarPericias();
+    if (document.getElementById('tela-lista-personagens')?.style.display === 'block') renderizarListaPersonagens();
+    window.calcularDefesas(); 
 }
 
 // --- Modal de Perícias ---
@@ -210,6 +242,7 @@ window.alterarExtraPericia = async (nomePericia, valorExtra) => {
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
     p.pericias[nomePericia].extra = parseInt(valorExtra) || 0;
     await salvarNaSala();
+    window.calcularDefesas();
 };
 
 window.alterarTreinoPericia = async (nomePericia, valorTreino) => {
@@ -219,6 +252,7 @@ window.alterarTreinoPericia = async (nomePericia, valorTreino) => {
     if (!p.pericias[nomePericia]) p.pericias[nomePericia] = { treino: 0, extra: 0 };
     p.pericias[nomePericia].treino = parseInt(valorTreino) || 0;
     await salvarNaSala();
+    window.calcularDefesas();
 };
 
 function renderizarPericias() {
@@ -259,28 +293,14 @@ window.toggleModoEdicao = async () => {
         btn.innerHTML = 'Salvar'; 
         btn.style.borderColor = '#22c55e'; 
         btn.style.color = '#22c55e';
-        
-        // Libera inputs de texto e número
-        inputs.forEach(i => { 
-            i.removeAttribute('readonly'); 
-            i.classList.remove('input-travado'); 
-        });
-        // Libera o Select
+        inputs.forEach(i => { i.removeAttribute('readonly'); i.classList.remove('input-travado'); });
         if(selectNex) selectNex.removeAttribute('disabled');
-        
     } else {
         btn.innerHTML = 'Editar'; 
         btn.style.borderColor = '#444'; 
         btn.style.color = '#aaa';
-        
-        // Trava inputs
-        inputs.forEach(i => { 
-            i.setAttribute('readonly', 'true'); 
-            i.classList.add('input-travado'); 
-        });
-        // Trava o Select
+        inputs.forEach(i => { i.setAttribute('readonly', 'true'); i.classList.add('input-travado'); });
         if(selectNex) selectNex.setAttribute('disabled', 'true');
-        
         await salvarAtributos(); 
         await salvarExtras();
     }
@@ -293,13 +313,13 @@ window.salvarAtributos = async () => {
     p.vig = document.getElementById('at-vig').value;
     p.pre = document.getElementById('at-pre').value;
     p.forca = document.getElementById('at-for').value;
-    // Campos da defesa
     p.defEquip = document.getElementById('def-equip').value;
     p.defOutros = document.getElementById('def-outros').value;
     p.defProtecao = document.getElementById('def-protecao').value;
     p.defResistencias = document.getElementById('def-resistencias').value;
     p.defProficiencias = document.getElementById('def-proficiencias').value;
     await salvarNaSala();
+    window.calcularDefesas();
 };
 
 window.salvarExtras = async () => {
@@ -364,25 +384,22 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-vig').value = p.vig || "0";
         document.getElementById('at-pre').value = p.pre || "0";
         document.getElementById('at-for').value = p.forca || "0";
-        
-        // Defesa
         document.getElementById('def-equip').value = p.defEquip || "0";
         document.getElementById('def-outros').value = p.defOutros || "0";
         document.getElementById('def-protecao').value = p.defProtecao || "";
         document.getElementById('def-resistencias').value = p.defResistencias || "";
         document.getElementById('def-proficiencias').value = p.defProficiencias || "";
-        
         const selectNex = document.getElementById('ext-nex');
         if (selectNex) selectNex.innerHTML = gerarOpcoesNex(p.nex || 0);
-        
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
         document.getElementById('ext-deslocamento-m').value = p.deslocamentoMetro || "9";
         document.getElementById('ext-deslocamento-q').value = p.deslocamentoQuadrado || "6";
-        
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
         document.getElementById('bar-display-san').value = p.san || "0 / 0";
         document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
         atualizarBarraVisual('pv'); atualizarBarraVisual('san'); atualizarBarraVisual('pe');
+        
+        window.calcularDefesas(); // Executa o cálculo ao abrir a aba
     } else if (idAba === 'aba-pericias') { renderizarPericias(); }
 };
 
