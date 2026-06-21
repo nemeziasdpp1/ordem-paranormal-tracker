@@ -414,6 +414,10 @@ window.selecionarOrigem = async (nome) => {
     window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
 };
 
+
+// Garantir que a variável global do Set existe desde o início
+window.idsHabilidadesExpandidas = window.idsHabilidadesExpandidas || new Set();
+
 // --- Gerenciamento da Aba de Habilidades na Ficha ---
 window.abrirAbaHabilidadesFicha = () => {
     ocultarTodasTelas();
@@ -436,12 +440,15 @@ window.renderizarHabilidadesPersonagem = () => {
     }
 
     p.habilidades.forEach((hab, index) => {
-        const expandida = idsHabilidadesExpandidas.has(`pers_${index}`);
+        // Usa o index como ID único na ficha
+        const idUnico = `pers_${index}`;
+        const expandida = window.idsHabilidadesExpandidas.has(idUnico);
+        
         const card = document.createElement('div');
         card.className = 'card-hab';
         
         card.innerHTML = `
-            <div class="card-hab-header" onclick="window.toggleExpandirHabilidade('pers_${index}')">
+            <div class="card-hab-header" style="cursor:pointer;" onclick="window.toggleExpandirHabilidade('${idUnico}')">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
                     <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
@@ -451,7 +458,7 @@ window.renderizarHabilidadesPersonagem = () => {
                 <div class="card-hab-corpo">
                     <p style="margin: 0 0 10px 0;">${hab.descricao}</p>
                     <div style="display:flex; justify-content:space-between; font-size:11px;">
-                        <span onclick="window.removerHabilidadePersonagem(${index})" style="color:#ef4444; cursor:pointer;">Remover</span>
+                        <span onclick="event.stopPropagation(); window.removerHabilidadePersonagem(${index})" style="color:#ef4444; cursor:pointer;">Remover</span>
                         <span style="color:#22c55e; cursor:pointer;">Editar</span>
                     </div>
                 </div>
@@ -462,10 +469,12 @@ window.renderizarHabilidadesPersonagem = () => {
 };
 
 window.toggleExpandirHabilidade = (idUnico) => {
-    if (idsHabilidadesExpandidas.has(idUnico)) {
-        idsHabilidadesExpandidas.delete(idUnico);
+    if (!window.idsHabilidadesExpandidas) window.idsHabilidadesExpandidas = new Set();
+    
+    if (window.idsHabilidadesExpandidas.has(idUnico)) {
+        window.idsHabilidadesExpandidas.delete(idUnico);
     } else {
-        idsHabilidadesExpandidas.add(idUnico);
+        window.idsHabilidadesExpandidas.add(idUnico);
     }
     window.renderizarHabilidadesPersonagem();
     window.renderizarListaBiblioteca(); // Mantém ambos atualizados se necessário
@@ -572,17 +581,22 @@ window.renderizarListaBiblioteca = () => {
     }
 
     listaFiltrada.forEach(hab => {
-        const expandida = idsHabilidadesExpandidas.has(`bib_${hab.id}`);
+        // CORREÇÃO 1: Garante um identificador único usando o ID (se existir) ou o NOME da habilidade
+        const identHab = hab.id || hab.nome;
+        const idUnico = `bib_${identHab}`;
+        const expandida = window.idsHabilidadesExpandidas.has(idUnico);
+        
         const card = document.createElement('div');
         card.className = 'card-hab';
 
+        // CORREÇÃO 2: Adicionado 'event.stopPropagation()' no botão '+'
         card.innerHTML = `
-            <div class="card-hab-header">
-                <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex-grow:1;" onclick="window.toggleExpandirHabilidade('bib_${hab.id}')">
+            <div class="card-hab-header" onclick="window.toggleExpandirHabilidade('${idUnico}')">
+                <div style="display:flex; align-items:center; gap:8px; cursor:pointer; flex-grow:1;">
                     <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
                     <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
                 </div>
-                <button class="btn-add-box" onclick="window.adicionarHabilidadeAoPersonagem('${hab.id}')">+</button>
+                <button class="btn-add-box" onclick="event.stopPropagation(); window.adicionarHabilidadeAoPersonagem('${identHab}')">+</button>
             </div>
             ${expandida ? `<div class="card-hab-corpo">${hab.descricao}</div>` : ''}
         `;
@@ -600,11 +614,13 @@ window.adicionarHabilidadeAoPersonagem = async (idHab) => {
     if (!p.habilidades) p.habilidades = [];
 
     const listaOriginal = (bibliotecaHabilidades[abaModalHabAtiva] && bibliotecaHabilidades[abaModalHabAtiva][subFiltroModalHabAtivo]) || [];
-    const habEncontrada = listaOriginal.find(h => h.id === idHab);
+    
+    // Procura pela habilidade combinando a trava de segurança (id ou nome)
+    const habEncontrada = listaOriginal.find(h => (h.id || h.nome) === idHab);
 
     if (habEncontrada) {
-        // Evita duplicados idênticos por segurança
-        if (p.habilidades.some(h => h.id === idHab)) {
+        // Evita duplicados verificando também com a mesma trava
+        if (p.habilidades.some(h => (h.id || h.nome) === idHab)) {
             alert("O personagem já possui esta habilidade.");
             return;
         }
