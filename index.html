@@ -166,14 +166,19 @@
 
     <div id="aba-hab" style="display: none; padding: 10px; color: white;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h3 style="margin: 0; font-size: 16px;">Habilidades</h3>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button onclick="window.abrirAbaChar('aba-info')" style="background: transparent; border: none; color: #888; cursor: pointer; font-size: 20px; display: flex; align-items: center; padding: 0; padding-bottom: 2px; transition: color 0.2s;" onmouseover="this.style.color='#a855f7'" onmouseout="this.style.color='#888'">
+                ←
+            </button>
+            <h3 style="margin: 0; font-size: 16px;">Habilidades</h3>
+        </div>
         <button class="menu-btn" onclick="window.abrirModalAdicionarHabilidades()" style="border-color: #a855f7; color: #a855f7; padding: 4px 12px; font-size: 12px;">Adicionar</button>
     </div>
     
     <div id="lista-habilidades-personagem" style="display: flex; flex-direction: column; gap: 8px;"></div>
 </div>
 
-    <div id="modal-selecao-habilidades" class="modal-hab-overlay" style="display: none;">
+<div id="modal-selecao-habilidades" class="modal-hab-overlay" style="display: none;">
     <div class="modal-hab-content">
         <div class="modal-hab-header">
             <span>Adicionar Habilidades</span>
@@ -185,8 +190,8 @@
         <div id="modal-hab-subfiltros" class="modal-hab-pills-row"></div>
 
         <div class="search-container">
-    <input type="text" id="busca-habilidade-input" placeholder="Buscar" oninput="window.filtrarHabilidadesModal()">
-</div>
+            <input type="text" id="busca-habilidade-input" placeholder="Buscar" oninput="window.filtrarHabilidadesModal()">
+        </div>
 
         <div id="lista-biblioteca-habilidades" class="modal-hab-lista"></div>
     </div>
