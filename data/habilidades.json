@@ -150,21 +150,591 @@
   } 
     ],
     
-    "Comandante de Campo": [],
-    "Guerreiro": [],
-    "Operações Especiais": [],
-    "Tropa de Choque": []
+    "Comandante de Campo": [
+  {
+    "nome": "NEX 10% - Inspirar Confiança",
+    "categoria": "Combatente",
+    "subcategoria": "Comandante de Campo",
+    "descricao": "Sua liderança inspira seus aliados. Você pode gastar uma reação e 2 PE para fazer um aliado em alcance curto rolar novamente um teste recém realizado."
+  },
+  {
+    "nome": "NEX 40% - Estrategista",
+    "categoria": "Combatente",
+    "subcategoria": "Comandante de Campo",
+    "descricao": "Você pode direcionar aliados em alcance curto. Gaste uma ação padrão e 1 PE por aliado que quiser direcionar (limitado pelo seu Intelecto). No próximo turno dos aliados afetados, eles ganham uma ação de movimento adicional."
+  },
+  {
+    "nome": "NEX 65% - Brecha na Guarda",
+    "categoria": "Combatente",
+    "subcategoria": "Comandante de Campo",
+    "descricao": "Uma vez por rodada, quando um aliado causar dano em um inimigo que esteja em seu alcance curto, você pode gastar uma reação e 2 PE para que você ou outro aliado em alcance curto faça um ataque adicional contra o mesmo inimigo. Além disso, o alcance de inspirar confiança e estrategista aumenta para médio."
+  },
+  {
+    "nome": "NEX 99% - Oficial Comandante",
+    "categoria": "Combatente",
+    "subcategoria": "Comandante de Campo",
+    "descricao": "Você pode gastar uma ação padrão e 5 PE para que cada aliado que você possa ver em alcance médio receba uma ação padrão adicional no próximo turno dele."
+  }
+],
+    "Guerreiro": [
+  {
+    "nome": "NEX 10% - Técnica Letal",
+    "categoria": "Combatente",
+    "subcategoria": "Guerreiro",
+    "descricao": "Você recebe um aumento de +2 na margem de ameaça com todos os seus ataques corpo a corpo."
+  },
+  {
+    "nome": "NEX 40% - Revidar",
+    "categoria": "Combatente",
+    "subcategoria": "Guerreiro",
+    "descricao": "Sempre que bloquear um ataque, você pode gastar uma reação e 2 PE para fazer um ataque corpo a corpo no inimigo que o atacou."
+  },
+  {
+    "nome": "NEX 65% - Força Opressora",
+    "categoria": "Combatente",
+    "subcategoria": "Guerreiro",
+    "descricao": "Quando acerta um ataque corpo a corpo, você pode gastar 1 PE para realizar uma manobra derrubar ou empurrar contra o alvo do ataque como ação livre. Se escolher empurrar, recebe um bônus de +5 para cada 10 pontos de dano que causou no alvo. Se escolher derrubar e vencer no teste oposto, você pode gastar 1 PE para fazer um ataque adicional contra o alvo caído."
+  },
+  {
+    "nome": "NEX 99% - Potência Máxima",
+    "categoria": "Combatente",
+    "subcategoria": "Guerreiro",
+    "descricao": "Quando usa seu Ataque Especial com armas corpo a corpo, todos os bônus numéricos são dobrados. Por exemplo, se usar 5 PE para receber +5 no ataque e +15 no dano, você recebe +10 no ataque e +30 no dano."
+  }
+],
+    "Operações Especiais": [
+  {
+    "nome": "NEX 10% - Iniciativa Aprimorada",
+    "categoria": "Combatente",
+    "subcategoria": "Operações Especiais",
+    "descricao": "Você recebe +5 em Iniciativa e uma ação de movimento adicional na primeira rodada."
+  },
+  {
+    "nome": "NEX 40% - Ataque Extra",
+    "categoria": "Combatente",
+    "subcategoria": "Operações Especiais",
+    "descricao": "Uma vez por rodada, quando faz um ataque, você pode gastar 2 PE para fazer um ataque adicional."
+  },
+  {
+    "nome": "NEX 65% - Surto de Adrenalina",
+    "categoria": "Combatente",
+    "subcategoria": "Operações Especiais",
+    "descricao": "Uma vez por rodada, você pode gastar 5 PE para realizar uma ação padrão ou de movimento adicional."
+  },
+  {
+    "nome": "NEX 99% - Sempre Alerta",
+    "categoria": "Combatente",
+    "subcategoria": "Operações Especiais",
+    "descricao": "Você recebe uma ação padrão adicional no início de cada cena de combate."
+  }
+],
+    "Tropa de Choque": [
+  {
+    "nome": "NEX 10% - Casca Grossa",
+    "categoria": "Combatente",
+    "subcategoria": "Tropa de Choque",
+    "descricao": "Você recebe +1 PV para cada 5% de NEX e, quando faz um bloqueio, soma seu Vigor na resistência a dano recebida."
+  },
+  {
+    "nome": "NEX 40% - Cai Dentro",
+    "categoria": "Combatente",
+    "subcategoria": "Tropa de Choque",
+    "descricao": "Sempre que um oponente em alcance curto ataca um de seus aliados, você pode gastar uma reação e 1 PE para fazer com que esse oponente faça um teste de Vontade (DT Vig). Se falhar, o oponente deve atacar você em vez de seu aliado. Este poder só funciona se você puder ser efetivamente atacado e estiver no alcance do ataque. Um oponente que passe no teste de Vontade não pode ser afetado por seu poder Cai Dentro até o final da cena."
+  },
+  {
+    "nome": "NEX 65% - Duro de Matar",
+    "categoria": "Combatente",
+    "subcategoria": "Tropa de Choque",
+    "descricao": "Ao sofrer dano não paranormal, você pode gastar uma reação e 2 PE para reduzir esse dano à metade. Em NEX 85%, você pode usar esta habilidade para reduzir dano paranormal."
+  },
+  {
+    "nome": "NEX 99% - Inquebrável",
+    "categoria": "Combatente",
+    "subcategoria": "Tropa de Choque",
+    "descricao": "Enquanto estiver machucado, você recebe +5 na Defesa e resistência a dano 5. Enquanto estiver morrendo, em vez do normal, você não fica indefeso e ainda pode realizar ações. Você ainda segue as regras de morte normalmente."
+  }
+]
   },
   "Especialista": {
     "Poderes de Especialista": [
-      {
-        "id": "ecletico",
-        "nome": "Eclético",
-        "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."
-      }
-    ]
+  {
+    "nome": "Artista Marcial",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
   },
-  "Ocultista": {},
-  "Origens": {},
+  {
+    "nome": "Balística Avançada",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe proficiência com armas táticas de fogo e +2 em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "Conhecimento Aplicado",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Quando faz um teste de perícia (exceto Luta e Pontaria), você pode gastar 2 PE para mudar o atributo-base da perícia para Int. Pré-requisito: Int 2."
+  },
+  {
+    "nome": "Eclético",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."
+  },
+  {
+    "nome": "Engenhosidade",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Em NEX 40%, quando usa sua habilidade Eclético, você pode gastar 2 PE adicionais para receber os benefícios de ser veterano na perícia. Em NEX 75%, pode gastar 4 PE adicionais para receber os benefícios de ser expert na perícia."
+  },
+  {
+    "nome": "Hacker",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe +5 em testes de Tecnologia para invadir sistemas e diminui o tempo necessário para hackear qualquer sistema para uma ação completa. Pré-requisito: treinado em Tecnologia."
+  },
+  {
+    "nome": "Mãos Rápidas",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Ao fazer um teste de Crime, você pode pagar 1 PE para fazê-lo como uma ação livre. Pré-requisitos: Agi 3, treinado em Crime."
+  },
+  {
+    "nome": "Mochila de Utilidades",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Um item a sua escolha (exceto armas) conta como uma categoria abaixo e ocupa 1 espaço a menos."
+  },
+  {
+    "nome": "Movimento Tático",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você pode gastar 1 PE para ignorar a penalidade em deslocamento por terreno difícil e por escalar até o final do turno. Pré-requisito: treinado em Atletismo."
+  },
+  {
+    "nome": "Na Trilha Certa",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Sempre que tiver sucesso em um teste para procurar pistas, você pode gastar 1 PE para receber +1d20 no próximo teste. Os custos e os bônus são cumulativos."
+  },
+  {
+    "nome": "Nerd",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Uma vez por cena, pode gastar 2 PE para fazer um teste de Atualidades (DT 20). Se passar, recebe uma informação útil para essa cena."
+  },
+  {
+    "nome": "Ninja Urbano",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe proficiência com armas táticas de ataque corpo a corpo e de disparo (exceto de fogo) e +2 em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "Pensamento Ágil",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Uma vez por rodada, durante uma cena de investigação, você pode gastar 2 PE para fazer uma ação de procurar pistas adicional."
+  },
+  {
+    "nome": "Perito",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. Conforme avança de NEX, você pode gastar +1 PE para aumentar o dado de bônus."
+  },
+  {
+    "nome": "Perito em Explosivos",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você soma seu Intelecto na DT para resistir aos seus explosivos e pode excluir dos efeitos da explosão um número de alvos igual ao seu valor de Intelecto."
+  },
+  {
+    "nome": "Primeira Impressão",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe +2d20 no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição que fizer em uma cena."
+  },
+  {
+    "nome": "Transcender",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."
+  },
+  {
+    "nome": "Treinamento em Perícia",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert."
+  }
+],
+    "Atirador de Elite": [
+  {
+    "nome": "NEX 10% - Mira de Elite",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Você recebe proficiência com armas de fogo que usam balas longas e soma seu Intelecto em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "NEX 40% - Disparo Letal",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Quando faz a ação mirar você pode gastar 1 PE para aumentar em +2 a margem de ameaça do próximo ataque que fizer até o final de seu próximo turno."
+  },
+  {
+    "nome": "NEX 65% - Disparo Impactante",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Se estiver usando uma arma de fogo com calibre grosso você pode gastar 2 PE para fazer as manobras derrubar, desarmar, empurrar e quebrar usando um ataque a distância."
+  },
+  {
+    "nome": "NEX 99% - Atirar para Matar",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Quando faz um acerto crítico com uma arma de fogo, você causa dano máximo, sem precisar rolar dados."
+  }
+],
+    "Infiltrador": [
+  {
+    "nome": "NEX 10% - Ataque Furtivo",
+    "categoria": "Especialista",
+    "subcategoria": "Infiltrador",
+    "descricao": "Você sabe atingir os pontos vitais de um inimigo distraído. Uma vez por rodada, quando atinge um alvo desprevenido com um ataque corpo a corpo ou em alcance curto, ou um alvo que você esteja flanqueando, você pode gastar 1 PE para causar +1d6 pontos de dano do mesmo tipo da arma. Em NEX 40% o dano adicional aumenta para +2d6, em NEX 65% aumenta para +3d6 e em NEX 99% aumenta para +4d6."
+  },
+  {
+    "nome": "NEX 40% - Gatuno",
+    "categoria": "Especialista",
+    "subcategoria": "Infiltrador",
+    "descricao": "Você recebe +5 em Atletismo e Crime e pode percorrer seu deslocamento normal quando se esconder sem penalidade."
+  },
+  {
+    "nome": "NEX 65% - Assassinar",
+    "categoria": "Especialista",
+    "subcategoria": "Infiltrador",
+    "descricao": "Você pode gastar uma ação de movimento e 3 PE para analisar um alvo em alcance curto. Até o fim de seu próximo turno, seu primeiro Ataque Furtivo que causar dano a ele tem seus dados de dano extras dessa habilidade dobrados. Além disso, se sofrer dano de seu ataque, o alvo fica inconsciente ou morrendo, à sua escolha (Fortitude DT Agi evita)."
+  },
+  {
+    "nome": "NEX 99% - Sombra Fugaz",
+    "categoria": "Especialista",
+    "subcategoria": "Infiltrador",
+    "descricao": "Quando faz um teste de Furtividade após atacar ou fazer outra ação chamativa, você pode gastar 3 PE para não sofrer a penalidade de –3d20 no teste."
+  }
+],
+
+    "Médico de Campo": [
+  {
+    "nome": "NEX 10% - Paramédico",
+    "categoria": "Especialista",
+    "subcategoria": "Médico de Campo",
+    "descricao": "Você pode usar uma ação padrão e 2 PE para curar 2d10 pontos de vida a de si mesmo ou de um aliado adjacente. Você pode curar +1d10 PV respectivamente em NEX 40%, 65% e 99%, gastando +1 PE por dado adicional de cura."
+  },
+  {
+    "nome": "NEX 40% - Equipe de Trauma",
+    "categoria": "Especialista",
+    "subcategoria": "Médico de Campo",
+    "descricao": "Você pode usar uma ação padrão e 2 PE para remover uma condição negativa (exceto morrendo) de um aliado adjacente."
+  },
+  {
+    "nome": "NEX 65% - Resgate",
+    "categoria": "Especialista",
+    "subcategoria": "Médico de Campo",
+    "descricao": "Uma vez por rodada, se estiver em alcance curto de um aliado machucado ou morrendo, você pode se aproximar do aliado com uma ação livre. Além disso, sempre que curar PV ou remover condições do aliado, você e o aliado recebem +5 na Defesa até o início de seu próximo turno. Por fim, para você, o total de espaços ocupados por carregar um personagem é reduzido pela metade."
+  },
+  {
+    "nome": "NEX 99% - Reanimação",
+    "categoria": "Especialista",
+    "subcategoria": "Médico de Campo",
+    "descricao": "Uma vez por cena, você pode gastar uma ação completa e 10 PE para trazer de volta a vida um personagem que tenha morrido na mesma cena (exceto morte por dano massivo)."
+  }
+],
+
+    "Negociador": [
+  {
+    "nome": "NEX 10% - Eloquência",
+    "categoria": "Especialista",
+    "subcategoria": "Negociador",
+    "descricao": "Você pode usar uma ação completa e 1 PE por alvo em alcance curto para afetar outros personagens com sua fala. Faça um teste de Diplomacia, Enganação ou Intimidação contra a Vontade dos alvos. Se você vencer, os alvos ficam fascinados enquanto você se concentrar (uma ação padrão por rodada). Um alvo hostil ou que esteja envolvido em combate recebe +5 em seu teste de resistência e tem direito a um novo teste por rodada."
+  },
+  {
+    "nome": "NEX 40% - Discurso Motivador",
+    "categoria": "Especialista",
+    "subcategoria": "Negociador",
+    "descricao": "Você pode gastar uma ação padrão e 4 PE para inspirar seus aliados com suas palavras. Você e todos os seus aliados em alcance curto ganham +1d20 em testes de perícia até o fim da cena. A partir de NEX 65%, você pode gastar 8 PE para fornecer um bônus total de +2d20."
+  },
+  {
+    "nome": "NEX 65% - Eu Conheço um Cara",
+    "categoria": "Especialista",
+    "subcategoria": "Negociador",
+    "descricao": "Uma vez por missão, você pode ativar sua rede de contatos para pedir um favor, como por exemplo trocar todo o equipamento do seu grupo, conseguir um local de descanso ou mesmo ser resgatado de uma cena."
+  },
+  {
+    "nome": "NEX 99% - Truque de Mestre",
+    "categoria": "Especialista",
+    "subcategoria": "Negociador",
+    "descricao": "Acostumado a uma vida de fingimento e manipulação, você pode gastar 5 PE para simular o efeito de qualquer habilidade que você tenha visto um de seus aliados usar durante a cena. Você ignora os pré-requisitos da habilidade, mas ainda precisa pagar todos os seus custos, incluindo ações, PE e materiais."
+  }
+    ],
+    "Técnico": [
+      { "nome": "NEX 10% - Inventário Otimizado", "categoria": "Especialista", "subcategoria": "Técnico", "descricao": "Você soma seu Intelecto à sua Força para calcular sua capacidade de carga." },
+      { "nome": "NEX 40% - Remendão", "categoria": "Especialista", "subcategoria": "Técnico", "descricao": "Você pode gastar uma ação completa e 1 PE para remover a condição quebrado de um equipamento adjacente até o final da cena. Além disso, qualquer equipamento geral tem sua categoria reduzida em I para você." },
+      { "nome": "NEX 65% - Improvisar", "categoria": "Especialista", "subcategoria": "Técnico", "descricao": "Você pode improvisar equipamentos com materiais ao seu redor. Escolha um equipamento geral e gaste uma ação completa e 2 PE, mais 2 PE por categoria do item escolhido. Você cria uma versão funcional do equipamento. Ao final da cena, seu equipamento improvisado se torna inútil." },
+      { "nome": "NEX 99% - Preparado para Tudo", "categoria": "Especialista", "subcategoria": "Técnico", "descricao": "Você sempre tem o que precisa para qualquer situação. Sempre que precisar de um item qualquer (exceto armas), pode gastar uma ação de movimento e 3 PE por categoria do item para lembrar que colocou ele no fundo da bolsa!" }
+    ]
+},
+  "Ocultista": {
+    "Poderes de Ocultista": [
+      { "nome": "Camuflar Ocultismo", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Você pode gastar uma ação livre para esconder símbolos e sigilos tornando-os invisíveis. Ao lançar um ritual, pode gastar +2 PE para lançá-lo sem componentes e sem gesticular. Outros só percebem com teste de Ocultismo (DT 25)." },
+      { "nome": "Criar Selo", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Sabe fabricar selos paranormais de rituais que conhece. Gasta uma ação de interlúdio e PE iguais ao custo do ritual. Máximo de selos igual à sua Presença." },
+      { "nome": "Envolto em Mistério", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Recebe +5 em Enganação e Intimidação contra pessoas não treinadas em Ocultismo." },
+      { "nome": "Escolhido pelo Outro Lado", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Pode lançar rituais de 1º círculo. Aumenta o círculo conforme o NEX (2º em 25%, 3º em 55%, 4º em 85%). Aprende um ritual extra por nível." },
+      { "nome": "Especialista em Elemento", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Escolha um elemento. A DT para resistir aos seus rituais desse elemento aumenta em +2." },
+      { "nome": "Ferramentas Paranormais", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Reduz a categoria de um item paranormal em I e pode ativar itens paranormais sem pagar custo em PE." },
+      { "nome": "Fluxo de Poder", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Pode manter dois efeitos sustentados simultaneamente com uma ação livre. Pré-requisito: NEX 60%." },
+      { "nome": "Guiado pelo Paranormal", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Uma vez por cena, gasta 2 PE para fazer uma ação de investigação adicional." },
+      { "nome": "Identificação Paranormal", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Recebe +10 em testes de Ocultismo para identificar criaturas, objetos ou rituais." },
+      { "nome": "Improvisar Componentes", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Gasta uma ação completa e faz teste de Investigação (DT 15) para encontrar componentes de um elemento." },
+      { "nome": "Intuição Paranormal", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Ao facilitar investigação, soma Intelecto ou Presença no teste." },
+      { "nome": "Mestre em Elemento", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Escolha um elemento. O custo para lançar rituais desse elemento diminui em –1 PE. Pré-requisito: Especialista no elemento, NEX 45%." },
+      { "nome": "Ritual Potente", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Soma seu Intelecto nas rolagens de dano ou efeitos de cura de seus rituais. Pré-requisito: Int 2." },
+      { "nome": "Ritual Predileto", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Escolha um ritual. Reduz o custo dele em –1 PE." },
+      { "nome": "Tatuagem Ritualística", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Símbolos na pele reduzem em –1 PE o custo de rituais de alcance pessoal." },
+      { "nome": "Transcender", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Escolha um poder paranormal. Não ganha Sanidade ao subir NEX. Pode ser escolhido várias vezes." },
+      { "nome": "Treinamento em Perícia", "categoria": "Ocultista", "subcategoria": "Poderes de Ocultista", "descricao": "Escolha duas perícias. Torna-se treinado. Pode evoluir para veterano (NEX 35%) e expert (NEX 70%)." }
+    ],
+    "Conduíte": [
+      { "nome": "NEX 10% - Ampliar Ritual", "categoria": "Ocultista", "subcategoria": "Conduíte", "descricao": "Gaste +2 PE para aumentar o alcance em um passo ou dobrar a área de efeito." },
+      { "nome": "NEX 40% - Acelerar Ritual", "categoria": "Ocultista", "subcategoria": "Conduíte", "descricao": "Uma vez por rodada, aumente o custo em 4 PE para conjurar um ritual como ação livre." },
+      { "nome": "NEX 65% - Anular Ritual", "categoria": "Ocultista", "subcategoria": "Conduíte", "descricao": "Gaste PE igual ao ritual alvo e vença um teste de Ocultismo para anulá-lo." },
+      { "nome": "NEX 99% - Canalizar o Medo", "categoria": "Ocultista", "subcategoria": "Conduíte", "descricao": "Você aprende o ritual Canalizar o Medo." }
+    ],
+    "Flagelador": [
+      { "nome": "NEX 10% - Poder do Flagelo", "categoria": "Ocultista", "subcategoria": "Flagelador", "descricao": "Pague custo de PE com PV (2 PV por 1 PE). PV só recuperam com descanso." },
+      { "nome": "NEX 40% - Abraçar a Dor", "categoria": "Ocultista", "subcategoria": "Flagelador", "descricao": "Ao sofrer dano não paranormal, gaste reação e 2 PE para reduzir o dano à metade." },
+      { "nome": "NEX 65% - Absorver Agonia", "categoria": "Ocultista", "subcategoria": "Flagelador", "descricao": "Ao reduzir um inimigo a 0 PV com ritual, recebe PE temporários igual ao círculo do ritual." },
+      { "nome": "NEX 99% - Medo Tangível", "categoria": "Ocultista", "subcategoria": "Flagelador", "descricao": "Você aprende o ritual Medo Tangível." }
+    ],
+    "Graduado": [
+      { "nome": "NEX 10% - Saber Ampliado", "categoria": "Ocultista", "subcategoria": "Graduado", "descricao": "Aprende um ritual de 1º círculo. A cada novo círculo, aprende um ritual extra." },
+      { "nome": "NEX 40% - Grimório Ritualístico", "categoria": "Ocultista", "subcategoria": "Graduado", "descricao": "Armazena rituais extras (quantidade igual ao Intelecto). Requer ação completa para folhear." },
+      { "nome": "NEX 65% - Rituais Eficientes", "categoria": "Ocultista", "subcategoria": "Graduado", "descricao": "A DT para resistir a todos os seus rituais aumenta em +5." },
+      { "nome": "NEX 99% - Conhecendo o Medo", "categoria": "Ocultista", "subcategoria": "Graduado", "descricao": "Você aprende o ritual Conhecendo o Medo." }
+    ],
+    "Intuitivo": [
+      { "nome": "NEX 10% - Mente Sã", "categoria": "Ocultista", "subcategoria": "Intuitivo", "descricao": "Recebe resistência paranormal +5." },
+      { "nome": "NEX 40% - Presença Poderosa", "categoria": "Ocultista", "subcategoria": "Intuitivo", "descricao": "Adiciona Presença ao limite de PE por turno para conjurar rituais." },
+      { "nome": "NEX 65% - Inabalável", "categoria": "Ocultista", "subcategoria": "Intuitivo", "descricao": "Resistência a dano mental e paranormal 10. Se passar em teste de Vontade, sofre 0 de dano." },
+      { "nome": "NEX 99% - Presença do Medo", "categoria": "Ocultista", "subcategoria": "Intuitivo", "descricao": "Você aprende o ritual Presença do Medo." }
+    ],
+    "Lâmina Paranormal": [
+      { "nome": "NEX 10% - Lâmina Maldita", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Aprende Amaldiçoar Arma. Pode usar Ocultismo para ataques com a arma amaldiçoada." },
+      { "nome": "NEX 40% - Gladiador Paranormal", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Ao acertar ataque corpo a corpo, recebe 2 PE temporários (limite por cena)." },
+      { "nome": "NEX 65% - Conjuração Marcial", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Ao lançar ritual como padrão, pode gastar 2 PE para fazer ataque corpo a corpo como livre." },
+      { "nome": "NEX 99% - Lâmina do Medo", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Você aprende o ritual Lâmina do Medo." }
+    ]
+},
+  "Origens": [
+  {
+    "nome": "110%",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste."
+  },
+  {
+    "nome": "Acalentar",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +5 em testes de Religião para acalmar. Além disso, quando acalma uma pessoa, ela recebe um número de pontos de Sanidade igual a 1d6 + a sua Presença."
+  },
+  {
+    "nome": "Antes Só",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +1 na Defesa, em testes de perícias e em seu limite de PE por turno se estiver sem nenhum aliado em alcance curto."
+  },
+  {
+    "nome": "Aula de Campo",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por cena, pode gastar uma ação padrão e 2 PE para fornecer +1 em um atributo de outro personagem em alcance curto até o fim da cena."
+  },
+  {
+    "nome": "Bagagem de Leitura",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por cena, pode gastar 2 PE para se tornar treinado em uma perícia qualquer até o fim da cena."
+  },
+  {
+    "nome": "Calejado",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +1 PV para cada 5% de NEX."
+  },
+  {
+    "nome": "Cicatrizes Psicológicas",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +1 de Sanidade para cada 5% de NEX."
+  },
+  {
+    "nome": "Dedicação",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +1 PE, e mais 1 PE adicional a cada NEX ímpar. Além disso, seu limite de PE por turno aumenta em 1."
+  },
+  {
+    "nome": "Desbravador",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Quando faz um teste de Adestramento ou Sobrevivência, você pode gastar 2 PE para receber +5 nesse teste. Além disso, você não sofre penalidade em deslocamento por terreno difícil."
+  },
+  {
+    "nome": "Destemido",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Quando faz um teste de perícia para o qual uma falha terá como consequência direta dano ou uma condição negativa, você recebe +5 nesse teste."
+  },
+  {
+    "nome": "Espírito Cívico",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Sempre que faz um teste para ajudar, você pode gastar 1 PE para aumentar o bônus concedido em +2."
+  },
+  {
+    "nome": "Eu Já Sabia",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe resistência a dano mental igual ao seu Intelecto."
+  },
+  {
+    "nome": "Faro para Pistas",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por cena, quando fizer um teste para procurar pistas, você pode gastar 1 PE para receber +5 nesse teste."
+  },
+  {
+    "nome": "Ferramenta de Trabalho",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Escolha uma arma simples ou tática. Você sabe usar a arma escolhida e recebe +1 em testes de ataque, rolagens de dano e margem de ameaça com ela."
+  },
+  {
+    "nome": "Ferramentas Favoritas",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Um item a sua escolha (exceto armas) conta como uma categoria abaixo (por exemplo, um item de categoria II conta como categoria I para você)."
+  },
+  {
+    "nome": "Fontes Confiáveis",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por sessão de jogo, pode gastar 1 PE para contatar suas fontes, permitindo rolar novamente um teste já realizado para encontrar uma pista, com +5 de bônus."
+  },
+  {
+    "nome": "Fraternidade Gaudéria",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por rodada, quando um aliado adjacente é alvo de um ataque ou efeito, você pode gastar 1 PE para trocar de lugar com este aliado."
+  },
+  {
+    "nome": "Impostor",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por cena, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Enganação."
+  },
+  {
+    "nome": "Ingrediente Secreto",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Em cenas de interlúdio, você pode cozinhar um prato especial. Você e todos que comerem recebem o benefício de dois pratos."
+  },
+  {
+    "nome": "Investigação Científica",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por cena de investigação, pode gastar uma ação livre para procurar pistas, usando Ciências no lugar da perícia padrão."
+  },
+  {
+    "nome": "Magnum Opus",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por missão, determina que um personagem o reconheça. Você recebe +5 em testes de Presença e perícias baseadas em Presença contra ele."
+  },
+  {
+    "nome": "Mão Pesada",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +2 em rolagens de dano com ataques corpo a corpo."
+  },
+  {
+    "nome": "Mobilidade Acrobática",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +2 na Defesa e seu deslocamento aumenta em +3m."
+  },
+  {
+    "nome": "Motor de Busca",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Sempre que tiver acesso a internet, você pode gastar 2 PE para substituir um teste de perícia qualquer por um teste de Tecnologia."
+  },
+  {
+    "nome": "O Crime Compensa",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "No final de uma missão, escolha um item encontrado. Na próxima, você pode incluí-lo em seu inventário sem contar no limite de patente."
+  },
+  {
+    "nome": "Para Bellum",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +2 em rolagens de dano com armas de fogo."
+  },
+  {
+    "nome": "Patrocinador da Ordem",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Seu limite de crédito é sempre considerado um acima do atual."
+  },
+  {
+    "nome": "Patrulha",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você recebe +2 em Defesa."
+  },
+  {
+    "nome": "Posição de Combate",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "No primeiro turno de cada cena de ação, você pode gastar 2 PE para receber uma ação de movimento adicional."
+  },
+  {
+    "nome": "Processo Otimizado",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Sempre que faz um teste de perícia durante um teste estendido, ou revisa documentos, paga 2 PE para receber +5 nesse teste."
+  },
+  {
+    "nome": "Saber é Poder",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Quando faz um teste usando Intelecto, você pode gastar 2 PE para receber +5 nesse teste."
+  },
+  {
+    "nome": "Técnica Medicinal",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Sempre que cura um personagem, você adiciona seu Intelecto no total de PV curados."
+  },
+  {
+    "nome": "Traços do Outro Lado",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Você possui um poder paranormal à sua escolha. Porém, começa o jogo com metade da Sanidade normal para sua classe."
+  },
+  {
+    "nome": "Vislumbres do Passado",
+    "categoria": "Origem",
+    "subcategoria": "Origens",
+    "descricao": "Uma vez por sessão, pode fazer um teste de Intelecto (DT 10) para reconhecer lugares/pessoas. Se passar, recebe 1d4 PE temporários e info útil."
+  }
+],
   "Poderes Paranormais": {}
 }
