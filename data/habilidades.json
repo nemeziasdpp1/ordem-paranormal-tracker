@@ -8,8 +8,142 @@
     "Tropa de Choque": []
   },
   "Especialista": {
-    "Poderes de Especialista": [],
-    "Atirador de Elite": [],
+    "Poderes de Especialista": [
+  {
+    "nome": "Artista Marcial",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
+  },
+  {
+    "nome": "Balística Avançada",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe proficiência com armas táticas de fogo e +2 em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "Conhecimento Aplicado",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Quando faz um teste de perícia (exceto Luta e Pontaria), você pode gastar 2 PE para mudar o atributo-base da perícia para Int. Pré-requisito: Int 2."
+  },
+  {
+    "nome": "Eclético",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."
+  },
+  {
+    "nome": "Engenhosidade",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Em NEX 40%, quando usa sua habilidade Eclético, você pode gastar 2 PE adicionais para receber os benefícios de ser veterano na perícia. Em NEX 75%, pode gastar 4 PE adicionais para receber os benefícios de ser expert na perícia."
+  },
+  {
+    "nome": "Hacker",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe +5 em testes de Tecnologia para invadir sistemas e diminui o tempo necessário para hackear qualquer sistema para uma ação completa. Pré-requisito: treinado em Tecnologia."
+  },
+  {
+    "nome": "Mãos Rápidas",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Ao fazer um teste de Crime, você pode pagar 1 PE para fazê-lo como uma ação livre. Pré-requisitos: Agi 3, treinado em Crime."
+  },
+  {
+    "nome": "Mochila de Utilidades",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Um item a sua escolha (exceto armas) conta como uma categoria abaixo e ocupa 1 espaço a menos."
+  },
+  {
+    "nome": "Movimento Tático",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você pode gastar 1 PE para ignorar a penalidade em deslocamento por terreno difícil e por escalar até o final do turno. Pré-requisito: treinado em Atletismo."
+  },
+  {
+    "nome": "Na Trilha Certa",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Sempre que tiver sucesso em um teste para procurar pistas, você pode gastar 1 PE para receber +1d20 no próximo teste. Os custos e os bônus são cumulativos."
+  },
+  {
+    "nome": "Nerd",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Uma vez por cena, pode gastar 2 PE para fazer um teste de Atualidades (DT 20). Se passar, recebe uma informação útil para essa cena."
+  },
+  {
+    "nome": "Ninja Urbano",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe proficiência com armas táticas de ataque corpo a corpo e de disparo (exceto de fogo) e +2 em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "Pensamento Ágil",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Uma vez por rodada, durante uma cena de investigação, você pode gastar 2 PE para fazer uma ação de procurar pistas adicional."
+  },
+  {
+    "nome": "Perito",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. Conforme avança de NEX, você pode gastar +1 PE para aumentar o dado de bônus."
+  },
+  {
+    "nome": "Perito em Explosivos",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você soma seu Intelecto na DT para resistir aos seus explosivos e pode excluir dos efeitos da explosão um número de alvos igual ao seu valor de Intelecto."
+  },
+  {
+    "nome": "Primeira Impressão",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Você recebe +2d20 no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição que fizer em uma cena."
+  },
+  {
+    "nome": "Transcender",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."
+  },
+  {
+    "nome": "Treinamento em Perícia",
+    "categoria": "Especialista",
+    "subcategoria": "Poderes de Especialista",
+    "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert."
+  }
+],
+    "Atirador de Elite": [
+  {
+    "nome": "NEX 10% - Mira de Elite",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Você recebe proficiência com armas de fogo que usam balas longas e soma seu Intelecto em rolagens de dano com essas armas."
+  },
+  {
+    "nome": "NEX 40% - Disparo Letal",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Quando faz a ação mirar você pode gastar 1 PE para aumentar em +2 a margem de ameaça do próximo ataque que fizer até o final de seu próximo turno."
+  },
+  {
+    "nome": "NEX 65% - Disparo Impactante",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Se estiver usando uma arma de fogo com calibre grosso você pode gastar 2 PE para fazer as manobras derrubar, desarmar, empurrar e quebrar usando um ataque a distância."
+  },
+  {
+    "nome": "NEX 99% - Atirar para Matar",
+    "categoria": "Especialista",
+    "subcategoria": "Atirador de Elite",
+    "descricao": "Quando faz um acerto crítico com uma arma de fogo, você causa dano máximo, sem precisar rolar dados."
+  }
+],
     "Infiltrador": [
       { "nome": "NEX 10% - Ataque Furtivo", "categoria": "Especialista", "subcategoria": "Infiltrador", "descricao": "Você sabe atingir os pontos vitais de um inimigo distraído. Uma vez por rodada, quando atinge um alvo desprevenido com um ataque corpo a corpo ou em alcance curto, ou um alvo que você esteja flanqueando, você pode gastar 1 PE para causar +1d6 pontos de dano do mesmo tipo da arma. Em NEX 40% o dano adicional aumenta para +2d6, em NEX 65% aumenta para +3d6 e em NEX 99% aumenta para +4d6." },
       { "nome": "NEX 40% - Gatuno", "categoria": "Especialista", "subcategoria": "Infiltrador", "descricao": "Você recebe +5 em Atletismo e Crime e pode percorrer seu deslocamento normal quando se esconder sem penalidade." },
