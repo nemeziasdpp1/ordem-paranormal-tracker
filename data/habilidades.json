@@ -530,7 +530,6 @@
       { "nome": "NEX 99% - Lâmina do Medo", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Você aprende o ritual Lâmina do Medo." }
     ]
 },
-  {
   "Origens": [
     { "nome": "110%", "categoria": "Origens", "descricao": "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste." },
     { "nome": "Acalentar", "categoria": "Origens", "descricao": "Você recebe +5 em testes de Religião para acalmar. Além disso, quando acalma uma pessoa, ela recebe um número de pontos de Sanidade igual a 1d6 + a sua Presença." },
