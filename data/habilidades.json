@@ -500,7 +500,7 @@
       { "nome": "Patrulha", "categoria": "Origens", "descricao": "Você recebe +2 em Defesa." },
       { "nome": "Posição de Combate", "categoria": "Origens", "descricao": "No primeiro turno de cada cena de ação, você pode gastar 2 PE para receber uma ação de movimento adicional." },
       { "nome": "Processo Otimizado", "categoria": "Origens", "descricao": "Sempre que faz um teste de perícia durante um teste estendido, ou revisa documentos, paga 2 PE para receber +5 nesse teste." },
-      { "nome": "Saber é Poder", "categoria": "Origens", "descricao": "Quando faz um teste usando Intelecto, você pode gastar 2 PE para receber +5 nesse teste." },
+      { "nome": "Acadêmico", "categoria": "Origens", "descricao": "Quando faz um teste usando Intelecto, você pode gastar 2 PE para receber +5 nesse teste." },
       { "nome": "Técnica Medicinal", "categoria": "Origens", "descricao": "Sempre que cura um personagem, você adiciona seu Intelecto no total de PV curados." },
       { "nome": "Traços do Outro Lado", "categoria": "Origens", "descricao": "Você possui um poder paranormal à sua escolha. Porém, começa o jogo com metade da Sanidade normal para sua classe." },
       { "nome": "Vislumbres do Passado", "categoria": "Origens", "descricao": "Uma vez por sessão, pode fazer um teste de Intelecto (DT 10) para reconhecer lugares/pessoas. Se passar, recebe 1d4 PE temporários e info útil." }
