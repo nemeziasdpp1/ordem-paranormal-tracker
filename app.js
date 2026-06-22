@@ -290,7 +290,6 @@ function renderizarPericias() {
 
 
 // --- Origens ---
-// --- Origens ---
 window.abrirOrigens = () => {
     ocultarTodasTelas();
     document.getElementById('aba-origens').style.display = 'block';
@@ -354,26 +353,31 @@ window.selecionarOrigem = async (nome) => {
     if (!p) return;
 
     try {
-        const response = await fetch('./data/origens.json');
-        const todasOrigens = await response.json();
+        // 1. Carrega ambos os arquivos necessários simultaneamente
+        const [todasOrigens, respHabilidades] = await Promise.all([
+            fetch('./data/origens.json').then(r => r.json()),
+            fetch('./data/habilidades.json').then(r => r.json())
+        ]);
+        
         const origemData = todasOrigens[nome];
 
         if (origemData) {
-            // Garante que a estrutura exista
+            // Garante a estrutura necessária
             if (!p.pericias) p.pericias = {};
             if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
             if (!p.habilidades) p.habilidades = [];
 
-            // 1. Limpa perícias e habilidades da origem anterior
+            // 2. Limpa perícias e habilidades da origem anterior
             p.periciasOrigemAntiga.forEach(periciaAntiga => {
                 if (p.pericias[periciaAntiga]) {
                     p.pericias[periciaAntiga].treino = 0;
                 }
             });
             p.periciasOrigemAntiga = []; 
+            // Remove apenas habilidades que foram marcadas como categoria "Origens"
             p.habilidades = p.habilidades.filter(h => h.categoria !== "Origens");
 
-            // 2. Aplica novas perícias
+            // 3. Aplica novas perícias
             if (origemData.pericias.length === 0) {
                 alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
             } else {
@@ -386,24 +390,38 @@ window.selecionarOrigem = async (nome) => {
                 });
             }
 
-            // 3. Adiciona a nova habilidade da origem
-            p.habilidades.push({
-                nome: nome,
-                categoria: "Origens",
-                descricao: origemData.descricao || "Sem descrição disponível."
-            });
+            // 4. Adiciona a(s) nova(s) habilidade(s) da origem
+            if (origemData.habilidade && Array.isArray(origemData.habilidade)) {
+                // Acessa o array dentro de Origens -> Todas as Origens
+                const listaHabilidadesDisponiveis = respHabilidades.Origens["Todas as Origens"];
+
+                origemData.habilidade.forEach(nomeHab => {
+                    // Busca a habilidade completa pelo nome
+                    const habCompleta = listaHabilidadesDisponiveis.find(h => h.nome === nomeHab);
+
+                    if (habCompleta) {
+                        p.habilidades.push({
+                            ...habCompleta, // Copia todos os dados (nome, desc, etc)
+                            categoria: "Origens" // Adiciona a categoria para identificar depois
+                        });
+                    } else {
+                        console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json`);
+                    }
+                });
+            }
         }
     } catch (err) {
         console.error("Erro ao processar origem:", err);
     }
 
+    // Atualiza dados e interface
     p.origem = nome;
     const inputOrigem = document.getElementById('info-origem');
     if (inputOrigem) inputOrigem.value = nome;
     
     await salvarNaSala();
     
-    // Atualiza interfaces
+    // Atualiza todas as interfaces
     if (typeof renderizarPericias === "function") renderizarPericias();
     if (typeof renderizarHabilidades === "function") renderizarHabilidades();
     if (typeof atualizarInterface === "function") atualizarInterface(); 
