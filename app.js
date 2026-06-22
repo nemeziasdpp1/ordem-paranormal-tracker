@@ -290,6 +290,7 @@ function renderizarPericias() {
 
 
 // --- Origens ---
+// --- Origens ---
 window.abrirOrigens = () => {
     ocultarTodasTelas();
     document.getElementById('aba-origens').style.display = 'block';
@@ -353,65 +354,61 @@ window.selecionarOrigem = async (nome) => {
     if (!p) return;
 
     try {
-        // 1. Carrega o JSON para saber quais perícias essa origem concede
         const response = await fetch('./data/origens.json');
         const todasOrigens = await response.json();
         const origemData = todasOrigens[nome];
 
         if (origemData) {
-            // Garante que a lista de perícias e o histórico existam (Segurança para personagens novos)
+            // Garante que a estrutura exista
             if (!p.pericias) p.pericias = {};
             if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
+            if (!p.habilidades) p.habilidades = [];
 
-            // 2. LIMPA AS PERÍCIAS DA ORIGEM ANTERIOR
+            // 1. Limpa perícias e habilidades da origem anterior
             p.periciasOrigemAntiga.forEach(periciaAntiga => {
                 if (p.pericias[periciaAntiga]) {
                     p.pericias[periciaAntiga].treino = 0;
                 }
             });
-            p.periciasOrigemAntiga = []; // Reseta a lista de controle
+            p.periciasOrigemAntiga = []; 
+            p.habilidades = p.habilidades.filter(h => h.categoria !== "Origens");
 
-            // 3. SE FOR AMNÉSICO: Avisa o jogador e para por aqui
+            // 2. Aplica novas perícias
             if (origemData.pericias.length === 0) {
                 alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
             } else {
-                // 4. APLICA AS NOVAS PERÍCIAS (+5 no treino)
                 origemData.pericias.forEach(novaPericia => {
-                    // Se a perícia ainda não existir, cria com treino 0 e extra 0
                     if (!p.pericias[novaPericia]) {
                         p.pericias[novaPericia] = { treino: 0, extra: 0 };
                     }
-                    
-                    // Define o treino como 5
                     p.pericias[novaPericia].treino = 5;
-                    
-                    // Salva nesta lista para sabermos o que limpar se ele trocar de origem depois
                     p.periciasOrigemAntiga.push(novaPericia);
                 });
             }
+
+            // 3. Adiciona a nova habilidade da origem
+            p.habilidades.push({
+                nome: nome,
+                categoria: "Origens",
+                descricao: origemData.descricao || "Sem descrição disponível."
+            });
         }
     } catch (err) {
-        console.error("Erro ao processar perícias da origem:", err);
+        console.error("Erro ao processar origem:", err);
     }
 
-    // Atualiza o nome da origem no personagem
     p.origem = nome;
-    
-    // Atualiza o input visual se ele existir na aba info
     const inputOrigem = document.getElementById('info-origem');
     if (inputOrigem) inputOrigem.value = nome;
     
-    // Salva as alterações na sala/banco de dados
     await salvarNaSala();
     
-    // Recarrega a listagem visual das perícias para que o valor '5' apareça no dropdown
-    if (typeof renderizarPericias === "function") {
-        renderizarPericias();
-    } else if (typeof atualizarInterface === "function") {
-        atualizarInterface(); 
-    }
+    // Atualiza interfaces
+    if (typeof renderizarPericias === "function") renderizarPericias();
+    if (typeof renderizarHabilidades === "function") renderizarHabilidades();
+    if (typeof atualizarInterface === "function") atualizarInterface(); 
 
-    window.abrirAbaChar('aba-info'); // Retorna automaticamente para a aba de info
+    window.abrirAbaChar('aba-info');
 };
 
 
