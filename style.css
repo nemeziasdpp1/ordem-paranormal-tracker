@@ -645,19 +645,22 @@ body {
     text-decoration: underline;
 }
 
-/* O campo de input */
+/* O campo de input - Ajustado para o layout de linha */
 #info-classe {
-    background: #1a1a1a;
-    border: 1px solid #444;
+    background: transparent; /* Remove o fundo cinza/preto */
+    border: none; /* Remove a caixa em volta */
+    border-bottom: 1px solid #fff; /* Cria a linha branca embaixo igual aos outros campos */
     color: white;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 5px 0 8px 0; /* Espaço para o texto não ficar grudado na linha */
+    border-radius: 0; /* Remove cantos arredondados */
     cursor: pointer; /* Indica que é clicável */
     outline: none;
-    transition: border 0.3s;
+    width: 100%; /* Faz a linha esticar por todo o espaço */
+    text-align: center; /* Deixa o texto centralizado igual aos outros */
+    transition: border-color 0.3s;
 }
 
-/* Efeito ao clicar no campo de input */
+/* Efeito ao clicar/passar o mouse no campo de input */
 #info-classe:hover, #info-classe:focus {
-    border-color: #a855f7;
+    border-bottom-color: #a855f7; /* A linha branca muda para roxo ao interagir */
 }
