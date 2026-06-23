@@ -813,8 +813,13 @@ window.renderizarListaPersonagens = () => {
 // --- Classes ---
 window.abrirClasses = () => {
     ocultarTodasTelas();
-    document.getElementById('aba-classes').style.display = 'block';
-    renderizarClasses();
+    const abaClasses = document.getElementById('aba-classes');
+    if (abaClasses) {
+        abaClasses.style.display = 'block';
+    }
+    if (typeof renderizarClasses === 'function') {
+        renderizarClasses();
+    }
 };
 
 async function renderizarClasses() {
