@@ -346,11 +346,63 @@ body {
     cursor: pointer;
 }
 
-/* --- Componentes Extras --- */
-.form-container { display: flex; flex-direction: column; gap: 10px; background: #111; padding: 15px; border-radius: 8px; }
-.form-group { display: flex; align-items: center; border-bottom: 1px solid #fff; padding-bottom: 3px; }
-.form-group label { font-size: 10px; color: #888; width: 100px; }
-.form-group input { color: white; flex-grow: 1; border: none; background: transparent; outline: none; }
+/* --- COMPONENTES DE FORMULÁRIO (PADRONIZADOS LADO A LADO) --- */
+.form-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    background: #111; 
+    padding: 15px; 
+    border-radius: 8px; 
+}
+
+/* Alinha o Label na esquerda, o Input na direita e adiciona a linha branca inferior contínua */
+.form-group { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    border-bottom: 1px solid #ffffff; 
+    padding-bottom: 5px; 
+    width: 100%;
+}
+
+/* Padrão visual idêntico para todos os textos dos campos */
+.form-group label { 
+    font-size: 10px; 
+    color: #888; 
+    width: 100px; 
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+/* Estilo unificado para a entrada de dados (texto à direita) */
+.form-group input { 
+    color: white; 
+    flex-grow: 1; 
+    border: none; 
+    background: transparent; 
+    outline: none; 
+    font-size: 14px;
+    text-align: right; /* Joga os valores para a extremidade direita */
+}
+
+/* Modificadores exclusivos para os campos clicáveis (Origem e Classe) */
+.form-group label.clicavel, 
+.form-group input[readonly] {
+    cursor: pointer;
+}
+
+.form-group label.clicavel:hover {
+    color: #a855f7;
+    text-decoration: underline;
+}
+
+.form-group input[readonly]:hover {
+    color: #a855f7;
+}
+
 .checkbox-group { display: flex; align-items: center; gap: 8px; font-size: 12px; }
 
 .character-card { display: flex; justify-content: space-between; align-items: center; background: #111; padding: 12px; border-radius: 8px; }
@@ -401,7 +453,7 @@ body {
     background: #131314; 
     width: 90%; 
     max-width: 500px; 
-    height: 85vh; /* Força uma altura fixa baseada na tela para o scroll interno funcionar */
+    height: 85vh; 
     max-height: 85vh; 
     border-radius: 8px; 
     border: 1px solid #2e2e30; 
@@ -421,7 +473,7 @@ body {
     font-weight: bold; 
     font-size: 16px; 
     margin-bottom: 15px;
-    flex-shrink: 0; /* Impede o cabeçalho de encolher */
+    flex-shrink: 0; 
 }
 
 .modal-hab-header .close-btn {
@@ -440,14 +492,12 @@ body {
     padding-bottom: 5px; 
     overflow-x: auto; 
     margin-bottom: 10px;
-    flex-shrink: 0; /* Impede as abas de encolherem */
-    
-    /* Remove a barra de rolagem cinza horrível do Windows/Chrome */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    flex-shrink: 0; 
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
 .modal-hab-tabs-row::-webkit-scrollbar {
-    display: none; /* Chrome, Safari e Opera */
+    display: none; 
 }
 
 .tab-principal-item {
@@ -482,14 +532,12 @@ body {
     overflow-x: auto; 
     padding: 5px 0; 
     margin-bottom: 12px;
-    flex-shrink: 0; /* Impede os filtros de encolherem */
-    
-    /* Remove a barra de rolagem cinza horrível do Windows/Chrome */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    flex-shrink: 0; 
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
 .modal-hab-pills-row::-webkit-scrollbar {
-    display: none; /* Chrome, Safari e Opera */
+    display: none; 
 }
 
 .pill-filtro-item {
@@ -512,7 +560,7 @@ body {
 .search-container {
     position: relative; 
     margin-bottom: 12px;
-    flex-shrink: 0; /* Impede a barra de busca de encolher */
+    flex-shrink: 0; 
 }
 
 .search-container input {
@@ -540,12 +588,12 @@ body {
     display: flex; 
     flex-direction: column; 
     gap: 6px; 
-    overflow-y: auto; /* Força o scroll vertical unicamente aqui */
-    flex-grow: 1; /* Faz a lista herdar e preencher todo o espaço restante do modal */
+    overflow-y: auto; 
+    flex-grow: 1; 
     padding-right: 4px; 
 }
 
-/* Estilização da barra de rolagem vertical da lista (Estilo Clean Dark) */
+/* Estilização da barra de rolagem */
 .modal-hab-lista::-webkit-scrollbar {
     width: 5px;
 }
@@ -563,23 +611,22 @@ body {
 /* Contêineres de navegação */
 #modal-hab-abas-principais, 
 #modal-hab-subfiltros {
-    display: flex;           /* Coloca tudo em uma linha */
-    overflow-x: auto;        /* Ativa o scroll horizontal quando o conteúdo exceder a largura */
-    white-space: nowrap;     /* Impede que os itens pulem de linha */
-    gap: 10px;               /* Espaçamento entre os botões */
-    padding-bottom: 8px;     /* Espaço para a barra de scroll não ficar grudada nos botões */
+    display: flex;           
+    overflow-x: auto;        
+    white-space: nowrap;     
+    gap: 10px;               
+    padding-bottom: 8px;     
 }
 
-/* Opcional: Estilizar a barra de scroll para ficar bonita */
 #modal-hab-abas-principais::-webkit-scrollbar,
 #modal-hab-subfiltros::-webkit-scrollbar {
-    height: 6px;             /* Altura da barra horizontal */
+    height: 6px;             
 }
 
 #modal-hab-abas-principais::-webkit-scrollbar-thumb,
 #modal-hab-subfiltros::-webkit-scrollbar-thumb {
-    background: #555;        /* Cor da barra */
-    border-radius: 4px;      /* Bordas arredondadas */
+    background: #555;        
+    border-radius: 4px;      
 }
 
 /* Cards de Habilidade */
@@ -588,7 +635,7 @@ body {
     border-radius: 4px; 
     border: 1px solid #2e2e30; 
     overflow: hidden;
-    flex-shrink: 0; /* SOLUÇÃO DO SEU PROBLEMA: Impede que os cards sejam esmagados a zero! */
+    flex-shrink: 0; 
 }
 
 .card-hab-header {
@@ -621,46 +668,4 @@ body {
     border-radius: 4px; 
     cursor: pointer; 
     font-weight: bold;
-}
-
-/* Container que agrupa o Label e o Input */
-.form-group {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
-
-/* O texto "CLASSE" que funciona como botão */
-.form-group label {
-    color: #fff;
-    font-weight: bold;
-    margin-bottom: 5px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-/* Efeito ao passar o mouse na palavra "CLASSE" */
-.form-group label:hover {
-    color: #a855f7; /* Cor roxa do seu layout */
-    text-decoration: underline;
-}
-
-/* O campo de input - Ajustado para o layout de linha */
-#info-classe {
-    background: transparent; /* Remove o fundo cinza/preto */
-    border: none; /* Remove a caixa em volta */
-    border-bottom: 1px solid #fff; /* Cria a linha branca embaixo igual aos outros campos */
-    color: white;
-    padding: 5px 0 8px 0; /* Espaço para o texto não ficar grudado na linha */
-    border-radius: 0; /* Remove cantos arredondados */
-    cursor: pointer; /* Indica que é clicável */
-    outline: none;
-    width: 100%; /* Faz a linha esticar por todo o espaço */
-    text-align: center; /* Deixa o texto centralizado igual aos outros */
-    transition: border-color 0.3s;
-}
-
-/* Efeito ao clicar/passar o mouse no campo de input */
-#info-classe:hover, #info-classe:focus {
-    border-bottom-color: #a855f7; /* A linha branca muda para roxo ao interagir */
 }
