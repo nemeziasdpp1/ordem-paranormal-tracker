@@ -196,8 +196,7 @@ window.voltarParaLista = () => window.mostrarListaPersonagens();
 window.voltarParaMenuChar = () => { ocultarTodasTelas(); document.getElementById('menu-personagem').style.display = 'block'; };
 
 function ocultarTodasTelas() {
-    // ABA-ORIGENS ADICIONADA AQUI ↓
-    ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais', 'aba-origens'].forEach(id => {
+    ['tela-raiz', 'tela-lista-personagens', 'menu-personagem', 'aba-iniciativa', 'aba-info', 'aba-atrib', 'aba-pericias', 'aba-combate', 'aba-inv', 'aba-hab', 'aba-rituais', 'aba-origens', 'aba-classes'].forEach(id => {
         const el = document.getElementById(id); if (el) el.style.display = 'none';
     });
 }
