@@ -209,34 +209,25 @@
     <div id="aba-info" class="tela-oculta">
     <button class="btn-voltar" onclick="voltarParaMenuChar()">⬅ Voltar</button>
     <div class="form-container">
-        <div class="form-group">
-            <label>PERSONAGEM</label>
-            <input type="text" id="info-nome" oninput="salvarDadosForm()">
-        </div>
-        <div class="form-group">
-            <label>JOGADOR</label>
-            <input type="text" id="info-jogador" oninput="salvarDadosForm()">
-        </div>
-        
-        <div class="linha-ficha-inline">
-            <label class="label-ficha-inline" onclick="window.abrirOrigens()">ORIGEM</label>
-            <input type="text" 
-                   id="info-origem" 
-                   class="input-da-ficha" 
-                   placeholder="Escolha uma Origem..." 
-                   readonly 
-                   onclick="window.abrirOrigens()">
-        </div>
+    <div class="form-group">
+        <label>PERSONAGEM</label>
+        <input type="text" id="info-nome" oninput="salvarDadosForm()">
+    </div>
 
-        <div class="linha-ficha-inline">
-            <label class="label-ficha-inline" onclick="abrirClasses()">CLASSE</label>
-            <input type="text" 
-                   id="info-classe" 
-                   class="input-da-ficha" 
-                   placeholder="Escolha uma Classe..." 
-                   readonly 
-                   onclick="abrirClasses()">
-        </div>
+    <div class="form-group">
+        <label>JOGADOR</label>
+        <input type="text" id="info-jogador" oninput="salvarDadosForm()">
+    </div>
+
+    <div class="form-group">
+        <label class="clicavel" onclick="window.abrirOrigens()">ORIGEM</label>
+        <input type="text" id="info-origem" readonly onclick="window.abrirOrigens()">
+    </div>
+
+    <div class="form-group">
+        <label class="clicavel" onclick="abrirClasses()">CLASSE</label>
+        <input type="text" id="info-classe" readonly onclick="abrirClasses()">
+    </div>
         <div class="checkbox-group">
             <input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)">
             <label for="info-em-iniciativa">Adicionar à iniciativa</label>
