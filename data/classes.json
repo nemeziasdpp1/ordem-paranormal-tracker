@@ -17,7 +17,9 @@
       { "nex": "15%", "habilidade": "Poder de combatente" }
     ]
   },
-  "Especialista": {"descricao": "Um agente que confia mais em esperteza do que em força bruta. Um especialista se vale de conhecimento técnico, raciocínio rápido ou mesmo lábia para resolver mistérios e enfrentar o paranormal. Cientistas, inventores, pesquisadores e técnicos de vários tipos são exemplos de especialistas, que são tão variados quanto as áreas do conhecimento e da tecnologia. Alguns ainda preferem estudar engenharia social e se tornam excelentes espiões infiltrados, ou mesmo estudam técnicas especiais de combate como artes marciais e tiro a distância, aliando conhecimento técnico e habilidade. O que une todos os especialistas é sua incrível capacidade de aprender e improvisar usando seu intelecto e conhecimento avançado, que pode tirar o grupo todo dos mais diversos tipos de enrascadas."    "caracteristicas": {
+  "Especialista": {
+    "descricao": "Um agente que confia mais em esperteza do que em força bruta. Um especialista se vale de conhecimento técnico, raciocínio rápido ou mesmo lábia para resolver mistérios e enfrentar o paranormal. Cientistas, inventores, pesquisadores e técnicos de vários tipos são exemplos de especialistas, que são tão variados quanto as áreas do conhecimento e da tecnologia. Alguns ainda preferem estudar engenharia social e se tornam excelentes espiões infiltrados, ou mesmo estudam técnicas especiais de combate como artes marciais e tiro a distância, aliando conhecimento técnico e habilidade. O que une todos os especialistas é sua incrível capacidade de aprender e improvisar usando seu intelecto e conhecimento avançado, que pode tirar o grupo todo dos mais diversos tipos de enrascadas.",
+    "caracteristicas": {
       "pv_inicial": "16 + Vigor",
       "pv_nivel": "3 PV (+Vig)",
       "pe_inicial": "3 + Presença",
@@ -33,7 +35,9 @@
       { "nex": "15%", "habilidade": "Poder de especialista" }
     ]
   },
-  "Ocultista": {"descricao": "O Outro Lado é misterioso, perigoso e, de certa forma, cativante. Muitos estudiosos das entidades se perdem em seus reinos obscuros em busca de poder, mas existem aqueles que visam compreender e dominar os mistérios paranormais para usá-los para combater o próprio Outro Lado. Esse tipo de agente não é apenas um conhecedor do oculto, como também possui talento para se conectar com elementos paranormais. Ao contrário da crendice popular, ocultistas não são intrinsecamente malignos. Seria como dizer que o cientista que inventou a pólvora é culpado pelo assassino que disparou o revólver. Para a Ordem, o Paranormal é uma força que pode ser usada para os mais diversos propósitos, de acordo com a intenção de seu usuário. Ocultistas aplicam seu conhecimento acadêmico e suas capacidades de conjuração de rituais em missões para investigar e combater o Paranormal em todas as suas formas, principalmente quando munição convencional não é o suficiente para lidar com a tarefa."      
+  "Ocultista": {
+    "descricao": "O Outro Lado é misterioso, perigoso e, de certa forma, cativante. Muitos estudiosos das entidades se perdem em seus reinos obscuros em busca de poder, mas existem aqueles que visam compreender e dominar os mistérios paranormais para usá-los para combater o próprio Outro Lado. Esse tipo de agente não é apenas um conhecedor do oculto, como também possui talento para se conectar com elementos paranormais. Ao contrário da crendice popular, ocultistas não são intrinsecamente malignos. Seria como dizer que o cientista que inventou a pólvora é culpado pelo assassino que disparou o revólver. Para a Ordem, o Paranormal é uma força que pode ser usada para os mais diversos propósitos, de acordo com a intenção de seu usuário. Ocultistas aplicam seu conhecimento acadêmico e suas capacidades de conjuração de rituais em missões para investigar e combater o Paranormal em todas as suas formas, principalmente quando munição convencional não é o suficiente para lidar com a tarefa.",
+    "caracteristicas": {
       "pv_inicial": "12 + Vigor",
       "pv_nivel": "2 PV (+Vig)",
       "pe_inicial": "4 + Presença",
@@ -49,12 +53,15 @@
       { "nex": "15%", "habilidade": "Poder de ocultista" }
     ]
   },
-  "Mundano": {"descricao": "Você é uma pessoa comum, com uma ocupação regular e uma vida normal. Claro, considerando que você é um personagem de Ordem Paranormal RPG, essa normalidade toda não vai durar muito..."  
+  "Mundano": {
+    "descricao": "Você é uma pessoa comum, com uma ocupação regular e uma vida normal. Claro, considerando que você é um personagem de Ordem Paranormal RPG, essa normalidade toda não vai durar muito...",
+    "caracteristicas": {
       "pv_inicial": "8 + Vigor",
       "pe_inicial": "1 + Presença",
       "san_inicial": 8,
       "pericias": "Uma quantidade de perícias à sua escolha igual a 1 + Intelecto.",
       "proficiencias": "Armas simples."
     },
+    "progressao": []
   }
 }
