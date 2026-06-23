@@ -17,7 +17,7 @@
       { "nex": "15%", "habilidade": "Poder de combatente" }
     ]
   },
-  "Especialista": { ... },
-  "Ocultista": { ... },
-  "Mundano": { ... }
+  "Especialista": {},
+  "Ocultista": {},
+  "Mundano": {}
 }
