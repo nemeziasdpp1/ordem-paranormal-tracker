@@ -1,0 +1,23 @@
+{
+  "Combatente": {
+    "descricao": "Treinado para lutar com todo tipo de armas...",
+    "caracteristicas": {
+      "pv_inicial": "20 + Vigor",
+      "pv_nivel": "4 PV (+Vig)",
+      "pe_inicial": "2 + Presença",
+      "pe_nivel": "2 PE (+Pre)",
+      "san_inicial": 12,
+      "san_nivel": 3,
+      "pericias": "Luta ou Pontaria, Fortitude ou Reflexos, +1 + Int.",
+      "proficiencias": "Armas simples, táticas e proteções leves."
+    },
+    "progressao": [
+      { "nex": "5%", "habilidade": "Ataque especial (2 PE, +5)" },
+      { "nex": "10%", "habilidade": "Habilidade de trilha" },
+      { "nex": "15%", "habilidade": "Poder de combatente" }
+    ]
+  },
+  "Especialista": { ... },
+  "Ocultista": { ... },
+  "Mundano": { ... }
+}
