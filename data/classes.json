@@ -1,6 +1,6 @@
 {
   "Combatente": {
-    "descricao": "Treinado para lutar com todo tipo de armas...",
+    "descricao": "Treinado para lutar com todo tipo de armas, e com a força e a coragem para encarar os perigos de frente, É o tipo de agente que prefere abordagens mais diretas e costuma atirar primeiro e perguntar depois. Do mercenário especialista em armas de fogo até o perito em espadas, combatentes apresentam uma gama enorme de habilidades e técnicas especiais que aprimoram sua eficiência no campo de batalha, tornando-os membros essenciais em qualquer missão de extermínio. Além de treinar seu corpo, o combatente também é perito em liderar seus aliados em batalha e cuidar de seu equipamento de combate, sempre preparado para assumir a linha de frente quando a coisa fica feia.",
     "caracteristicas": {
       "pv_inicial": "20 + Vigor",
       "pv_nivel": "4 PV (+Vig)",
