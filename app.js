@@ -809,3 +809,97 @@ window.renderizarListaPersonagens = () => {
     };
     container.appendChild(bNovo);
 };
+
+// --- Classes ---
+window.abrirClasses = () => {
+    ocultarTodasTelas();
+    document.getElementById('aba-classes').style.display = 'block';
+    renderizarClasses();
+};
+
+async function renderizarClasses() {
+    const container = document.getElementById('lista-classes-container');
+    if (!container) return;
+    
+    try {
+        const response = await fetch('./data/classes.json');
+        const todasClasses = await response.json();
+        
+        container.innerHTML = ''; 
+        
+        Object.keys(todasClasses).forEach(nome => {
+            const item = document.createElement('div');
+            item.className = 'classe-item-row'; // Pode usar a mesma classe CSS de origem
+            item.style.padding = "10px";
+            item.style.background = "#222";
+            item.style.borderRadius = "4px";
+            item.style.display = "flex";
+            item.style.justifyContent = "space-between";
+            item.style.marginBottom = "5px";
+            
+            item.innerHTML = `
+                <span onclick="abrirModalClasse('${nome}')" style="cursor:pointer; color:white; font-weight:bold;">${nome}</span>
+                <button class="menu-btn" onclick="selecionarClasse('${nome}')" style="font-size:10px; padding:2px 8px;">Escolher</button>
+            `;
+            container.appendChild(item);
+        });
+    } catch (err) {
+        container.innerHTML = `<p style="color:red; text-align:center;">Erro ao carregar classes.</p>`;
+    }
+}
+
+window.abrirModalClasse = async (nomeClasse) => {
+    const modal = document.getElementById('modal-pericia');
+    const titulo = document.getElementById('modal-titulo');
+    const texto = document.getElementById('modal-texto');
+    
+    try {
+        const response = await fetch('./data/classes.json');
+        const classes = await response.json();
+        const info = classes[nomeClasse];
+        
+        if (info) {
+            titulo.innerText = nomeClasse;
+            
+            // Monta a tabela de progressão
+            let htmlProgresso = info.progressao.map(p => 
+                `<tr><td>${p.nex}</td><td>${p.habilidade}</td></tr>`
+            ).join('');
+
+            texto.innerHTML = `
+                <p>${info.descricao}</p>
+                <div class="caracteristicas-container">
+                    <strong>PV:</strong> ${info.caracteristicas.pv_inicial} (+${info.caracteristicas.pv_nivel}/nível)<br>
+                    <strong>PE:</strong> ${info.caracteristicas.pe_inicial} (+${info.caracteristicas.pe_nivel}/nível)<br>
+                    <strong>SAN:</strong> ${info.caracteristicas.san_inicial} (+${info.caracteristicas.san_nivel}/nível)<br>
+                    <p><strong>Perícias:</strong> ${info.caracteristicas.pericias}</p>
+                    <p><strong>Proficiências:</strong> ${info.caracteristicas.proficiencias}</p>
+                </div>
+                <table style="width:100%; border-collapse: collapse; margin-top:10px;">
+                    <tr style="background:#444;"><th>NEX</th><th>Habilidade</th></tr>
+                    ${htmlProgresso}
+                </table>
+            `;
+            modal.style.display = 'flex';
+        }
+    } catch (err) {
+        console.error("Erro ao carregar modal de classe:", err);
+    }
+};
+
+window.selecionarClasse = async (nome) => {
+    const p = obterPersonagemAtual();
+    if (!p) return;
+
+    p.classe = nome; // Salva a classe no objeto do personagem
+    
+    // Atualiza input visual se houver
+    const inputClasse = document.getElementById('info-classe');
+    if (inputClasse) inputClasse.value = nome;
+    
+    await salvarNaSala();
+    alert(`Classe ${nome} selecionada com sucesso!`);
+    
+    if (typeof atualizarInterface === "function") atualizarInterface();
+    window.abrirAbaChar('aba-info');
+};
