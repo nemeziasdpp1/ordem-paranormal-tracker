@@ -208,13 +208,8 @@
         <div class="form-container">
             <div class="form-group"><label>PERSONAGEM</label><input type="text" id="info-nome" oninput="salvarDadosForm()"></div>
             <div class="form-group"><label>JOGADOR</label><input type="text" id="info-jogador" oninput="salvarDadosForm()"></div>
-            <div class="form-group"><label onclick="window.abrirOrigens()" style="cursor: pointer; color: #888; text-decoration: underline;">
-        ORIGEM
-    </label>
-    <input type="text" id="info-origem" class="input-editavel" readonly>
-</div>
-            <div class="form-group">
-    <label class="btn-abrir-menu" onclick="abrirClasses()">CLASSE</label><input type="text" id="info-classe" oninput="salvarDadosForm()" readonly></div>
+            <div class="form-group"><label onclick="window.abrirOrigens()" style="cursor: pointer; color: #888; text-decoration: underline;">ORIGEM</label><input type="text" id="info-origem" class="input-editavel" readonly></div>
+            <div class="form-group"><label class="btn-abrir-menu" onclick="abrirClasses()">CLASSE</label><input type="text" id="info-classe" oninput="salvarDadosForm()" readonly></div>
             <div class="checkbox-group"><input type="checkbox" id="info-em-iniciativa" onchange="alternarIniciativa(this.checked)"><label for="info-em-iniciativa">Adicionar à iniciativa</label></div>
             <button class="btn-excluir" onclick="excluirPersonagemAtual()">Excluir Personagem</button>
         </div>
