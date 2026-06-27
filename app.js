@@ -107,11 +107,27 @@ window.gerarOpcoesNex = (valorAtual) => {
 window.atualizarNex = async (novoNex) => {
     const p = obterPersonagemAtual();
     if (!p) return;
+    
+    // 1. Atualiza o NEX no personagem
     p.nex = novoNex;
+    
+    // 2. Mantém o seu cálculo original de PE por Turno
     p.peTurno = Math.floor(parseInt(novoNex) / 5);
     const inputPe = document.getElementById('ext-pe-turno');
     if (inputPe) inputPe.value = p.peTurno;
+
+    // 3. --- NOVA PARTE: Recalcula PV, PE e SAN com base na Classe ---
+    if (p.classe && typeof calcularStatusClasse === "function") {
+        await calcularStatusClasse();
+    }
+
+    // 4. Salva todas as alterações juntas na sala
     await salvarNaSala();
+    
+    // 5. Atualiza qualquer outro elemento da tela que precise refletir os novos status
+    if (typeof atualizarInterface === "function") {
+        atualizarInterface();
+    }
 };
 
 // --- Lógica de Deslocamento ---
