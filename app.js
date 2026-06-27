@@ -901,6 +901,12 @@ window.selecionarClasse = async (nome) => {
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
+    // --- CÁLCULO DE STATUS ADICIONADO AQUI ---
+    // Calcula os atributos baseados na nova classe antes de salvar
+    if (typeof calcularStatusClasse === "function") {
+        await calcularStatusClasse(); 
+    }
+    
     await salvarNaSala();
     alert(`Classe ${nome} selecionada com sucesso!`);
     
