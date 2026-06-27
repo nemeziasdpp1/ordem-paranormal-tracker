@@ -72,7 +72,6 @@ window.selecionarOrigem = async (nomeDaOrigem) => {
 
 window.calcularStatusClasse = async () => {
     const p = obterPersonagemAtual();
-    // Se o personagem não tiver classe, ou não tiver NEX, não fazemos nada.
     if (!p || !p.classe) return; 
 
     try {
@@ -83,17 +82,19 @@ window.calcularStatusClasse = async () => {
 
         if (!infoClasse) return;
 
-        // Pegamos os atributos do personagem (se estiverem vazios, assumimos 0)
-        // Certifique-se de que o caminho dos atributos no seu objeto 'p' seja este mesmo:
-        const vigor = (p.atributos && p.atributos.vigor) ? parseInt(p.atributos.vigor) : 0;
-        const presenca = (p.atributos && p.atributos.presenca) ? parseInt(p.atributos.presenca) : 0;
+        // 1. Pega os atributos DIRETO dos seus inputs do HTML (at-vig e at-pre)
+        const inputVig = document.getElementById('at-vig');
+        const inputPre = document.getElementById('at-pre');
+        
+        const vigor = inputVig ? parseInt(inputVig.value) || 0 : 0;
+        const presenca = inputPre ? parseInt(inputPre.value) || 0 : 0;
 
-        // Calcula o Nível a partir do NEX (Ex: NEX 15 / 5 = Nível 3)
-        const nex = p.nex ? parseInt(p.nex) : 5; // Se não tiver NEX preenchido, assumimos 5
+        // 2. Calcula o Nível a partir do NEX
+        const nex = p.nex ? parseInt(p.nex) : 5;
         let nivel = Math.floor(nex / 5);
         if (nivel < 1) nivel = 1;
 
-        // Extrai apenas os números base do JSON usando parseInt
+        // 3. Extrai os números base do JSON
         const pvInicial = parseInt(infoClasse.caracteristicas.pv_inicial);
         const pvNivel = parseInt(infoClasse.caracteristicas.pv_nivel);
         
@@ -103,50 +104,59 @@ window.calcularStatusClasse = async () => {
         const sanInicial = parseInt(infoClasse.caracteristicas.san_inicial);
         const sanNivel = parseInt(infoClasse.caracteristicas.san_nivel);
 
-        // --- CÁLCULOS MATEMÁTICOS ---
-        
-        // PV: Valor inicial + Vigor. 
-        // Para os níveis seguintes, soma (Valor por nível + Vigor)
+        // 4. Cálculos Matemáticos de Progressão
         let pvMaximo = pvInicial + vigor;
         for (let i = 2; i <= nivel; i++) {
             let ganhoNivel = pvNivel + vigor;
-            pvMaximo += ganhoNivel < 1 ? 1 : ganhoNivel; // Em RPG, você sempre ganha no mínimo 1 de PV por nível
+            pvMaximo += ganhoNivel < 1 ? 1 : ganhoNivel;
         }
 
-        // PE: Segue a mesma lógica do PV, mas com Presença
         let peMaximo = peInicial + presenca;
         for (let i = 2; i <= nivel; i++) {
             let ganhoNivel = peNivel + presenca;
             peMaximo += ganhoNivel < 1 ? 1 : ganhoNivel;
         }
 
-        // SAN: Valor inicial + (Valor por Nível x os níveis extras)
         let sanMaximo = sanInicial + ((nivel - 1) * sanNivel);
 
-        // --- APLICANDO NO PERSONAGEM ---
-        
-        // Garantimos que a estrutura de status existe
+        // 5. Tratamento especial para o formato "Atual / Máximo" (Ex: "20 / 20")
         if (!p.status) p.status = {};
 
-        // Salvamos os valores Máximos
-        p.status.pvMax = pvMaximo;
-        p.status.peMax = peMaximo;
-        p.status.sanMax = sanMaximo;
+        // Função interna para processar o texto do input sem perder o valor Atual
+        const atualizarBarraDisplay = (idInput, novoMaximo, chaveStatus) => {
+            const inputEl = document.getElementById(idInput);
+            let atual = novoMaximo; // Valor padrão inicial
 
-        // Se o personagem não tiver valor "Atual" (estiver zerado), preenchemos os atuais para ficarem cheios
-        if (p.status.pvAtual === undefined || p.status.pvAtual === null) p.status.pvAtual = pvMaximo;
-        if (p.status.peAtual === undefined || p.status.peAtual === null) p.status.peAtual = peMaximo;
-        if (p.status.sanAtual === undefined || p.status.sanAtual === null) p.status.sanAtual = sanMaximo;
+            if (inputEl && inputEl.value) {
+                // Divide o texto "0 / 0" pela barra para pegar o número da esquerda (Atual)
+                const partes = inputEl.value.split('/');
+                if (partes.length === 2) {
+                    const atualExistente = parseInt(partes[0].trim());
+                    // Se já existia um valor atual válido ali dentro, mantém ele
+                    if (!isNaN(atualExistente) && atualExistente !== 0) {
+                        atual = atualExistente;
+                    }
+                }
+            }
 
-        // Atualizamos os campos visuais no HTML (se eles existirem na sua ficha com esses IDs)
-        const inputPvMax = document.getElementById('pv-max');
-        if (inputPvMax) inputPvMax.value = pvMaximo;
-        
-        const inputPeMax = document.getElementById('pe-max');
-        if (inputPeMax) inputPeMax.value = peMaximo;
-        
-        const inputSanMax = document.getElementById('san-max');
-        if (inputSanMax) inputSanMax.value = sanMaximo;
+            // Garante que a vida atual não fique maior que a nova vida máxima
+            if (atual > novoMaximo) atual = novoMaximo;
+
+            // Salva no objeto do personagem
+            p.status[`${chaveStatus}Max`] = novoMaximo;
+            p.status[`${chaveStatus}Atual`] = atual;
+
+            // Devolve para o HTML no formato bonito "Atual / Máximo"
+            if (inputEl) {
+                inputEl.value = `${atual} / ${novoMaximo}`;
+            }
+        };
+
+        // Executa a atualização para as três barras de recursos
+        // (Assumi os padrões 'bar-display-pe' e 'bar-display-san' seguindo o seu molde do PV)
+        atualizarBarraDisplay('bar-display-pv', pvMaximo, 'pv');
+        atualizarBarraDisplay('bar-display-pe', peMaximo, 'pe');
+        atualizarBarraDisplay('bar-display-san', sanMaximo, 'san');
 
         await salvarNaSala();
 
