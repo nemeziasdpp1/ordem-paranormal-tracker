@@ -14,7 +14,24 @@
     "progressao": [
       { "nex": "5%", "habilidade": "Ataque especial (2 PE, +5)" },
       { "nex": "10%", "habilidade": "Habilidade de trilha" },
-      { "nex": "15%", "habilidade": "Poder de combatente" }
+      { "nex": "15%", "habilidade": "Poder de combatente" },
+      { "nex": "20%", "habilidade": "Aumento de atributo" },
+      { "nex": "25%", "habilidade": "Ataque especial (3 PE, +10)" },
+      { "nex": "30%", "habilidade": "Poder de combatente" },
+      { "nex": "35%", "habilidade": "Grau de treinamento" },
+      { "nex": "40%", "habilidade": "Habilidade de trilha" },
+      { "nex": "45%", "habilidade": "Poder de combatente" },
+      { "nex": "50%", "habilidade": "Aumento de atributo, versatilidade" },
+      { "nex": "55%", "habilidade": "Ataque especial (4 PE, +15)" },
+      { "nex": "60%", "habilidade": "Poder de combatente" },
+      { "nex": "65%", "habilidade": "Habilidade de trilha" },
+      { "nex": "70%", "habilidade": "Grau de treinamento" },
+      { "nex": "75%", "habilidade": "Poder de combatente" },
+      { "nex": "80%", "habilidade": "Aumento de atributo" },
+      { "nex": "85%", "habilidade": "Ataque especial (5 PE, +20)" },
+      { "nex": "90%", "habilidade": "Poder de combatente" },
+      { "nex": "95%", "habilidade": "Aumento de atributo" },
+      { "nex": "99%", "habilidade": "Habilidade de trilha" }
     ]
   },
   "Especialista": {
@@ -32,7 +49,24 @@
     "progressao": [
       { "nex": "5%", "habilidade": "Eclético, perito (2 PE, +1d6)" },
       { "nex": "10%", "habilidade": "Habilidade de trilha" },
-      { "nex": "15%", "habilidade": "Poder de especialista" }
+      { "nex": "15%", "habilidade": "Poder de especialista" },
+      { "nex": "20%", "habilidade": "Aumento de atributo" },
+      { "nex": "25%", "habilidade": "Perito (3 PE, +1d8)" },
+      { "nex": "30%", "habilidade": "Poder de especialista" },
+      { "nex": "35%", "habilidade": "Grau de treinamento" },
+      { "nex": "40%", "habilidade": "Engenhosidade (veterano), habilidade de trilha" },
+      { "nex": "45%", "habilidade": "Poder de especialista" },
+      { "nex": "50%", "habilidade": "Aumento de atributo, versatilidade" },
+      { "nex": "55%", "habilidade": "Perito (4 PE, +1d10)" },
+      { "nex": "60%", "habilidade": "Poder de especialista" },
+      { "nex": "65%", "habilidade": "Habilidade de trilha" },
+      { "nex": "70%", "habilidade": "Grau de treinamento" },
+      { "nex": "75%", "habilidade": "Engenhosidade (expert), poder de especialista" },
+      { "nex": "80%", "habilidade": "Aumento de atributo" },
+      { "nex": "85%", "habilidade": "Perito (5 PE, +1d12)" },
+      { "nex": "90%", "habilidade": "Poder de especialista" },
+      { "nex": "95%", "habilidade": "Aumento de atributo" },
+      { "nex": "99%", "habilidade": "Habilidade de trilha" }
     ]
   },
   "Ocultista": {
@@ -50,7 +84,24 @@
     "progressao": [
       { "nex": "5%", "habilidade": "Escolhido pelo Outro Lado (1º círculo)" },
       { "nex": "10%", "habilidade": "Habilidade de trilha" },
-      { "nex": "15%", "habilidade": "Poder de ocultista" }
+      { "nex": "15%", "habilidade": "Poder de ocultista" },
+      { "nex": "20%", "habilidade": "Aumento de atributo" },
+      { "nex": "25%", "habilidade": "Escolhido pelo Outro Lado (2º círculo)" },
+      { "nex": "30%", "habilidade": "Poder de ocultista" },
+      { "nex": "35%", "habilidade": "Grau de treinamento" },
+      { "nex": "40%", "habilidade": "Habilidade de trilha" },
+      { "nex": "45%", "habilidade": "Poder de ocultista" },
+      { "nex": "50%", "habilidade": "Aumento de atributo, versatilidade" },
+      { "nex": "55%", "habilidade": "Escolhido pelo Outro Lado (3º círculo)" },
+      { "nex": "60%", "habilidade": "Poder de ocultista" },
+      { "nex": "65%", "habilidade": "Habilidade de trilha" },
+      { "nex": "70%", "habilidade": "Grau de treinamento" },
+      { "nex": "75%", "habilidade": "Poder de ocultista" },
+      { "nex": "80%", "habilidade": "Aumento de atributo" },
+      { "nex": "85%", "habilidade": "Escolhido pelo Outro Lado (4º círculo)" },
+      { "nex": "90%", "habilidade": "Poder de ocultista" },
+      { "nex": "95%", "habilidade": "Aumento de atributo" },
+      { "nex": "99%", "habilidade": "Habilidade de trilha" }
     ]
   },
   "Mundano": {
