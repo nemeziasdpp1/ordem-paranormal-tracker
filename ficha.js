@@ -154,22 +154,3 @@ window.calcularStatusClasse = async () => {
         console.error("Erro ao calcular os status:", err);
     }
 };
-
-window.atualizarNEX = async (novoValor) => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
-
-    // Atualiza o NEX no objeto do personagem
-    p.nex = novoValor; 
-
-    // Se o personagem já tiver uma classe escolhida, recalcula os status com o novo NEX
-    if (p.classe && typeof calcularStatusClasse === "function") {
-        await calcularStatusClasse();
-    }
-
-    // Salva a alteração
-    await salvarNaSala();
-    
-    // Atualiza a tela
-    if (typeof atualizarInterface === "function") atualizarInterface();
-};
