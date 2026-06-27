@@ -70,8 +70,7 @@ window.selecionarOrigem = async (nomeDaOrigem) => {
     }
 };
 
-window.calcularStatusClasse = async () => {
-    const p = obterPersonagemAtual();
+window.calcularStatusClasse = async (p) => {
     if (!p || !p.classe) return; 
 
     try {
