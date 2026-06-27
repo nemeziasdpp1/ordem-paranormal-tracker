@@ -920,7 +920,7 @@ window.selecionarClasse = async (nome) => {
     // --- CÁLCULO DE STATUS ADICIONADO AQUI ---
     // Calcula os atributos baseados na nova classe antes de salvar
     if (typeof calcularStatusClasse === "function") {
-        await calcularStatusClasse(); 
+        await calcularStatusClasse(p); 
     }
     
     await salvarNaSala();
