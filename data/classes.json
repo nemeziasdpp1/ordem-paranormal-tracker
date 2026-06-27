@@ -57,8 +57,11 @@
     "descricao": "Você é uma pessoa comum, com uma ocupação regular e uma vida normal. Claro, considerando que você é um personagem de Ordem Paranormal RPG, essa normalidade toda não vai durar muito...",
     "caracteristicas": {
       "pv_inicial": "8 + Vigor",
+      "pv_nivel": "0",
       "pe_inicial": "1 + Presença",
+      "pe_nivel": "0",
       "san_inicial": 8,
+      "san_nivel": 0,
       "pericias": "Uma quantidade de perícias à sua escolha igual a 1 + Intelecto.",
       "proficiencias": "Armas simples."
     },
