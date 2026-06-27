@@ -118,7 +118,7 @@ window.atualizarNex = async (novoNex) => {
 
     // 3. --- NOVA PARTE: Recalcula PV, PE e SAN com base na Classe ---
     if (p.classe && typeof calcularStatusClasse === "function") {
-        await calcularStatusClasse();
+        await calcularStatusClasse(p);
     }
 
     // 4. Salva todas as alterações juntas na sala
