@@ -81,14 +81,19 @@ window.calcularStatusClasse = async (p) => {
 
         if (!infoClasse) return;
 
-        // --- PROFICIÊNCIAS ATUALIZADO COM O ID CORRETO ---
+        // --- PROFICIÊNCIAS ATUALIZADO (VERSÃO ROBUSTA) ---
         const proficienciasDaClasse = infoClasse.caracteristicas.proficiencias;
         if (proficienciasDaClasse) {
             p.proficiencias = proficienciasDaClasse; // Salva na memória do personagem
             
             const inputProficiencias = document.getElementById('def-proficiencias');
             if (inputProficiencias) {
-                inputProficiencias.value = p.proficiencias;
+                // Verifica o tipo do elemento no HTML para injetar o texto do jeito certo
+                if (inputProficiencias.tagName === 'INPUT' || inputProficiencias.tagName === 'TEXTAREA') {
+                    inputProficiencias.value = p.proficiencias;
+                } else {
+                    inputProficiencias.textContent = p.proficiencias;
+                }
             }
         }
         // -------------------------------------------------
