@@ -81,18 +81,17 @@ window.calcularStatusClasse = async (p) => {
 
         if (!infoClasse) return;
 
-        // --- NOVA PARTE: PROFICIÊNCIAS ---
+        // --- PROFICIÊNCIAS ATUALIZADO COM O ID CORRETO ---
         const proficienciasDaClasse = infoClasse.caracteristicas.proficiencias;
         if (proficienciasDaClasse) {
             p.proficiencias = proficienciasDaClasse; // Salva na memória do personagem
             
-            // Coloque o ID correto da sua caixa de texto aqui embaixo!
             const inputProficiencias = document.getElementById('def-proficiencias');
             if (inputProficiencias) {
                 inputProficiencias.value = p.proficiencias;
             }
         }
-        // ---------------------------------
+        // -------------------------------------------------
 
         // 1. Pega os atributos DIRETO dos seus inputs do HTML
         const inputVig = document.getElementById('at-vig');
@@ -162,7 +161,7 @@ window.calcularStatusClasse = async (p) => {
         atualizarBarraDisplay('bar-display-pe', peMaximo, 'pe');
         atualizarBarraDisplay('bar-display-san', sanMaximo, 'san');
 
-        await salvarNaSala();
+        // REMOVIDO: await salvarNaSala(); (Deixamos o app.js cuidar disso)
 
     } catch (err) {
         console.error("Erro ao calcular os status:", err);
