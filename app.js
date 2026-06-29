@@ -927,29 +927,28 @@ window.selecionarClasse = async (nome) => {
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
-    // --- CÁLCULO DE STATUS ADICIONADO AQUI ---
-    // Calcula os atributos baseados na nova classe antes de salvar
+    // Calcula os atributos baseados na nova classe
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
-
-    // --- FORÇA A ATUALIZAÇÃO DA PROFICIÊNCIA (COM ATRASO ESTRATÉGICO) ---
-    // Esperamos 200 milissegundos para o sistema terminar de recarregar as abas
-    setTimeout(() => {
-        const caixaProficiencias = document.getElementById('def-proficiencias');
-        if (caixaProficiencias && p.proficiencias) {
-            if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
-                caixaProficiencias.value = p.proficiencias;
-            } else {
-                caixaProficiencias.textContent = p.proficiencias;
-            }
-        }
-    }, 200); 
-    // --------------------------------------------------------------------
     
     await salvarNaSala();
+    
+    // O ALERTA PAUSA O NAVEGADOR AQUI (Tudo para até você dar OK)
     alert(`Classe ${nome} selecionada com sucesso!`);
     
+    // O sistema original recarrega a tela e muda de aba
     if (typeof atualizarInterface === "function") atualizarInterface();
     window.abrirAbaChar('aba-info');
+
+    // --- A INJEÇÃO FINAL (À PROVA DE BALAS) ---
+    // Injetamos o texto DEPOIS que a ficha já piscou, atualizou e mudou de aba.
+    const caixaProficiencias = document.getElementById('def-proficiencias');
+    if (caixaProficiencias && p.proficiencias) {
+        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
+            caixaProficiencias.value = p.proficiencias;
+        } else {
+            caixaProficiencias.textContent = p.proficiencias;
+        }
+    }
 };
