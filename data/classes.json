@@ -45,7 +45,9 @@
       "san_inicial": 16,
       "san_nivel": 4,
       "pericias": "Uma quantidade de perícias à sua escolha igual a 7 + Intelecto.",
-      "proficiencias": "Armas simples e proteções leves."
+      "proficiencias": "Armas simples e proteções leves.",
+      "habilidade": ["Eclético"],
+      "habilidade": ["Perito"]
     },
     "progressao": [
       { "nex": "5%", "habilidade": "Eclético, perito (2 PE, +1d6)" },
@@ -80,7 +82,8 @@
       "san_inicial": 20,
       "san_nivel": 5,
       "pericias": "Ocultismo e Vontade, mais uma quantidade de perícias a sua escolha igual a 3 + Intelecto.",
-      "proficiencias": "Armas simples."
+      "proficiencias": "Armas simples.",
+      "habilidade": ["Escolhido pelo Outro Lado"]
     },
     "progressao": [
       { "nex": "5%", "habilidade": "Escolhido pelo Outro Lado (1º círculo)" },
@@ -115,7 +118,8 @@
       "san_inicial": 8,
       "san_nivel": 0,
       "pericias": "Uma quantidade de perícias à sua escolha igual a 1 + Intelecto.",
-      "proficiencias": "Armas simples."
+      "proficiencias": "Armas simples.",
+      "habilidade": ["Empenho"]
     },
     "progressao": []
   }
