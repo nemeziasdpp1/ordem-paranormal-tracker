@@ -932,6 +932,20 @@ window.selecionarClasse = async (nome) => {
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
+
+    // --- FORÇA A ATUALIZAÇÃO DA PROFICIÊNCIA (COM ATRASO ESTRATÉGICO) ---
+    // Esperamos 200 milissegundos para o sistema terminar de recarregar as abas
+    setTimeout(() => {
+        const caixaProficiencias = document.getElementById('def-proficiencias');
+        if (caixaProficiencias && p.proficiencias) {
+            if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
+                caixaProficiencias.value = p.proficiencias;
+            } else {
+                caixaProficiencias.textContent = p.proficiencias;
+            }
+        }
+    }, 200); 
+    // --------------------------------------------------------------------
     
     await salvarNaSala();
     alert(`Classe ${nome} selecionada com sucesso!`);
