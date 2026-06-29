@@ -1,397 +1,85 @@
 {
   "Combatente": {
     "Poderes de Combatente": [
-      {
-    "nome": "Armamento Pesado",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você recebe proficiência com armas pesadas. Pré-requisito: For 2."
-  },
-  {
-    "nome": "Artista Marcial",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
-  },
-  {
-    "nome": "Ataque de Oportunidade",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Sempre que um ser sair voluntariamente de um espaço adjacente ao seu, você pode gastar uma reação e 1 PE para fazer um ataque corpo a corpo contra ele."
-  },
-  {
-    "nome": "Ataque Especial",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Quando faz um ataque, você pode gastar 2 PE para receber +5 no teste de ataque ou na rolagem de dano. Conforme avança de NEX, você pode gastar +1 PE para receber mais bônus de +5. Você pode aplicar cada bônus de +5 em ataque ou dano. Por exemplo, em NEX 55%, você pode gastar 4 PE para receber +5 no teste de ataque e +10 na rolagem de dano."
-  },
-  {
-    "nome": "Combate Defensivo",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Quando usa a ação agredir, você pode combater defensivamente. Se fizer isso, até seu próximo turno, sofre –1d20 em todos os testes de ataque, mas recebe +5 na Defesa. Pré-requisito: Int 2."
-  },
-  {
-    "nome": "Combater com Duas Armas",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Se estiver empunhando duas armas (e pelo menos uma for leve) e fizer a ação agredir, você pode fazer dois ataques, um com cada arma. Se fizer isso, sofre –1d20 em todos os testes de ataque até o seu próximo turno. Pré-requisitos: Agi 3, treinado em Luta ou Pontaria."
-  },
-  {
-    "nome": "Golpe Demolidor",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Quando usa a manobra quebrar ou ataca um objeto, você pode gastar 1 PE para causar dois dados de dano extra do mesmo tipo de sua arma. Pré-requisitos: For 2, treinado em Luta."
-  },
-  {
-    "nome": "Golpe Pesado",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "O dano de suas armas corpo a corpo aumenta em mais um dado do mesmo tipo."
-  },
-  {
-    "nome": "Incansável",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Uma vez por cena, você pode gastar 2 PE para fazer uma ação de investigação adicional, mas deve usar Força ou Agilidade como atributo-base do teste."
-  },
-  {
-    "nome": "Presteza Atlética",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Quando faz um teste de facilitar a investigação, você pode gastar 1 PE para usar Força ou Agilidade no lugar do atributo-base da perícia. Se passar no teste, o próximo aliado que usar seu bônus também recebe +1d20 no teste."
-  },
-  {
-    "nome": "Proteção Pesada",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você recebe proficiência com Proteções Pesadas. Pré-requisito: NEX 30%."
-  },
-  {
-    "nome": "Reflexos Defensivos",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você recebe +2 em Defesa e em testes de resistência. Pré-requisitos: Agi 2."
-  },
-  {
-    "nome": "Saque Rápido",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você pode sacar ou guardar itens como uma ação livre (em vez de ação de movimento). Além disso, caso esteja usando a regra opcional de contagem de munição, uma vez por rodada pode recarregar uma arma de disparo como uma ação livre. Pré-requisito: treinado em Iniciativa."
-  },
-  {
-    "nome": "Segurar o Gatilho",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Sempre que acerta um ataque com uma arma de fogo, pode fazer outro ataque com a mesma arma contra o mesmo alvo, pagando 2 PE por cada ataque já realizado no turno. Ou seja, pode fazer o primeiro ataque extra gastando 2 PE e, se acertar, pode fazer um segundo ataque extra gastando mais 4 PE e assim por diante, até errar um ataque ou atingir o limite de seus PE por rodada. Pré-requisito: NEX 60%."
-  },
-  {
-    "nome": "Sentido Tático",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você pode gastar uma ação de movimento e 2 PE para analisar o ambiente. Se fizer isso, recebe um bônus em Defesa e em testes de resistência igual ao seu Intelecto até o final da cena. Pré-requisitos: treinado em Percepção e Tática."
-  },
-  {
-    "nome": "Tanque de Guerra",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Se estiver usando uma proteção pesada, a Defesa e a resistência a dano que ela fornece aumentam em +2. Pré-requisito: Proteção Pesada."
-  },
-  {
-    "nome": "Tiro Certeiro",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Se estiver usando uma arma de disparo, você soma sua Agilidade nas rolagens de dano e ignora a penalidade contra alvos envolvidos em combate corpo a corpo (mesmo se não usar a ação mirar). Pré-requisito: treinado em Pontaria."
-  },
-  {
-    "nome": "Tiro de Cobertura",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Você pode gastar uma ação padrão e 1 PE para disparar uma arma de fogo na direção de um personagem no alcance da arma apenas para forçá-lo a se proteger. Faça um teste de Pontaria contra a Vontade do alvo. Se vencer, até o início do seu próximo turno o alvo não pode sair do lugar onde está e sofre –5 em testes de ataque. A critério do mestre, o alvo recebe +5 no teste de Vontade se estiver em um lugar extremamente perigoso, como uma casa em chamas ou um barco afundando. Este é um efeito de medo."
-  },
-  {
-    "nome": "Transcender",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."
-  },
-  {
-    "nome": "Treinamento em Perícia",
-    "categoria": "Combatente",
-    "subcategoria": "Poderes de Combatente",
-    "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert. Você pode escolher este poder várias vezes."
-  }
+      { "nome": "Armamento Pesado", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você recebe proficiência com armas pesadas. Pré-requisito: For 2."},
+      { "nome": "Artista Marcial", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."},
+      { "nome": "Ataque de Oportunidade", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Sempre que um ser sair voluntariamente de um espaço adjacente ao seu, você pode gastar uma reação e 1 PE para fazer um ataque corpo a corpo contra ele."},
+      { "nome": "Ataque Especial", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Quando faz um ataque, você pode gastar 2 PE para receber +5 no teste de ataque ou na rolagem de dano. Conforme avança de NEX, você pode gastar +1 PE para receber mais bônus de +5. Você pode aplicar cada bônus de +5 em ataque ou dano. Por exemplo, em NEX 55%, você pode gastar 4 PE para receber +5 no teste de ataque e +10 na rolagem de dano."},
+      { "nome": "Combate Defensivo", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Quando usa a ação agredir, você pode combater defensivamente. Se fizer isso, até seu próximo turno, sofre –1d20 em todos os testes de ataque, mas recebe +5 na Defesa. Pré-requisito: Int 2."},
+      { "nome": "Combater com Duas Armas", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Se estiver empunhando duas armas (e pelo menos uma for leve) e fizer a ação agredir, você pode fazer dois ataques, um com cada arma. Se fizer isso, sofre –1d20 em todos os testes de ataque até o seu próximo turno. Pré-requisitos: Agi 3, treinado em Luta ou Pontaria."},
+      { "nome": "Golpe Demolidor", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Quando usa a manobra quebrar ou ataca um objeto, você pode gastar 1 PE para causar dois dados de dano extra do mesmo tipo de sua arma. Pré-requisitos: For 2, treinado em Luta."},
+      { "nome": "Golpe Pesado", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "O dano de suas armas corpo a corpo aumenta em mais um dado do mesmo tipo."},
+      { "nome": "Incansável", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Uma vez por cena, você pode gastar 2 PE para fazer uma ação de investigação adicional, mas deve usar Força ou Agilidade como atributo-base do teste."},
+      { "nome": "Presteza Atlética", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Quando faz um teste de facilitar a investigação, você pode gastar 1 PE para usar Força ou Agilidade no lugar do atributo-base da perícia. Se passar no teste, o próximo aliado que usar seu bônus também recebe +1d20 no teste."},
+      { "nome": "Proteção Pesada", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você recebe proficiência com Proteções Pesadas. Pré-requisito: NEX 30%."},
+      { "nome": "Reflexos Defensivos", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você recebe +2 em Defesa e em testes de resistência. Pré-requisitos: Agi 2."},
+      { "nome": "Saque Rápido", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você pode sacar ou guardar itens como uma ação livre (em vez de ação de movimento). Além disso, caso esteja usando a regra opcional de contagem de munição, uma vez por rodada pode recarregar uma arma de disparo como uma ação livre. Pré-requisito: treinado em Iniciativa."},
+      { "nome": "Segurar o Gatilho", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Sempre que acerta um ataque com uma arma de fogo, pode fazer outro ataque com a mesma arma contra o mesmo alvo, pagando 2 PE por cada ataque já realizado no turno. Ou seja, pode fazer o primeiro ataque extra gastando 2 PE e, se acertar, pode fazer um segundo ataque extra gastando mais 4 PE e assim por diante, até errar um ataque ou atingir o limite de seus PE por rodada. Pré-requisito: NEX 60%."},
+      { "nome": "Sentido Tático", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você pode gastar uma ação de movimento e 2 PE para analisar o ambiente. Se fizer isso, recebe um bônus em Defesa e em testes de resistência igual ao seu Intelecto até o final da cena. Pré-requisitos: treinado em Percepção e Tática."},
+      { "nome": "Tanque de Guerra", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Se estiver usando uma proteção pesada, a Defesa e a resistência a dano que ela fornece aumentam em +2. Pré-requisito: Proteção Pesada."},
+      { "nome": "Tiro Certeiro", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Se estiver usando uma arma de disparo, você soma sua Agilidade nas rolagens de dano e ignora a penalidade contra alvos envolvidos em combate corpo a corpo (mesmo se não usar a ação mirar). Pré-requisito: treinado em Pontaria."},
+      { "nome": "Tiro de Cobertura", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Você pode gastar uma ação padrão e 1 PE para disparar uma arma de fogo na direção de um personagem no alcance da arma apenas para forçá-lo a se proteger. Faça um teste de Pontaria contra a Vontade do alvo. Se vencer, até o início do seu próximo turno o alvo não pode sair do lugar onde está e sofre –5 em testes de ataque. A critério do mestre, o alvo recebe +5 no teste de Vontade se estiver em um lugar extremamente perigoso, como uma casa em chamas ou um barco afundando. Este é um efeito de medo."},
+      { "nome": "Transcender", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."},
+      { "nome": "Treinamento em Perícia", "categoria": "Combatente", "subcategoria": "Poderes de Combatente", "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert. Você pode escolher este poder várias vezes."}
     ],
-    
     "Aniquilador": [
-      {
-    "nome": "NEX 10% - A Favorita",
-    "categoria": "Combatente",
-    "subcategoria": "Aniquilador",
-    "descricao": "Escolha uma arma para ser sua favorita, como katana ou fuzil de assalto. A categoria da arma escolhida é reduzida em I."
-  },
-  {
-    "nome": "NEX 40% - Técnica Secreta",
-    "categoria": "Combatente",
-    "subcategoria": "Aniquilador",
-    "descricao": "A categoria da arma favorita passa a ser reduzida em II. Quando faz um ataque com ela, você pode gastar 2 PE para executar um dos efeitos abaixo como parte do ataque (gaste +2 PE por efeito adicional):\n\n- Amplo: O ataque pode atingir um alvo adicional em seu alcance e adjacente ao original (use o mesmo teste de ataque para ambos).\n- Destruidor: Aumenta o multiplicador de crítico da arma em +1."
-  },  
-  {
-    "nome": "NEX 65% - Técnica Sublime",
-    "categoria": "Combatente",
-    "subcategoria": "Aniquilador",
-    "descricao": "Você adiciona os seguintes efeitos à lista de sua Técnica Secreta:\n\n- Letal: Aumenta a margem de ameaça em +2. Você pode escolher este efeito duas vezes para aumentar a margem de ameaça em +5.\n- Perfurante: Ignora até 5 pontos de resistência a dano de qualquer tipo do alvo."
-  },
-  {
-    "nome": "NEX 99% - Máquina de Matar",
-    "categoria": "Combatente",
-    "subcategoria": "Aniquilador",
-    "descricao": "A categoria da arma favorita passa a ser reduzida em III, ela recebe +2 na margem de ameaça e seu dano aumenta em um dado do mesmo tipo."
-  } 
+      { "nome": "NEX 10% - A Favorita", "categoria": "Combatente", "subcategoria": "Aniquilador", "descricao": "Escolha uma arma para ser sua favorita, como katana ou fuzil de assalto. A categoria da arma escolhida é reduzida em I."},
+      { "nome": "NEX 40% - Técnica Secreta", "categoria": "Combatente", "subcategoria": "Aniquilador", "descricao": "A categoria da arma favorita passa a ser reduzida em II. Quando faz um ataque com ela, você pode gastar 2 PE para executar um dos efeitos abaixo como parte do ataque (gaste +2 PE por efeito adicional):\n\n- Amplo: O ataque pode atingir um alvo adicional em seu alcance e adjacente ao original (use o mesmo teste de ataque para ambos).\n- Destruidor: Aumenta o multiplicador de crítico da arma em +1."},  
+      { "nome": "NEX 65% - Técnica Sublime", "categoria": "Combatente", "subcategoria": "Aniquilador", "descricao": "Você adiciona os seguintes efeitos à lista de sua Técnica Secreta:\n\n- Letal: Aumenta a margem de ameaça em +2. Você pode escolher este efeito duas vezes para aumentar a margem de ameaça em +5.\n- Perfurante: Ignora até 5 pontos de resistência a dano de qualquer tipo do alvo."},
+      { "nome": "NEX 99% - Máquina de Matar", "categoria": "Combatente", "subcategoria": "Aniquilador", "descricao": "A categoria da arma favorita passa a ser reduzida em III, ela recebe +2 na margem de ameaça e seu dano aumenta em um dado do mesmo tipo."} 
     ],
-    
     "Comandante de Campo": [
-  {
-    "nome": "NEX 10% - Inspirar Confiança",
-    "categoria": "Combatente",
-    "subcategoria": "Comandante de Campo",
-    "descricao": "Sua liderança inspira seus aliados. Você pode gastar uma reação e 2 PE para fazer um aliado em alcance curto rolar novamente um teste recém realizado."
-  },
-  {
-    "nome": "NEX 40% - Estrategista",
-    "categoria": "Combatente",
-    "subcategoria": "Comandante de Campo",
-    "descricao": "Você pode direcionar aliados em alcance curto. Gaste uma ação padrão e 1 PE por aliado que quiser direcionar (limitado pelo seu Intelecto). No próximo turno dos aliados afetados, eles ganham uma ação de movimento adicional."
-  },
-  {
-    "nome": "NEX 65% - Brecha na Guarda",
-    "categoria": "Combatente",
-    "subcategoria": "Comandante de Campo",
-    "descricao": "Uma vez por rodada, quando um aliado causar dano em um inimigo que esteja em seu alcance curto, você pode gastar uma reação e 2 PE para que você ou outro aliado em alcance curto faça um ataque adicional contra o mesmo inimigo. Além disso, o alcance de inspirar confiança e estrategista aumenta para médio."
-  },
-  {
-    "nome": "NEX 99% - Oficial Comandante",
-    "categoria": "Combatente",
-    "subcategoria": "Comandante de Campo",
-    "descricao": "Você pode gastar uma ação padrão e 5 PE para que cada aliado que você possa ver em alcance médio receba uma ação padrão adicional no próximo turno dele."
-  }
-],
+      { "nome": "NEX 10% - Inspirar Confiança", "categoria": "Combatente", "subcategoria": "Comandante de Campo", "descricao": "Sua liderança inspira seus aliados. Você pode gastar uma reação e 2 PE para fazer um aliado em alcance curto rolar novamente um teste recém realizado."},
+      { "nome": "NEX 40% - Estrategista", "categoria": "Combatente", "subcategoria": "Comandante de Campo", "descricao": "Você pode direcionar aliados em alcance curto. Gaste uma ação padrão e 1 PE por aliado que quiser direcionar (limitado pelo seu Intelecto). No próximo turno dos aliados afetados, eles ganham uma ação de movimento adicional."},
+      { "nome": "NEX 65% - Brecha na Guarda", "categoria": "Combatente", "subcategoria": "Comandante de Campo", "descricao": "Uma vez por rodada, quando um aliado causar dano em um inimigo que esteja em seu alcance curto, você pode gastar uma reação e 2 PE para que você ou outro aliado em alcance curto faça um ataque adicional contra o mesmo inimigo. Além disso, o alcance de inspirar confiança e estrategista aumenta para médio."},
+      { "nome": "NEX 99% - Oficial Comandante", "categoria": "Combatente", "subcategoria": "Comandante de Campo", "descricao": "Você pode gastar uma ação padrão e 5 PE para que cada aliado que você possa ver em alcance médio receba uma ação padrão adicional no próximo turno dele."}
+    ],
     "Guerreiro": [
-  {
-    "nome": "NEX 10% - Técnica Letal",
-    "categoria": "Combatente",
-    "subcategoria": "Guerreiro",
-    "descricao": "Você recebe um aumento de +2 na margem de ameaça com todos os seus ataques corpo a corpo."
-  },
-  {
-    "nome": "NEX 40% - Revidar",
-    "categoria": "Combatente",
-    "subcategoria": "Guerreiro",
-    "descricao": "Sempre que bloquear um ataque, você pode gastar uma reação e 2 PE para fazer um ataque corpo a corpo no inimigo que o atacou."
-  },
-  {
-    "nome": "NEX 65% - Força Opressora",
-    "categoria": "Combatente",
-    "subcategoria": "Guerreiro",
-    "descricao": "Quando acerta um ataque corpo a corpo, você pode gastar 1 PE para realizar uma manobra derrubar ou empurrar contra o alvo do ataque como ação livre. Se escolher empurrar, recebe um bônus de +5 para cada 10 pontos de dano que causou no alvo. Se escolher derrubar e vencer no teste oposto, você pode gastar 1 PE para fazer um ataque adicional contra o alvo caído."
-  },
-  {
-    "nome": "NEX 99% - Potência Máxima",
-    "categoria": "Combatente",
-    "subcategoria": "Guerreiro",
-    "descricao": "Quando usa seu Ataque Especial com armas corpo a corpo, todos os bônus numéricos são dobrados. Por exemplo, se usar 5 PE para receber +5 no ataque e +15 no dano, você recebe +10 no ataque e +30 no dano."
-  }
-],
+      { "nome": "NEX 10% - Técnica Letal", "categoria": "Combatente", "subcategoria": "Guerreiro", "descricao": "Você recebe um aumento de +2 na margem de ameaça com todos os seus ataques corpo a corpo."},
+      { "nome": "NEX 40% - Revidar", "categoria": "Combatente", "subcategoria": "Guerreiro", "descricao": "Sempre que bloquear um ataque, você pode gastar uma reação e 2 PE para fazer um ataque corpo a corpo no inimigo que o atacou."},
+      { "nome": "NEX 65% - Força Opressora", "categoria": "Combatente", "subcategoria": "Guerreiro", "descricao": "Quando acerta um ataque corpo a corpo, você pode gastar 1 PE para realizar uma manobra derrubar ou empurrar contra o alvo do ataque como ação livre. Se escolher empurrar, recebe um bônus de +5 para cada 10 pontos de dano que causou no alvo. Se escolher derrubar e vencer no teste oposto, você pode gastar 1 PE para fazer um ataque adicional contra o alvo caído."},
+      { "nome": "NEX 99% - Potência Máxima", "categoria": "Combatente", "subcategoria": "Guerreiro", "descricao": "Quando usa seu Ataque Especial com armas corpo a corpo, todos os bônus numéricos são dobrados. Por exemplo, se usar 5 PE para receber +5 no ataque e +15 no dano, você recebe +10 no ataque e +30 no dano."}
+    ],
     "Operações Especiais": [
-  {
-    "nome": "NEX 10% - Iniciativa Aprimorada",
-    "categoria": "Combatente",
-    "subcategoria": "Operações Especiais",
-    "descricao": "Você recebe +5 em Iniciativa e uma ação de movimento adicional na primeira rodada."
-  },
-  {
-    "nome": "NEX 40% - Ataque Extra",
-    "categoria": "Combatente",
-    "subcategoria": "Operações Especiais",
-    "descricao": "Uma vez por rodada, quando faz um ataque, você pode gastar 2 PE para fazer um ataque adicional."
-  },
-  {
-    "nome": "NEX 65% - Surto de Adrenalina",
-    "categoria": "Combatente",
-    "subcategoria": "Operações Especiais",
-    "descricao": "Uma vez por rodada, você pode gastar 5 PE para realizar uma ação padrão ou de movimento adicional."
-  },
-  {
-    "nome": "NEX 99% - Sempre Alerta",
-    "categoria": "Combatente",
-    "subcategoria": "Operações Especiais",
-    "descricao": "Você recebe uma ação padrão adicional no início de cada cena de combate."
-  }
-],
+      { "nome": "NEX 10% - Iniciativa Aprimorada", "categoria": "Combatente", "subcategoria": "Operações Especiais", "descricao": "Você recebe +5 em Iniciativa e uma ação de movimento adicional na primeira rodada."},
+      { "nome": "NEX 40% - Ataque Extra", "categoria": "Combatente", "subcategoria": "Operações Especiais", "descricao": "Uma vez por rodada, quando faz um ataque, você pode gastar 2 PE para fazer um ataque adicional."},
+      { "nome": "NEX 65% - Surto de Adrenalina", "categoria": "Combatente", "subcategoria": "Operações Especiais", "descricao": "Uma vez por rodada, você pode gastar 5 PE para realizar uma ação padrão ou de movimento adicional."},
+      { "nome": "NEX 99% - Sempre Alerta", "categoria": "Combatente", "subcategoria": "Operações Especiais", "descricao": "Você recebe uma ação padrão adicional no início de cada cena de combate."}
+    ],
     "Tropa de Choque": [
-  {
-    "nome": "NEX 10% - Casca Grossa",
-    "categoria": "Combatente",
-    "subcategoria": "Tropa de Choque",
-    "descricao": "Você recebe +1 PV para cada 5% de NEX e, quando faz um bloqueio, soma seu Vigor na resistência a dano recebida."
-  },
-  {
-    "nome": "NEX 40% - Cai Dentro",
-    "categoria": "Combatente",
-    "subcategoria": "Tropa de Choque",
-    "descricao": "Sempre que um oponente em alcance curto ataca um de seus aliados, você pode gastar uma reação e 1 PE para fazer com que esse oponente faça um teste de Vontade (DT Vig). Se falhar, o oponente deve atacar você em vez de seu aliado. Este poder só funciona se você puder ser efetivamente atacado e estiver no alcance do ataque. Um oponente que passe no teste de Vontade não pode ser afetado por seu poder Cai Dentro até o final da cena."
-  },
-  {
-    "nome": "NEX 65% - Duro de Matar",
-    "categoria": "Combatente",
-    "subcategoria": "Tropa de Choque",
-    "descricao": "Ao sofrer dano não paranormal, você pode gastar uma reação e 2 PE para reduzir esse dano à metade. Em NEX 85%, você pode usar esta habilidade para reduzir dano paranormal."
-  },
-  {
-    "nome": "NEX 99% - Inquebrável",
-    "categoria": "Combatente",
-    "subcategoria": "Tropa de Choque",
-    "descricao": "Enquanto estiver machucado, você recebe +5 na Defesa e resistência a dano 5. Enquanto estiver morrendo, em vez do normal, você não fica indefeso e ainda pode realizar ações. Você ainda segue as regras de morte normalmente."
-  }
-]
+      { "nome": "NEX 10% - Casca Grossa", "categoria": "Combatente", "subcategoria": "Tropa de Choque", "descricao": "Você recebe +1 PV para cada 5% de NEX e, quando faz um bloqueio, soma seu Vigor na resistência a dano recebida."},
+      { "nome": "NEX 40% - Cai Dentro", "categoria": "Combatente", "subcategoria": "Tropa de Choque", "descricao": "Sempre que um oponente em alcance curto ataca um de seus aliados, você pode gastar uma reação e 1 PE para fazer com que esse oponente faça um teste de Vontade (DT Vig). Se falhar, o oponente deve atacar você em vez de seu aliado. Este poder só funciona se você puder ser efetivamente atacado e estiver no alcance do ataque. Um oponente que passe no teste de Vontade não pode ser afetado por seu poder Cai Dentro até o final da cena."},
+      { "nome": "NEX 65% - Duro de Matar", "categoria": "Combatente", "subcategoria": "Tropa de Choque", "descricao": "Ao sofrer dano não paranormal, você pode gastar uma reação e 2 PE para reduzir esse dano à metade. Em NEX 85%, você pode usar esta habilidade para reduzir dano paranormal."},
+      { "nome": "NEX 99% - Inquebrável", "categoria": "Combatente", "subcategoria": "Tropa de Choque", "descricao": "Enquanto estiver machucado, você recebe +5 na Defesa e resistência a dano 5. Enquanto estiver morrendo, em vez do normal, você não fica indefeso e ainda pode realizar ações. Você ainda segue as regras de morte normalmente."}
+    ]
   },
   "Especialista": {
     "Poderes de Especialista": [
-  {
-    "nome": "Artista Marcial",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."
-  },
-  {
-    "nome": "Balística Avançada",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você recebe proficiência com armas táticas de fogo e +2 em rolagens de dano com essas armas."
-  },
-  {
-    "nome": "Conhecimento Aplicado",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Quando faz um teste de perícia (exceto Luta e Pontaria), você pode gastar 2 PE para mudar o atributo-base da perícia para Int. Pré-requisito: Int 2."
-  },
-  {
-    "nome": "Eclético",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."
-  },
-  {
-    "nome": "Engenhosidade",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Em NEX 40%, quando usa sua habilidade Eclético, você pode gastar 2 PE adicionais para receber os benefícios de ser veterano na perícia. Em NEX 75%, pode gastar 4 PE adicionais para receber os benefícios de ser expert na perícia."
-  },
-  {
-    "nome": "Hacker",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você recebe +5 em testes de Tecnologia para invadir sistemas e diminui o tempo necessário para hackear qualquer sistema para uma ação completa. Pré-requisito: treinado em Tecnologia."
-  },
-  {
-    "nome": "Mãos Rápidas",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Ao fazer um teste de Crime, você pode pagar 1 PE para fazê-lo como uma ação livre. Pré-requisitos: Agi 3, treinado em Crime."
-  },
-  {
-    "nome": "Mochila de Utilidades",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Um item a sua escolha (exceto armas) conta como uma categoria abaixo e ocupa 1 espaço a menos."
-  },
-  {
-    "nome": "Movimento Tático",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você pode gastar 1 PE para ignorar a penalidade em deslocamento por terreno difícil e por escalar até o final do turno. Pré-requisito: treinado em Atletismo."
-  },
-  {
-    "nome": "Na Trilha Certa",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Sempre que tiver sucesso em um teste para procurar pistas, você pode gastar 1 PE para receber +1d20 no próximo teste. Os custos e os bônus são cumulativos."
-  },
-  {
-    "nome": "Nerd",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Uma vez por cena, pode gastar 2 PE para fazer um teste de Atualidades (DT 20). Se passar, recebe uma informação útil para essa cena."
-  },
-  {
-    "nome": "Ninja Urbano",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você recebe proficiência com armas táticas de ataque corpo a corpo e de disparo (exceto de fogo) e +2 em rolagens de dano com essas armas."
-  },
-  {
-    "nome": "Pensamento Ágil",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Uma vez por rodada, durante uma cena de investigação, você pode gastar 2 PE para fazer uma ação de procurar pistas adicional."
-  },
-  {
-    "nome": "Perito",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. Conforme avança de NEX, você pode gastar +1 PE para aumentar o dado de bônus."
-  },
-  {
-    "nome": "Perito em Explosivos",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você soma seu Intelecto na DT para resistir aos seus explosivos e pode excluir dos efeitos da explosão um número de alvos igual ao seu valor de Intelecto."
-  },
-  {
-    "nome": "Primeira Impressão",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Você recebe +2d20 no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição que fizer em uma cena."
-  },
-  {
-    "nome": "Transcender",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."
-  },
-  {
-    "nome": "Treinamento em Perícia",
-    "categoria": "Especialista",
-    "subcategoria": "Poderes de Especialista",
-    "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert."
-  }
-],
+      { "nome": "Artista Marcial", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Seus ataques desarmados causam 1d6 pontos de dano, podem causar dano letal e contam como armas ágeis. Em NEX 35%, o dano aumenta para 1d8 e, em NEX 70%, para 1d10."},
+      { "nome": "Balística Avançada", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você recebe proficiência com armas táticas de fogo e +2 em rolagens de dano com essas armas."},
+      { "nome": "Conhecimento Aplicado", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Quando faz um teste de perícia (exceto Luta e Pontaria), você pode gastar 2 PE para mudar o atributo-base da perícia para Int. Pré-requisito: Int 2."},
+      { "nome": "Eclético", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Quando faz um teste de uma perícia, você pode gastar 2 PE para receber os benefícios de ser treinado nesta perícia."},
+      { "nome": "Engenhosidade", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Em NEX 40%, quando usa sua habilidade Eclético, você pode gastar 2 PE adicionais para receber os benefícios de ser veterano na perícia. Em NEX 75%, pode gastar 4 PE adicionais para receber os benefícios de ser expert na perícia."},
+      { "nome": "Hacker", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você recebe +5 em testes de Tecnologia para invadir sistemas e diminui o tempo necessário para hackear qualquer sistema para uma ação completa. Pré-requisito: treinado em Tecnologia."},
+      { "nome": "Mãos Rápidas", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Ao fazer um teste de Crime, você pode pagar 1 PE para fazê-lo como uma ação livre. Pré-requisitos: Agi 3, treinado em Crime."},
+      { "nome": "Mochila de Utilidades", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Um item a sua escolha (exceto armas) conta como uma categoria abaixo e ocupa 1 espaço a menos."},
+      { "nome": "Movimento Tático", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você pode gastar 1 PE para ignorar a penalidade em deslocamento por terreno difícil e por escalar até o final do turno. Pré-requisito: treinado em Atletismo."},
+      { "nome": "Na Trilha Certa", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Sempre que tiver sucesso em um teste para procurar pistas, você pode gastar 1 PE para receber +1d20 no próximo teste. Os custos e os bônus são cumulativos."},
+      { "nome": "Nerd", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Uma vez por cena, pode gastar 2 PE para fazer um teste de Atualidades (DT 20). Se passar, recebe uma informação útil para essa cena."},
+      { "nome": "Ninja Urbano", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você recebe proficiência com armas táticas de ataque corpo a corpo e de disparo (exceto de fogo) e +2 em rolagens de dano com essas armas."},
+      { "nome": "Pensamento Ágil", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Uma vez por rodada, durante uma cena de investigação, você pode gastar 2 PE para fazer uma ação de procurar pistas adicional."},
+      { "nome": "Perito", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Escolha duas perícias nas quais você é treinado (exceto Luta e Pontaria). Quando faz um teste de uma dessas perícias, você pode gastar 2 PE para somar +1d6 no resultado do teste. Conforme avança de NEX, você pode gastar +1 PE para aumentar o dado de bônus."},
+      { "nome": "Perito em Explosivos", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você soma seu Intelecto na DT para resistir aos seus explosivos e pode excluir dos efeitos da explosão um número de alvos igual ao seu valor de Intelecto."},
+      { "nome": "Primeira Impressão", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Você recebe +2d20 no primeiro teste de Diplomacia, Enganação, Intimidação ou Intuição que fizer em uma cena."},
+      { "nome": "Transcender", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Escolha um poder paranormal. Você recebe o poder escolhido, mas não ganha Sanidade neste aumento de NEX. Você pode escolher este poder várias vezes."},
+      { "nome": "Treinamento em Perícia", "categoria": "Especialista", "subcategoria": "Poderes de Especialista", "descricao": "Escolha duas perícias. Você se torna treinado nessas perícias. A partir de NEX 35%, você pode escolher perícias nas quais já é treinado para se tornar veterano. A partir de NEX 70%, pode escolher perícias nas quais já é veterano para se tornar expert."}
+    ],
     "Atirador de Elite": [
-  {
-    "nome": "NEX 10% - Mira de Elite",
-    "categoria": "Especialista",
-    "subcategoria": "Atirador de Elite",
-    "descricao": "Você recebe proficiência com armas de fogo que usam balas longas e soma seu Intelecto em rolagens de dano com essas armas."
-  },
-  {
-    "nome": "NEX 40% - Disparo Letal",
-    "categoria": "Especialista",
-    "subcategoria": "Atirador de Elite",
-    "descricao": "Quando faz a ação mirar você pode gastar 1 PE para aumentar em +2 a margem de ameaça do próximo ataque que fizer até o final de seu próximo turno."
-  },
-  {
-    "nome": "NEX 65% - Disparo Impactante",
-    "categoria": "Especialista",
-    "subcategoria": "Atirador de Elite",
-    "descricao": "Se estiver usando uma arma de fogo com calibre grosso você pode gastar 2 PE para fazer as manobras derrubar, desarmar, empurrar e quebrar usando um ataque a distância."
-  },
-  {
-    "nome": "NEX 99% - Atirar para Matar",
-    "categoria": "Especialista",
-    "subcategoria": "Atirador de Elite",
-    "descricao": "Quando faz um acerto crítico com uma arma de fogo, você causa dano máximo, sem precisar rolar dados."
-  }
-],
+      { "nome": "NEX 10% - Mira de Elite", "categoria": "Especialista", "subcategoria": "Atirador de Elite", "descricao": "Você recebe proficiência com armas de fogo que usam balas longas e soma seu Intelecto em rolagens de dano com essas armas."},
+      { "nome": "NEX 40% - Disparo Letal", "categoria": "Especialista", "subcategoria": "Atirador de Elite", "descricao": "Quando faz a ação mirar você pode gastar 1 PE para aumentar em +2 a margem de ameaça do próximo ataque que fizer até o final de seu próximo turno."},
+      { "nome": "NEX 65% - Disparo Impactante", "categoria": "Especialista", "subcategoria": "Atirador de Elite", "descricao": "Se estiver usando uma arma de fogo com calibre grosso você pode gastar 2 PE para fazer as manobras derrubar, desarmar, empurrar e quebrar usando um ataque a distância."},
+      { "nome": "NEX 99% - Atirar para Matar", "categoria": "Especialista", "subcategoria": "Atirador de Elite", "descricao": "Quando faz um acerto crítico com uma arma de fogo, você causa dano máximo, sem precisar rolar dados."}
+    ],
     "Infiltrador": [
       { "nome": "NEX 10% - Ataque Furtivo", "categoria": "Especialista", "subcategoria": "Infiltrador", "descricao": "Você sabe atingir os pontos vitais de um inimigo distraído. Uma vez por rodada, quando atinge um alvo desprevenido com um ataque corpo a corpo ou em alcance curto, ou um alvo que você esteja flanqueando, você pode gastar 1 PE para causar +1d6 pontos de dano do mesmo tipo da arma. Em NEX 40% o dano adicional aumenta para +2d6, em NEX 65% aumenta para +3d6 e em NEX 99% aumenta para +4d6." },
       { "nome": "NEX 40% - Gatuno", "categoria": "Especialista", "subcategoria": "Infiltrador", "descricao": "Você recebe +5 em Atletismo e Crime e pode percorrer seu deslocamento normal quando se esconder sem penalidade." },
@@ -468,6 +156,11 @@
       { "nome": "NEX 99% - Lâmina do Medo", "categoria": "Ocultista", "subcategoria": "Lâmina Paranormal", "descricao": "Você aprende o ritual Lâmina do Medo." }
     ]
   },
+  "Geral": {
+    "Todos Poderes Gerais": [
+      { "nome": "Empenho", "categoria": "Geral", "subcategoria": "Todos Poderes Gerais", "descricao": "Você pode não ter treinamento especial, mas compensa com dedicação e esforço. Quando faz um teste de perícia, você pode gastar 1 PE para receber +2 nesse teste." }
+    ]
+  },
   "Origens": {
     "Todas as Origens": [
       { "nome": "110%", "categoria": "Origens", "descricao": "Quando faz um teste de perícia usando Força ou Agilidade (exceto Luta e Pontaria) você pode gastar 2 PE para receber +5 nesse teste." },
@@ -504,11 +197,6 @@
       { "nome": "Técnica Medicinal", "categoria": "Origens", "descricao": "Sempre que cura um personagem, você adiciona seu Intelecto no total de PV curados." },
       { "nome": "Traços do Outro Lado", "categoria": "Origens", "descricao": "Você possui um poder paranormal à sua escolha. Porém, começa o jogo com metade da Sanidade normal para sua classe." },
       { "nome": "Vislumbres do Passado", "categoria": "Origens", "descricao": "Uma vez por sessão, pode fazer um teste de Intelecto (DT 10) para reconhecer lugares/pessoas. Se passar, recebe 1d4 PE temporários e info útil." }
-    ]
-  },
-  "Geral": {
-    "Todos Poderes Gerais": [
-
     ]
   },
   "Poderes Paranormais": {}
