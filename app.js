@@ -121,6 +121,16 @@ window.atualizarNex = async (novoNex) => {
         await calcularStatusClasse(p);
     }
 
+    // --- FORÇA A ATUALIZAÇÃO DA PROFICIÊNCIA NA TELA ---
+    const caixaProficiencias = document.getElementById('def-proficiencias');
+    if (caixaProficiencias && p.proficiencias) {
+        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
+            caixaProficiencias.value = p.proficiencias;
+        } else {
+            caixaProficiencias.textContent = p.proficiencias;
+        }
+    }
+
     // 4. Salva todas as alterações juntas na sala
     await salvarNaSala();
     
