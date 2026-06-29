@@ -921,34 +921,36 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    p.classe = nome; // Salva a classe no objeto do personagem
-    
-    // Atualiza input visual se houver
-    const inputClasse = document.getElementById('info-classe');
-    if (inputClasse) inputClasse.value = nome;
-    
-    // Calcula os atributos baseados na nova classe
+    p.classe = nome; // Atualiza a memória
+
+    // 1. Calcula os status primeiro
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
-    
-    await salvarNaSala();
-    
-    // O ALERTA PAUSA O NAVEGADOR AQUI (Tudo para até você dar OK)
-    alert(`Classe ${nome} selecionada com sucesso!`);
-    
-    // O sistema original recarrega a tela e muda de aba
+
+    // 2. MUDA A TELA (Garante que a aba principal vai abrir e a caixinha vai existir)
     if (typeof atualizarInterface === "function") atualizarInterface();
     window.abrirAbaChar('aba-info');
 
-    // --- A INJEÇÃO FINAL (À PROVA DE BALAS) ---
-    // Injetamos o texto DEPOIS que a ficha já piscou, atualizou e mudou de aba.
+    // 3. INJETA O TEXTO (Agora que a aba está aberta, colocamos o texto lá)
     const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias && p.proficiencias) {
+    if (caixaProficiencias) {
+        // Se a classe não tiver proficiência nenhuma, ele limpa a caixa em vez de manter a antiga
+        const textoProficiencia = p.proficiencias || ""; 
         if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
-            caixaProficiencias.value = p.proficiencias;
+            caixaProficiencias.value = textoProficiencia;
         } else {
-            caixaProficiencias.textContent = p.proficiencias;
+            caixaProficiencias.textContent = textoProficiencia;
         }
     }
+    
+    // Atualiza também a caixinha de nome da classe, se existir
+    const inputClasse = document.getElementById('info-classe');
+    if (inputClasse) inputClasse.value = nome;
+
+    // 4. SALVA NO BANCO DE DADOS (Agora sim! Ele vai ler a tela atualizada)
+    await salvarNaSala();
+    
+    // 5. O ALERTA FICA POR ÚLTIMO (Para não pausar nenhuma etapa acima)
+    alert(`Classe ${nome} selecionada com sucesso!`);
 };
