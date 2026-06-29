@@ -81,7 +81,20 @@ window.calcularStatusClasse = async (p) => {
 
         if (!infoClasse) return;
 
-        // 1. Pega os atributos DIRETO dos seus inputs do HTML (at-vig e at-pre)
+        // --- NOVA PARTE: PROFICIÊNCIAS ---
+        const proficienciasDaClasse = infoClasse.caracteristicas.proficiencias;
+        if (proficienciasDaClasse) {
+            p.proficiencias = proficienciasDaClasse; // Salva na memória do personagem
+            
+            // Coloque o ID correto da sua caixa de texto aqui embaixo!
+            const inputProficiencias = document.getElementById('def-proficiencias');
+            if (inputProficiencias) {
+                inputProficiencias.value = p.proficiencias;
+            }
+        }
+        // ---------------------------------
+
+        // 1. Pega os atributos DIRETO dos seus inputs do HTML
         const inputVig = document.getElementById('at-vig');
         const inputPre = document.getElementById('at-pre');
         
@@ -118,41 +131,33 @@ window.calcularStatusClasse = async (p) => {
 
         let sanMaximo = sanInicial + ((nivel - 1) * sanNivel);
 
-        // 5. Tratamento especial para o formato "Atual / Máximo" (Ex: "20 / 20")
+        // 5. Tratamento especial para o formato "Atual / Máximo"
         if (!p.status) p.status = {};
 
-        // Função interna para processar o texto do input sem perder o valor Atual
         const atualizarBarraDisplay = (idInput, novoMaximo, chaveStatus) => {
             const inputEl = document.getElementById(idInput);
-            let atual = novoMaximo; // Valor padrão inicial
+            let atual = novoMaximo; 
 
             if (inputEl && inputEl.value) {
-                // Divide o texto "0 / 0" pela barra para pegar o número da esquerda (Atual)
                 const partes = inputEl.value.split('/');
                 if (partes.length === 2) {
                     const atualExistente = parseInt(partes[0].trim());
-                    // Se já existia um valor atual válido ali dentro, mantém ele
                     if (!isNaN(atualExistente) && atualExistente !== 0) {
                         atual = atualExistente;
                     }
                 }
             }
 
-            // Garante que a vida atual não fique maior que a nova vida máxima
             if (atual > novoMaximo) atual = novoMaximo;
 
-            // Salva no objeto do personagem
             p.status[`${chaveStatus}Max`] = novoMaximo;
             p.status[`${chaveStatus}Atual`] = atual;
 
-            // Devolve para o HTML no formato bonito "Atual / Máximo"
             if (inputEl) {
                 inputEl.value = `${atual} / ${novoMaximo}`;
             }
         };
 
-        // Executa a atualização para as três barras de recursos
-        // (Assumi os padrões 'bar-display-pe' e 'bar-display-san' seguindo o seu molde do PV)
         atualizarBarraDisplay('bar-display-pv', pvMaximo, 'pv');
         atualizarBarraDisplay('bar-display-pe', peMaximo, 'pe');
         atualizarBarraDisplay('bar-display-san', sanMaximo, 'san');
