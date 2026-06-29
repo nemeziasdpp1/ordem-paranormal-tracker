@@ -88,7 +88,7 @@ window.calcularStatusClasse = async (p) => {
             
             const inputProficiencias = document.getElementById('def-proficiencias');
             if (inputProficiencias) {
-                inputProficiencias.value = p.proficiencias;
+                inputProficiencias.value = p.defProficiencias;
             }
         }
         // -------------------------------------------------
