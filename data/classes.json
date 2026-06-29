@@ -9,7 +9,8 @@
       "san_inicial": 12,
       "san_nivel": 3,
       "pericias": "Luta ou Pontaria, Fortitude ou Reflexos, +1 + Int.",
-      "proficiencias": "Armas simples, táticas e proteções leves."
+      "proficiencias": "Armas simples, táticas e proteções leves.",
+      "habilidade": ["Ataque Especial"]
     },
     "progressao": [
       { "nex": "5%", "habilidade": "Ataque especial (2 PE, +5)" },
