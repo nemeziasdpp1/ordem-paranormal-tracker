@@ -921,11 +921,11 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    // Limpa espaços invisíveis nas pontas (ex: "Combatente " vira "Combatente")
+    // Limpa espaços invisíveis nas pontas
     nome = nome ? nome.trim() : "";
 
     try {
-        // 1. Carrega ambos os arquivos necessários simultaneamente (Igual ao Origem)
+        // 1. Carrega ambos os arquivos simultaneamente
         const [todasClasses, respHabilidades] = await Promise.all([
             fetch('./data/classes.json').then(r => r.json()),
             fetch('./data/habilidades.json').then(r => r.json())
@@ -934,7 +934,6 @@ window.selecionarClasse = async (nome) => {
         const classeData = todasClasses[nome];
 
         if (classeData) {
-            // Garante a estrutura necessária
             if (!p.habilidades) p.habilidades = [];
 
             // 2. Remove apenas habilidades que foram marcadas como categoria "Classes"
@@ -944,32 +943,33 @@ window.selecionarClasse = async (nome) => {
             const habsDaClasse = classeData.caracteristicas?.habilidade;
             
             if (habsDaClasse && Array.isArray(habsDaClasse)) {
-                // Encontra a lista correta de habilidades de classe dentro do seu habilidades.json
-                // Procura de forma inteligente em "Classes" ou "Todas as Classes"
-                let listaHabilidadesDisponiveis = [];
-                if (respHabilidades.Classes) {
-                    if (Array.isArray(respHabilidades.Classes)) {
-                        listaHabilidadesDisponiveis = respHabilidades.Classes;
-                    } else if (respHabilidades.Classes["Todas as Classes"]) {
-                        listaHabilidadesDisponiveis = respHabilidades.Classes["Todas as Classes"];
-                    } else if (respHabilidades.Classes[nome]) {
-                        listaHabilidadesDisponiveis = respHabilidades.Classes[nome];
-                    } else {
-                        listaHabilidadesDisponiveis = Object.values(respHabilidades.Classes).flat();
+                
+                // --- A NOVA MÁGICA DA BUSCA GLOBAL ---
+                // Cria uma lista única com TODAS as habilidades do jogo
+                let todasAsHabilidadesDoJogo = [];
+                
+                // Varre as categorias principais ("Combatente", "Especialista", "Geral", etc.)
+                for (const categoria in respHabilidades) { 
+                    const subcategorias = respHabilidades[categoria];
+                    // Varre as subcategorias ("Poderes de Combatente", "Todos Poderes Gerais", etc.)
+                    for (const sub in subcategorias) {
+                        if (Array.isArray(subcategorias[sub])) {
+                            todasAsHabilidadesDoJogo.push(...subcategorias[sub]); // Junta tudo
+                        }
                     }
                 }
 
                 habsDaClasse.forEach(nomeHab => {
-                    // Busca a habilidade completa pelo nome no habilidades.json
-                    const habCompleta = listaHabilidadesDisponiveis.find(h => h.nome === nomeHab);
+                    // Agora a busca é feita na lista global! Acha o "Empenho" em "Geral" perfeitamente.
+                    const habCompleta = todasAsHabilidadesDoJogo.find(h => h.nome === nomeHab);
 
                     if (habCompleta) {
                         p.habilidades.push({
-                            ...habCompleta, // Copia todos os dados (nome, desc, etc.)
-                            categoria: "Classes" // Adiciona a categoria para a interface identificar
+                            ...habCompleta, 
+                            categoria: "Classes" // Mantém a categoria para a interface
                         });
                     } else {
-                        console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json`);
+                        console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json!`);
                     }
                 });
             }
@@ -981,7 +981,7 @@ window.selecionarClasse = async (nome) => {
     // Atualiza dados e interface da classe
     p.classe = nome;
     
-    // Recalcula status e as proficiências da classe na memória
+    // Recalcula os status e as proficiências
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
@@ -989,7 +989,7 @@ window.selecionarClasse = async (nome) => {
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
-    // Força o texto da proficiência direto no campo HTML para garantir
+    // Atualiza o elemento visual das proficiências imediatamente
     const caixaProficiencias = document.getElementById('def-proficiencias');
     if (caixaProficiencias) {
         if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
@@ -999,14 +999,14 @@ window.selecionarClasse = async (nome) => {
         }
     }
     
-    // 4. Salva o personagem inteiro na sala (O método oficial do seu sistema!)
+    // 4. Salva o personagem
     await salvarNaSala();
     
-    // 5. Atualiza todas as interfaces para redesenhar os componentes na tela
+    // 5. Atualiza os componentes visuais
     if (typeof renderizarHabilidades === "function") renderizarHabilidades();
     if (typeof atualizarInterface === "function") atualizarInterface(); 
 
-    // Truque do NEX para garantir que a interface recalcule as proficiências visualmente
+    // Gatilho do NEX
     setTimeout(() => {
         const inputNex = document.getElementById('info-nex') || document.getElementById('nex') || document.querySelector('[id*="nex"]');
         if (inputNex) {
