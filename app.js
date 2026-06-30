@@ -921,36 +921,32 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    p.classe = nome; // Atualiza a memória
+    // 1. Atualiza a Classe
+    p.classe = nome;
+    console.log("Classe mudada para:", p.classe); // Debug
 
-    // 1. Calcula os status primeiro
+    // 2. Garante o cálculo e a persistência do dado
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
+        console.log("Proficiência calculada:", p.proficiencias); // Debug
     }
 
-    // 2. MUDA A TELA (Garante que a aba principal vai abrir e a caixinha vai existir)
-    if (typeof atualizarInterface === "function") atualizarInterface();
-    window.abrirAbaChar('aba-info');
-
-    // 3. INJETA O TEXTO (Agora que a aba está aberta, colocamos o texto lá)
-    const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias) {
-        // Se a classe não tiver proficiência nenhuma, ele limpa a caixa em vez de manter a antiga
-        const textoProficiencia = p.proficiencias || ""; 
-        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
-            caixaProficiencias.value = textoProficiencia;
-        } else {
-            caixaProficiencias.textContent = textoProficiencia;
-        }
-    }
-    
-    // Atualiza também a caixinha de nome da classe, se existir
+    // 3. Atualiza a tela (Interface)
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
-
-    // 4. SALVA NO BANCO DE DADOS (Agora sim! Ele vai ler a tela atualizada)
-    await salvarNaSala();
     
-    // 5. O ALERTA FICA POR ÚLTIMO (Para não pausar nenhuma etapa acima)
+    const caixaProficiencias = document.getElementById('def-proficiencias');
+    if (caixaProficiencias && p.proficiencias) {
+        caixaProficiencias.value = p.proficiencias;
+    }
+
+    // 4. SALVAMENTO GARANTIDO
+    // Antes de salvar, garantimos que o p está atualizado
+    console.log("Salvando personagem...");
+    await salvarNaSala(); 
+    
+    // 5. Finalização
     alert(`Classe ${nome} selecionada com sucesso!`);
+    if (typeof atualizarInterface === "function") atualizarInterface();
+    window.abrirAbaChar('aba-info');
 };
