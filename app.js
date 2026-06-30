@@ -918,92 +918,96 @@ window.abrirModalClasse = async (nomeClasse) => {
 };
 
 window.selecionarClasse = async (nome) => {
-    console.log("=== 🔍 INÍCIO DO RASTREAMENTO ===");
     const p = obterPersonagemAtual();
-    if (!p) { 
-        console.error("❌ Erro: Personagem atual não foi encontrado!"); 
-        return; 
-    }
-    
-    console.log("👤 Personagem carregado:", p);
-    console.log("🔄 Tentando mudar classe de:", p.classe, " para:", nome);
+    if (!p) return;
 
     const classeAntigaNome = p.classe;
     if (!p.habilidades) p.habilidades = [];
 
-    // Atualiza a classe
+    // 1. Atualiza a classe no banco de dados
     await window.atualizarDado(p.id, 'classe', nome);
-    console.log("✅ Classe atualizada no banco.");
 
-    // ---- INVESTIGAÇÃO DO JSON ----
-    // Vamos testar várias possibilidades de nomes para a sua variável JSON
-    const dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
+    // 2. Busca os dados das classes (Tenta a memória ou carrega direto do arquivo JSON)
+    let dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
     
-    console.log("📦 Variável do JSON encontrada?", dadosClasses ? "Sim" : "Não");
-    
+    if (!dadosClasses) {
+        try {
+            const resposta = await fetch('classes.json');
+            dadosClasses = await resposta.json();
+        } catch (erro) {
+            console.error("❌ Não foi possível carregar o arquivo classes.json:", erro);
+        }
+    }
+
+    // 3. Processa as habilidades (Adiciona novas e remove antigas)
     if (dadosClasses) {
-        console.log("📄 Conteúdo detectado no JSON:", dadosClasses);
-        
-        // Remove antiga
         if (classeAntigaNome) {
             const classeAntigaDados = dadosClasses.find(c => c.nome === classeAntigaNome);
             if (classeAntigaDados && classeAntigaDados.habilidade) {
                 classeAntigaDados.habilidade.forEach(hab => {
                     const index = p.habilidades.indexOf(hab);
-                    if (index > -1) {
-                        p.habilidades.splice(index, 1);
-                        console.log(`🗑️ Habilidade antiga removida: ${hab}`);
-                    }
+                    if (index > -1) p.habilidades.splice(index, 1);
                 });
             }
         }
 
-        // Adiciona nova
         const novaClasseDados = dadosClasses.find(c => c.nome === nome);
         if (novaClasseDados && novaClasseDados.habilidade) {
             novaClasseDados.habilidade.forEach(hab => {
-                if (!p.habilidades.includes(hab)) {
-                    p.habilidades.push(hab);
-                    console.log(`✨ Nova habilidade inserida no objeto: ${hab}`);
-                }
+                if (!p.habilidades.includes(hab)) p.habilidades.push(hab);
             });
         }
 
-        // Salva passando uma cópia limpa do Array
-        await window.atualizarDado(p.id, 'habilidades', [...p.habilidades]);
-        console.log("💾 Lista de habilidades salva no banco:", p.habilidades);
-    } else {
-        console.warn("⚠️ Alerta: O sistema não achou onde o seu 'classes.json' está guardado na memória!");
+        await window.atualizarDado(p.id, 'habilidades', p.habilidades);
     }
 
-    // ---- PROFICIÊNCIAS E STATUS ----
+    // 4. Calcula os status e as proficiências na memória
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
-        console.log("⚔️ Status e Proficiências recalculados:", p.proficiencias);
     }
 
     if (p.proficiencias !== undefined) {
         await window.atualizarDado(p.id, 'proficiencias', p.proficiencias);
-        console.log("💾 Proficiência salva com sucesso.");
     }
 
-    // ---- INTERFACE ----
-    if (typeof atualizarInterface === "function") {
-        atualizarInterface();
-        console.log("🖥️ atualizarInterface() executado.");
-    }
+    // 5. Atualiza a Interface Padrão do sistema
+    if (typeof atualizarInterface === "function") atualizarInterface();
 
+    // 6. Força o preenchimento visual imediato (Prevenção para INPUT ou DIV/SPAN)
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
     const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias) caixaProficiencias.value = p.proficiencias || "";
-
+    if (caixaProficiencias) {
+        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
+            caixaProficiencias.value = p.proficiencias || "";
+        } else {
+            caixaProficiencias.textContent = p.proficiencias || "";
+        }
+    }
+ 
+    alert(`Classe ${nome} selecionada com sucesso!`);
     window.abrirAbaChar('aba-info');
-    console.log("=== 🔍 FIM DO RASTREAMENTO ===");
-
+    
+    // 7. TRUQUE MESTRE: Simular a alteração do NEX para forçar o sistema a renderizar as proficiências
     setTimeout(() => {
+        // Procura pelo input do NEX (tentando os IDs mais comuns como 'info-nex' ou 'nex')
+        const inputNex = document.getElementById('info-nex') || document.getElementById('nex') || document.querySelector('[id*="nex"]');
+        
+        if (inputNex) {
+            // Dispara os eventos que o navegador ativa quando o usuário digita algo
+            inputNex.dispatchEvent(new Event('input', { bubbles: true }));
+            inputNex.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        // Garante o texto direto no campo caso o gatilho do NEX limpe o elemento
         const checkCampo = document.getElementById('def-proficiencias');
-        if (checkCampo && p.proficiencias) checkCampo.value = p.proficiencias;
-    }, 500);
+        if (checkCampo && p.proficiencias) {
+            if (checkCampo.tagName === 'INPUT' || checkCampo.tagName === 'TEXTAREA') {
+                checkCampo.value = p.proficiencias;
+            } else {
+                checkCampo.textContent = p.proficiencias;
+            }
+        }
+    }, 400); // 400ms é o tempo perfeito para a aba abrir e o banco salvar
 };
