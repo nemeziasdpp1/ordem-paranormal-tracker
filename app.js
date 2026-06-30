@@ -481,9 +481,11 @@ window.renderizarHabilidadesPersonagem = () => {
     }
 
     p.habilidades.forEach((hab, index) => {
-        // Usa o index como ID único na ficha
         const idUnico = `pers_${index}`;
         const expandida = window.idsHabilidadesExpandidas.has(idUnico);
+        
+        // Verifica se a habilidade possui regras especiais de cálculo
+        const temCalculoEspecial = Object.prototype.hasOwnProperty.call(regrasHabilidades, hab.nome);
         
         const card = document.createElement('div');
         card.className = 'card-hab';
@@ -493,6 +495,10 @@ window.renderizarHabilidadesPersonagem = () => {
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
                     <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
+                    
+                    ${temCalculoEspecial ? `
+                        <span style="color:#a855f7; font-size:14px; cursor:help;" title="Esta habilidade modifica status automaticamente">⚙️</span>
+                    ` : ''}
                 </div>
             </div>
             ${expandida ? `
