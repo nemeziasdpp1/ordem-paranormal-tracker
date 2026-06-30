@@ -497,8 +497,10 @@ window.renderizarHabilidadesPersonagem = () => {
                     <span style="font-size:10px; color:#a855f7;">${expandida ? '▲' : '▼'}</span>
                     <span style="font-weight:bold; font-size:13px;">${hab.nome}</span>
                     
-                    ${temCalculoEspecial ? `
-                        <span style="color:#a855f7; font-size:14px; cursor:help;" title="Esta habilidade modifica status automaticamente">⚙️</span>
+                ${temCalculoEspecial ? `
+                    <img src="data:image/svg+xml,${encodeURIComponent(seuSvgAqui)}" 
+                    style="width:16px; height:16px; cursor:help; margin-left:4px; vertical-align:middle;" 
+                    title="Esta habilidade modifica status automaticamente">
                     ` : ''}
                 </div>
             </div>
