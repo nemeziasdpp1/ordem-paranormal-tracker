@@ -923,30 +923,40 @@ window.selecionarClasse = async (nome) => {
 
     // 1. Atualiza a Classe
     p.classe = nome;
-    console.log("Classe mudada para:", p.classe); // Debug
-
-    // 2. Garante o cálculo e a persistência do dado
+    
+    // 2. Calcula proficiências e status (isso preenche o objeto p.proficiencias)
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
-        console.log("Proficiência calculada:", p.proficiencias); // Debug
     }
 
-    // 3. Atualiza a tela (Interface)
-    const inputClasse = document.getElementById('info-classe');
-    if (inputClasse) inputClasse.value = nome;
-    
+    // 3. FORÇA A ATUALIZAÇÃO VISUAL IMEDIATA
+    // Preenchemos o input ANTES de salvar, para garantir que o salvamento pegue o valor
     const caixaProficiencias = document.getElementById('def-proficiencias');
     if (caixaProficiencias && p.proficiencias) {
-        caixaProficiencias.value = p.proficiencias;
+        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
+            caixaProficiencias.value = p.proficiencias;
+        } else {
+            caixaProficiencias.textContent = p.proficiencias;
+        }
     }
-
-    // 4. SALVAMENTO GARANTIDO
-    // Antes de salvar, garantimos que o p está atualizado
-    console.log("Salvando personagem...");
-    await salvarNaSala(); 
     
+    const inputClasse = document.getElementById('info-classe');
+    if (inputClasse) inputClasse.value = nome;
+
+    // 4. SALVAMENTO (Agora o salvamento lerá o input que acabamos de preencher)
+    await salvarNaSala(); 
+    console.log("Salvamento concluído com a proficiência:", p.proficiencias);
+
     // 5. Finalização
     alert(`Classe ${nome} selecionada com sucesso!`);
     if (typeof atualizarInterface === "function") atualizarInterface();
     window.abrirAbaChar('aba-info');
+    
+    // 6. GARANTIA EXTRA (Caso o atualizarInterface limpe o campo, voltamos a preencher)
+    setTimeout(() => {
+        const checkCampo = document.getElementById('def-proficiencias');
+        if (checkCampo && p.proficiencias) {
+            checkCampo.value = p.proficiencias;
+        }
+    }, 500);
 };
