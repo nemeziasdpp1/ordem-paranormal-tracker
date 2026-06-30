@@ -122,29 +122,38 @@ window.calcularStatusClasse = async (p) => {
         const sanInicial = parseInt(infoClasse.caracteristicas.san_inicial);
         const sanNivel = parseInt(infoClasse.caracteristicas.san_nivel);
 
-        // 4. Cálculos Matemáticos de Progressão
-        let pvMaximo = pvInicial + vigor;
+        // 4. Cálculos Matemáticos de Progressão (Valores BASE)
+        let pvBase = pvInicial + vigor;
         for (let i = 2; i <= nivel; i++) {
             let ganhoNivel = pvNivel + vigor;
-            pvMaximo += ganhoNivel < 1 ? 1 : ganhoNivel;
+            pvBase += ganhoNivel < 1 ? 1 : ganhoNivel;
         }
 
-        let peMaximo = peInicial + presenca;
+        let peBase = peInicial + presenca;
         for (let i = 2; i <= nivel; i++) {
             let ganhoNivel = peNivel + presenca;
-            peMaximo += ganhoNivel < 1 ? 1 : ganhoNivel;
+            peBase += ganhoNivel < 1 ? 1 : ganhoNivel;
         }
 
-        let sanMaximo = sanInicial + ((nivel - 1) * sanNivel);
+        let sanBase = sanInicial + ((nivel - 1) * sanNivel);
 
+        // 4.5. Prepara o objeto status e salva a BASE nele ANTES dos bônus
+        if (!p.status) p.status = {};
+        
+        p.status.pvMax = pvBase;
+        p.status.peMax = peBase;
+        p.status.sanMax = sanBase;
+
+        // 4.6. Aplica os Bônus de Habilidades (O Calejado vai somar em cima do p.status.pvMax)
         aplicarBonusDeHabilidades(p);
 
         // 5. Tratamento especial para o formato "Atual / Máximo"
-        if (!p.status) p.status = {};
-
-        const atualizarBarraDisplay = (idInput, novoMaximo, chaveStatus) => {
+        const atualizarBarraDisplay = (idInput, chaveStatus) => {
             const inputEl = document.getElementById(idInput);
-            let atual = novoMaximo; 
+            
+            // Aqui é o segredo: ele puxa o valor FINAL já com os bônus aplicados
+            const maximoFinal = p.status[`${chaveStatus}Max`]; 
+            let atual = maximoFinal; 
 
             if (inputEl && inputEl.value) {
                 const partes = inputEl.value.split('/');
@@ -156,19 +165,21 @@ window.calcularStatusClasse = async (p) => {
                 }
             }
 
-            if (atual > novoMaximo) atual = novoMaximo;
+            if (atual > maximoFinal) atual = maximoFinal;
 
-            p.status[`${chaveStatus}Max`] = novoMaximo;
+            // Salva o valor atual corrigido no objeto
             p.status[`${chaveStatus}Atual`] = atual;
 
+            // Exibe na tela no formato Atual / Máximo
             if (inputEl) {
-                inputEl.value = `${atual} / ${novoMaximo}`;
+                inputEl.value = `${atual} / ${maximoFinal}`;
             }
         };
 
-        atualizarBarraDisplay('bar-display-pv', pvMaximo, 'pv');
-        atualizarBarraDisplay('bar-display-pe', peMaximo, 'pe');
-        atualizarBarraDisplay('bar-display-san', sanMaximo, 'san');
+        // 6. Atualiza a tela (Note que não enviamos mais a variável, apenas o ID e a chave)
+        atualizarBarraDisplay('bar-display-pv', 'pv');
+        atualizarBarraDisplay('bar-display-pe', 'pe');
+        atualizarBarraDisplay('bar-display-san', 'san');
 
         // REMOVIDO: await salvarNaSala(); (Deixamos o app.js cuidar disso)
 
