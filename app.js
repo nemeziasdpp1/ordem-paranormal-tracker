@@ -921,86 +921,75 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    // Remove espaços invisíveis nas pontas se houver (ex: "Combatente " vira "Combatente")
-    const nomeClasseNova = nome ? nome.trim() : "";
-    const nomeClasseAntiga = p.classe ? p.classe.trim() : "";
+    // Limpa espaços invisíveis nas pontas (ex: "Combatente " vira "Combatente")
+    nome = nome ? nome.trim() : "";
 
-    if (!p.habilidades) p.habilidades = [];
+    try {
+        // 1. Carrega ambos os arquivos necessários simultaneamente (Igual ao Origem)
+        const [todasClasses, respHabilidades] = await Promise.all([
+            fetch('./data/classes.json').then(r => r.json()),
+            fetch('./data/habilidades.json').then(r => r.json())
+        ]);
+        
+        const classeData = todasClasses[nome];
 
-    // 1. Atualiza a classe no objeto e banco
-    await window.atualizarDado(p.id, 'classe', nomeClasseNova);
+        if (classeData) {
+            // Garante a estrutura necessária
+            if (!p.habilidades) p.habilidades = [];
 
-    // 2. Busca os dados brutos (Memória ou arquivo JSON)
-    let dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
+            // 2. Remove apenas habilidades que foram marcadas como categoria "Classes"
+            p.habilidades = p.habilidades.filter(h => h.categoria !== "Classes");
+
+            // 3. Adiciona a(s) nova(s) habilidade(s) da classe
+            const habsDaClasse = classeData.caracteristicas?.habilidade;
+            
+            if (habsDaClasse && Array.isArray(habsDaClasse)) {
+                // Encontra a lista correta de habilidades de classe dentro do seu habilidades.json
+                // Procura de forma inteligente em "Classes" ou "Todas as Classes"
+                let listaHabilidadesDisponiveis = [];
+                if (respHabilidades.Classes) {
+                    if (Array.isArray(respHabilidades.Classes)) {
+                        listaHabilidadesDisponiveis = respHabilidades.Classes;
+                    } else if (respHabilidades.Classes["Todas as Classes"]) {
+                        listaHabilidadesDisponiveis = respHabilidades.Classes["Todas as Classes"];
+                    } else if (respHabilidades.Classes[nome]) {
+                        listaHabilidadesDisponiveis = respHabilidades.Classes[nome];
+                    } else {
+                        listaHabilidadesDisponiveis = Object.values(respHabilidades.Classes).flat();
+                    }
+                }
+
+                habsDaClasse.forEach(nomeHab => {
+                    // Busca a habilidade completa pelo nome no habilidades.json
+                    const habCompleta = listaHabilidadesDisponiveis.find(h => h.nome === nomeHab);
+
+                    if (habCompleta) {
+                        p.habilidades.push({
+                            ...habCompleta, // Copia todos os dados (nome, desc, etc.)
+                            categoria: "Classes" // Adiciona a categoria para a interface identificar
+                        });
+                    } else {
+                        console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json`);
+                    }
+                });
+            }
+        }
+    } catch (err) {
+        console.error("Erro ao processar classe:", err);
+    }
+
+    // Atualiza dados e interface da classe
+    p.classe = nome;
     
-    if (!dadosClasses) {
-        try {
-            const resposta = await fetch('data/classes.json'); 
-            if (resposta.ok) {
-                dadosClasses = await resposta.json();
-            }
-        } catch (erro) {
-            console.warn("⚠️ Erro ao carregar data/classes.json, usando contingência.");
-        }
-    }
-
-    // Contingência estruturada exatamente igual ao seu JSON caso o arquivo suma
-    if (!dadosClasses) {
-        dadosClasses = {
-            "Combatente": { "caracteristicas": { "habilidade": ["Ataque Especial"] } },
-            "Ocultista": { "caracteristicas": { "habilidade": ["Escolhido pelo Outro Lado"] } },
-            "Especialista": { "caracteristicas": { "habilidade": ["Perito"] } },
-            "Mundano": { "caracteristicas": { "habilidade": ["Empenho"] } }
-        };
-    }
-
-    // 3. Processa as habilidades acessando diretamente as chaves do Objeto
-    if (dadosClasses) {
-        // A. Remove as habilidades da classe anterior
-        if (nomeClasseAntiga && dadosClasses[nomeClasseAntiga]) {
-            const classeAntigaDados = dadosClasses[nomeClasseAntiga];
-            // Acessa via .caracteristicas.habilidade conforme o seu JSON
-            const habsAntigas = classeAntigaDados.caracteristicas?.habilidade;
-            if (Array.isArray(habsAntigas)) {
-                habsAntigas.forEach(hab => {
-                    const index = p.habilidades.indexOf(hab);
-                    if (index > -1) p.habilidades.splice(index, 1);
-                });
-            }
-        }
-
-        // B. Adiciona as habilidades da nova classe
-        if (nomeClasseNova && dadosClasses[nomeClasseNova]) {
-            const novaClasseDados = dadosClasses[nomeClasseNova];
-            // Acessa via .caracteristicas.habilidade conforme o seu JSON
-            const habsNovas = novaClasseDados.caracteristicas?.habilidade;
-            if (Array.isArray(habsNovas)) {
-                habsNovas.forEach(hab => {
-                    if (!p.habilidades.includes(hab)) p.habilidades.push(hab);
-                });
-            }
-        }
-
-        // C. Grava a nova lista de habilidades no banco de dados
-        await window.atualizarDado(p.id, 'habilidades', p.habilidades);
-    }
-
-    // 4. Calcula os status e as proficiências na memória
+    // Recalcula status e as proficiências da classe na memória
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
 
-    if (p.proficiencias !== undefined) {
-        await window.atualizarDado(p.id, 'proficiencias', p.proficiencias);
-    }
-
-    // 5. Atualiza a Interface Padrão do sistema
-    if (typeof atualizarInterface === "function") atualizarInterface();
-
-    // 6. Força o preenchimento visual imediato (Prevenção para INPUT ou DIV/SPAN)
     const inputClasse = document.getElementById('info-classe');
-    if (inputClasse) inputClasse.value = nomeClasseNova;
+    if (inputClasse) inputClasse.value = nome;
     
+    // Força o texto da proficiência direto no campo HTML para garantir
     const caixaProficiencias = document.getElementById('def-proficiencias');
     if (caixaProficiencias) {
         if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
@@ -1009,26 +998,22 @@ window.selecionarClasse = async (nome) => {
             caixaProficiencias.textContent = p.proficiencias || "";
         }
     }
- 
-    alert(`Classe ${nomeClasseNova} selecionada com sucesso!`);
-    window.abrirAbaChar('aba-info');
     
-    // 7. TRUQUE DO NEX: Força o sistema a renderizar as proficiências na tela
+    // 4. Salva o personagem inteiro na sala (O método oficial do seu sistema!)
+    await salvarNaSala();
+    
+    // 5. Atualiza todas as interfaces para redesenhar os componentes na tela
+    if (typeof renderizarHabilidades === "function") renderizarHabilidades();
+    if (typeof atualizarInterface === "function") atualizarInterface(); 
+
+    // Truque do NEX para garantir que a interface recalcule as proficiências visualmente
     setTimeout(() => {
         const inputNex = document.getElementById('info-nex') || document.getElementById('nex') || document.querySelector('[id*="nex"]');
-        
         if (inputNex) {
             inputNex.dispatchEvent(new Event('input', { bubbles: true }));
             inputNex.dispatchEvent(new Event('change', { bubbles: true }));
         }
-
-        const checkCampo = document.getElementById('def-proficiencias');
-        if (checkCampo && p.proficiencias) {
-            if (checkCampo.tagName === 'INPUT' || checkCampo.tagName === 'TEXTAREA') {
-                checkCampo.value = p.proficiencias;
-            } else {
-                checkCampo.textContent = p.proficiencias;
-            }
-        }
     }, 400);
+
+    window.abrirAbaChar('aba-info');
 };
