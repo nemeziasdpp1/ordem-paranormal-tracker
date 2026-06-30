@@ -946,17 +946,7 @@ window.selecionarClasse = async (nome) => {
     if (caixaProficiencias) {
         caixaProficiencias.value = p.proficiencias || "";
     }
-
-    // --- FORÇA A ATUALIZAÇÃO DA PROFICIÊNCIA NA TELA ---
-    const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias && p.proficiencias) {
-        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
-            caixaProficiencias.value = p.proficiencias;
-        } else {
-            caixaProficiencias.textContent = p.proficiencias;
-        }
-    }
-    
+ 
     // 6. Alerta e Navegação
     alert(`Classe ${nome} selecionada com sucesso!`);
     window.abrirAbaChar('aba-info');
