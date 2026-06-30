@@ -918,81 +918,92 @@ window.abrirModalClasse = async (nomeClasse) => {
 };
 
 window.selecionarClasse = async (nome) => {
+    console.log("=== 🔍 INÍCIO DO RASTREAMENTO ===");
     const p = obterPersonagemAtual();
-    if (!p) return;
-
-    // 1. SALVA A CLASSE ANTIGA (Crucial para remover a habilidade certa depois)
-    const classeAntigaNome = p.classe;
+    if (!p) { 
+        console.error("❌ Erro: Personagem atual não foi encontrado!"); 
+        return; 
+    }
     
-    // Garante que a lista de habilidades existe no objeto
+    console.log("👤 Personagem carregado:", p);
+    console.log("🔄 Tentando mudar classe de:", p.classe, " para:", nome);
+
+    const classeAntigaNome = p.classe;
     if (!p.habilidades) p.habilidades = [];
 
-    // 2. ATUALIZA A CLASSE NO BANCO DE DADOS
+    // Atualiza a classe
     await window.atualizarDado(p.id, 'classe', nome);
+    console.log("✅ Classe atualizada no banco.");
 
-    // 3. GERENCIA AS HABILIDADES (Lendo do JSON global)
-    // ATENÇÃO: Confirme se a sua variável do JSON se chama 'window.listaClasses'
-    if (window.listaClasses) {
+    // ---- INVESTIGAÇÃO DO JSON ----
+    // Vamos testar várias possibilidades de nomes para a sua variável JSON
+    const dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
+    
+    console.log("📦 Variável do JSON encontrada?", dadosClasses ? "Sim" : "Não");
+    
+    if (dadosClasses) {
+        console.log("📄 Conteúdo detectado no JSON:", dadosClasses);
         
-        // A. Remove as habilidades da classe anterior
+        // Remove antiga
         if (classeAntigaNome) {
-            const classeAntigaDados = window.listaClasses.find(c => c.nome === classeAntigaNome);
+            const classeAntigaDados = dadosClasses.find(c => c.nome === classeAntigaNome);
             if (classeAntigaDados && classeAntigaDados.habilidade) {
                 classeAntigaDados.habilidade.forEach(hab => {
                     const index = p.habilidades.indexOf(hab);
                     if (index > -1) {
-                        p.habilidades.splice(index, 1); // Remove da lista
+                        p.habilidades.splice(index, 1);
+                        console.log(`🗑️ Habilidade antiga removida: ${hab}`);
                     }
                 });
             }
         }
 
-        // B. Adiciona as habilidades da classe nova
-        const novaClasseDados = window.listaClasses.find(c => c.nome === nome);
+        // Adiciona nova
+        const novaClasseDados = dadosClasses.find(c => c.nome === nome);
         if (novaClasseDados && novaClasseDados.habilidade) {
             novaClasseDados.habilidade.forEach(hab => {
                 if (!p.habilidades.includes(hab)) {
-                    p.habilidades.push(hab); // Adiciona na lista
+                    p.habilidades.push(hab);
+                    console.log(`✨ Nova habilidade inserida no objeto: ${hab}`);
                 }
             });
         }
 
-        // C. Salva as habilidades atualizadas no banco de dados
-        await window.atualizarDado(p.id, 'habilidades', p.habilidades);
+        // Salva passando uma cópia limpa do Array
+        await window.atualizarDado(p.id, 'habilidades', [...p.habilidades]);
+        console.log("💾 Lista de habilidades salva no banco:", p.habilidades);
+    } else {
+        console.warn("⚠️ Alerta: O sistema não achou onde o seu 'classes.json' está guardado na memória!");
     }
 
-    // 4. CALCULA OS STATUS
+    // ---- PROFICIÊNCIAS E STATUS ----
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
+        console.log("⚔️ Status e Proficiências recalculados:", p.proficiencias);
     }
 
-    // 5. ATUALIZA A PROFICIÊNCIA NO BANCO DE DADOS
     if (p.proficiencias !== undefined) {
         await window.atualizarDado(p.id, 'proficiencias', p.proficiencias);
+        console.log("💾 Proficiência salva com sucesso.");
     }
 
-    // 6. ATUALIZA A INTERFACE GERAL
-    // Isso vai redesenhar a tela inteira, incluindo a lista de habilidades
-    if (typeof atualizarInterface === "function") atualizarInterface();
+    // ---- INTERFACE ----
+    if (typeof atualizarInterface === "function") {
+        atualizarInterface();
+        console.log("🖥️ atualizarInterface() executado.");
+    }
 
-    // 7. GARANTIAS VISUAIS IMEDIATAS (Campos específicos)
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
     const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias) {
-        caixaProficiencias.value = p.proficiencias || "";
-    }
- 
-    // 8. ALERTA E NAVEGAÇÃO
-    alert(`Classe ${nome} selecionada com sucesso!`);
+    if (caixaProficiencias) caixaProficiencias.value = p.proficiencias || "";
+
     window.abrirAbaChar('aba-info');
-    
-    // 9. GARANTIA EXTRA (Timeout contra conflitos de renderização)
+    console.log("=== 🔍 FIM DO RASTREAMENTO ===");
+
     setTimeout(() => {
         const checkCampo = document.getElementById('def-proficiencias');
-        if (checkCampo && p.proficiencias) {
-            checkCampo.value = p.proficiencias;
-        }
+        if (checkCampo && p.proficiencias) checkCampo.value = p.proficiencias;
     }, 500);
 };
