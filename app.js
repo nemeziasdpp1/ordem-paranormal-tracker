@@ -921,57 +921,67 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    const classeAntigaNome = p.classe;
+    // Remove espaços invisíveis nas pontas se houver (ex: "Combatente " vira "Combatente")
+    const nomeClasseNova = nome ? nome.trim() : "";
+    const nomeClasseAntiga = p.classe ? p.classe.trim() : "";
+
     if (!p.habilidades) p.habilidades = [];
 
     // 1. Atualiza a classe no objeto e banco
-    await window.atualizarDado(p.id, 'classe', nome);
+    await window.atualizarDado(p.id, 'classe', nomeClasseNova);
 
-    // 2. Busca os dados das classes (Tenta Memória -> Tenta Arquivo na pasta data)
+    // 2. Busca os dados brutos (Memória ou arquivo JSON)
     let dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
     
     if (!dadosClasses) {
         try {
-            // CORREÇÃO: Apontando para a pasta correta
             const resposta = await fetch('data/classes.json'); 
             if (resposta.ok) {
                 dadosClasses = await resposta.json();
-            } else {
-                console.warn("⚠️ Arquivo não encontrado em data/classes.json. Usando contingência.");
             }
         } catch (erro) {
-            console.warn("⚠️ Erro ao processar o JSON de data/classes.json. Usando contingência.");
+            console.warn("⚠️ Erro ao carregar data/classes.json, usando contingência.");
         }
     }
 
-    // Contingência caso o fetch falhe por outro motivo (evita que o código trave)
+    // Contingência estruturada exatamente igual ao seu JSON caso o arquivo suma
     if (!dadosClasses) {
-        dadosClasses = [
-            { "nome": "Combatente", "habilidade": ["Ataque Especial"] },
-            { "nome": "Ocultista", "habilidade": ["Escolhido pelo Outro Lado"] },
-            { "nome": "Especialista", "habilidade": ["Perito"] }
-        ];
+        dadosClasses = {
+            "Combatente": { "caracteristicas": { "habilidade": ["Ataque Especial"] } },
+            "Ocultista": { "caracteristicas": { "habilidade": ["Escolhido pelo Outro Lado"] } },
+            "Especialista": { "caracteristicas": { "habilidade": ["Perito"] } },
+            "Mundano": { "caracteristicas": { "habilidade": ["Empenho"] } }
+        };
     }
 
-    // 3. Processa as habilidades (Adiciona as novas e remove as antigas)
+    // 3. Processa as habilidades acessando diretamente as chaves do Objeto
     if (dadosClasses) {
-        if (classeAntigaNome) {
-            const classeAntigaDados = dadosClasses.find(c => c.nome === classeAntigaNome);
-            if (classeAntigaDados && classeAntigaDados.habilidade) {
-                classeAntigaDados.habilidade.forEach(hab => {
+        // A. Remove as habilidades da classe anterior
+        if (nomeClasseAntiga && dadosClasses[nomeClasseAntiga]) {
+            const classeAntigaDados = dadosClasses[nomeClasseAntiga];
+            // Acessa via .caracteristicas.habilidade conforme o seu JSON
+            const habsAntigas = classeAntigaDados.caracteristicas?.habilidade;
+            if (Array.isArray(habsAntigas)) {
+                habsAntigas.forEach(hab => {
                     const index = p.habilidades.indexOf(hab);
                     if (index > -1) p.habilidades.splice(index, 1);
                 });
             }
         }
 
-        const novaClasseDados = dadosClasses.find(c => c.nome === nome);
-        if (novaClasseDados && novaClasseDados.habilidade) {
-            novaClasseDados.habilidade.forEach(hab => {
-                if (!p.habilidades.includes(hab)) p.habilidades.push(hab);
-            });
+        // B. Adiciona as habilidades da nova classe
+        if (nomeClasseNova && dadosClasses[nomeClasseNova]) {
+            const novaClasseDados = dadosClasses[nomeClasseNova];
+            // Acessa via .caracteristicas.habilidade conforme o seu JSON
+            const habsNovas = novaClasseDados.caracteristicas?.habilidade;
+            if (Array.isArray(habsNovas)) {
+                habsNovas.forEach(hab => {
+                    if (!p.habilidades.includes(hab)) p.habilidades.push(hab);
+                });
+            }
         }
 
+        // C. Grava a nova lista de habilidades no banco de dados
         await window.atualizarDado(p.id, 'habilidades', p.habilidades);
     }
 
@@ -989,7 +999,7 @@ window.selecionarClasse = async (nome) => {
 
     // 6. Força o preenchimento visual imediato (Prevenção para INPUT ou DIV/SPAN)
     const inputClasse = document.getElementById('info-classe');
-    if (inputClasse) inputClasse.value = nome;
+    if (inputClasse) inputClasse.value = nomeClasseNova;
     
     const caixaProficiencias = document.getElementById('def-proficiencias');
     if (caixaProficiencias) {
@@ -1000,7 +1010,7 @@ window.selecionarClasse = async (nome) => {
         }
     }
  
-    alert(`Classe ${nome} selecionada com sucesso!`);
+    alert(`Classe ${nomeClasseNova} selecionada com sucesso!`);
     window.abrirAbaChar('aba-info');
     
     // 7. TRUQUE DO NEX: Força o sistema a renderizar as proficiências na tela
@@ -1012,7 +1022,6 @@ window.selecionarClasse = async (nome) => {
             inputNex.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
-        // Garante o texto direto caso o gatilho do NEX limpe o elemento temporariamente
         const checkCampo = document.getElementById('def-proficiencias');
         if (checkCampo && p.proficiencias) {
             if (checkCampo.tagName === 'INPUT' || checkCampo.tagName === 'TEXTAREA') {
