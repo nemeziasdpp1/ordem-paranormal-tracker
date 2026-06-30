@@ -2,14 +2,13 @@
 
 export const regrasHabilidades = {
     "Calejado": (p) => {
-        // Garante que o NEX e o PV base sejam números. Se estiver vazio, usa 0.
         const nex = Number(p.nex) || 0;
         const bonusPV = Math.floor(nex / 5);
         
-        // Adiciona o bônus na propriedade correta que você usa para vida máxima
-        p.pvMax = (Number(p.pvMax) || 0) + bonusPV; 
+        if (!p.status) p.status = {};
         
-        console.log(`Calejado ativado! NEX: ${nex}, Bônus de PV: +${bonusPV}`); // Isso vai te ajudar a ver se funcionou
+        // A mágica acontece aqui: somando no p.status.pvMax
+        p.status.pvMax = (Number(p.status.pvMax) || 0) + bonusPV; 
     }
 };
 
