@@ -46,8 +46,7 @@
       "san_nivel": 4,
       "pericias": "Uma quantidade de perícias à sua escolha igual a 7 + Intelecto.",
       "proficiencias": "Armas simples e proteções leves.",
-      "habilidade": ["Eclético"],
-      "habilidade": ["Perito"]
+      "habilidade": ["Eclético", "Perito"]
     },
     "progressao": [
       { "nex": "5%", "habilidade": "Eclético, perito (2 PE, +1d6)" },
