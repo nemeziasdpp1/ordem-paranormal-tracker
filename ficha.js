@@ -2,6 +2,8 @@
 // Certifique-se de que ela está definida no topo do seu arquivo JS
 let periciasAutomaticasAtuais = []; 
 
+import { aplicarBonusDeHabilidades } from './regras.js';
+
 window.selecionarOrigem = async (nomeDaOrigem) => {
     // 1. Obtém o personagem e os dados necessários internamente
     const personagemAtual = obterPersonagemAtual();
@@ -134,6 +136,8 @@ window.calcularStatusClasse = async (p) => {
         }
 
         let sanMaximo = sanInicial + ((nivel - 1) * sanNivel);
+
+        aplicarBonusDeHabilidades(p);
 
         // 5. Tratamento especial para o formato "Atual / Máximo"
         if (!p.status) p.status = {};
