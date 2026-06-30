@@ -1,4 +1,6 @@
 import OBR from "https://esm.sh/@owlbear-rodeo/sdk";
+import { regrasHabilidades } from './regras.js';
+import { aplicarBonusDeHabilidades } from './regras.js';
 
 // --- Configuração OBR ---
 const METADATA_KEY = "com.ordemparanormal.ficha";
@@ -30,8 +32,6 @@ let abaModalHabAtiva = "";
 let subFiltroModalHabAtivo = "";
 let idsHabilidadesExpandidas = new Set();
 
-import { regrasHabilidades } from './regras.js';
-import { aplicarBonusDeHabilidades } from './regras.js';
 // --- NOVA LÓGICA DE DEFESA ---
 window.calcularDefesas = () => {
     const p = obterPersonagemAtual();
