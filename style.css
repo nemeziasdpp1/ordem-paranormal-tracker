@@ -669,3 +669,12 @@ body {
     cursor: pointer; 
     font-weight: bold;
 }
+
+
+
+/*simbolo de habilidade com calculo*/
+.icone-auto {
+    margin-left: 8px;
+    color: #a855f7; /* Cor roxa da imagem */
+    font-size: 0.9em;
+}
