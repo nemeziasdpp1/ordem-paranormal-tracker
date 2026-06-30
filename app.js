@@ -921,38 +921,38 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    // 1. Atualiza a Classe
-    p.classe = nome;
+    // 1. Atualiza a Classe e a Proficiência de forma persistente
+    // Isso garante que o sistema "saiba" que o dado mudou na fonte real
+    await window.atualizarDado(p.id, 'classe', nome);
     
-    // 2. Calcula proficiências e status (isso preenche o objeto p.proficiencias)
+    // 2. Calcula os status
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
 
-    // 3. FORÇA A ATUALIZAÇÃO VISUAL IMEDIATA
-    // Preenchemos o input ANTES de salvar, para garantir que o salvamento pegue o valor
-    const caixaProficiencias = document.getElementById('def-proficiencias');
-    if (caixaProficiencias && p.proficiencias) {
-        if (caixaProficiencias.tagName === 'INPUT' || caixaProficiencias.tagName === 'TEXTAREA') {
-            caixaProficiencias.value = p.proficiencias;
-        } else {
-            caixaProficiencias.textContent = p.proficiencias;
-        }
+    // 3. Atualiza o Dado da Proficiência (Opcional, mas seguro se o sistema permitir)
+    if (p.proficiencias !== undefined) {
+        await window.atualizarDado(p.id, 'proficiencias', p.proficiencias);
     }
-    
+
+    // 4. Força a atualização da Interface (Renderiza o que está no objeto)
+    if (typeof atualizarInterface === "function") atualizarInterface();
+
+    // 5. Atualiza os campos visuais diretamente (Garantia visual imediata)
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
-
-    // 4. SALVAMENTO (Agora o salvamento lerá o input que acabamos de preencher)
-    await salvarNaSala(); 
-    console.log("Salvamento concluído com a proficiência:", p.proficiencias);
-
-    // 5. Finalização
+    
+    const caixaProficiencias = document.getElementById('def-proficiencias');
+    if (caixaProficiencias) {
+        caixaProficiencias.value = p.proficiencias || "";
+    }
+    
+    // 6. Alerta e Navegação
     alert(`Classe ${nome} selecionada com sucesso!`);
-    if (typeof atualizarInterface === "function") atualizarInterface();
     window.abrirAbaChar('aba-info');
     
-    // 6. GARANTIA EXTRA (Caso o atualizarInterface limpe o campo, voltamos a preencher)
+    // 7. GARANTIA EXTRA: Se o 'atualizarInterface' ou a troca de aba
+    // limpar o campo, este tempo garante que o valor seja reposto 500ms depois.
     setTimeout(() => {
         const checkCampo = document.getElementById('def-proficiencias');
         if (checkCampo && p.proficiencias) {
