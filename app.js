@@ -924,22 +924,36 @@ window.selecionarClasse = async (nome) => {
     const classeAntigaNome = p.classe;
     if (!p.habilidades) p.habilidades = [];
 
-    // 1. Atualiza a classe no banco de dados
+    // 1. Atualiza a classe no objeto e banco
     await window.atualizarDado(p.id, 'classe', nome);
 
-    // 2. Busca os dados das classes (Tenta a memória ou carrega direto do arquivo JSON)
+    // 2. Busca os dados das classes (Tenta Memória -> Tenta Arquivo na pasta data)
     let dadosClasses = window.listaClasses || window.classes || window.dadosClasses;
     
     if (!dadosClasses) {
         try {
-            const resposta = await fetch('classes.json');
-            dadosClasses = await resposta.json();
+            // CORREÇÃO: Apontando para a pasta correta
+            const resposta = await fetch('data/classes.json'); 
+            if (resposta.ok) {
+                dadosClasses = await resposta.json();
+            } else {
+                console.warn("⚠️ Arquivo não encontrado em data/classes.json. Usando contingência.");
+            }
         } catch (erro) {
-            console.error("❌ Não foi possível carregar o arquivo classes.json:", erro);
+            console.warn("⚠️ Erro ao processar o JSON de data/classes.json. Usando contingência.");
         }
     }
 
-    // 3. Processa as habilidades (Adiciona novas e remove antigas)
+    // Contingência caso o fetch falhe por outro motivo (evita que o código trave)
+    if (!dadosClasses) {
+        dadosClasses = [
+            { "nome": "Combatente", "habilidade": ["Ataque Especial"] },
+            { "nome": "Ocultista", "habilidade": ["Escolhido pelo Outro Lado"] },
+            { "nome": "Especialista", "habilidade": ["Perito"] }
+        ];
+    }
+
+    // 3. Processa as habilidades (Adiciona as novas e remove as antigas)
     if (dadosClasses) {
         if (classeAntigaNome) {
             const classeAntigaDados = dadosClasses.find(c => c.nome === classeAntigaNome);
@@ -989,18 +1003,16 @@ window.selecionarClasse = async (nome) => {
     alert(`Classe ${nome} selecionada com sucesso!`);
     window.abrirAbaChar('aba-info');
     
-    // 7. TRUQUE MESTRE: Simular a alteração do NEX para forçar o sistema a renderizar as proficiências
+    // 7. TRUQUE DO NEX: Força o sistema a renderizar as proficiências na tela
     setTimeout(() => {
-        // Procura pelo input do NEX (tentando os IDs mais comuns como 'info-nex' ou 'nex')
         const inputNex = document.getElementById('info-nex') || document.getElementById('nex') || document.querySelector('[id*="nex"]');
         
         if (inputNex) {
-            // Dispara os eventos que o navegador ativa quando o usuário digita algo
             inputNex.dispatchEvent(new Event('input', { bubbles: true }));
             inputNex.dispatchEvent(new Event('change', { bubbles: true }));
         }
 
-        // Garante o texto direto no campo caso o gatilho do NEX limpe o elemento
+        // Garante o texto direto caso o gatilho do NEX limpe o elemento temporariamente
         const checkCampo = document.getElementById('def-proficiencias');
         if (checkCampo && p.proficiencias) {
             if (checkCampo.tagName === 'INPUT' || checkCampo.tagName === 'TEXTAREA') {
@@ -1009,5 +1021,5 @@ window.selecionarClasse = async (nome) => {
                 checkCampo.textContent = p.proficiencias;
             }
         }
-    }, 400); // 400ms é o tempo perfeito para a aba abrir e o banco salvar
+    }, 400);
 };
