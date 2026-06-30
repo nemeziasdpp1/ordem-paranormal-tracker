@@ -921,24 +921,61 @@ window.selecionarClasse = async (nome) => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    // 1. Atualiza a Classe e a Proficiência de forma persistente
-    // Isso garante que o sistema "saiba" que o dado mudou na fonte real
-    await window.atualizarDado(p.id, 'classe', nome);
+    // 1. SALVA A CLASSE ANTIGA (Crucial para remover a habilidade certa depois)
+    const classeAntigaNome = p.classe;
     
-    // 2. Calcula os status
+    // Garante que a lista de habilidades existe no objeto
+    if (!p.habilidades) p.habilidades = [];
+
+    // 2. ATUALIZA A CLASSE NO BANCO DE DADOS
+    await window.atualizarDado(p.id, 'classe', nome);
+
+    // 3. GERENCIA AS HABILIDADES (Lendo do JSON global)
+    // ATENÇÃO: Confirme se a sua variável do JSON se chama 'window.listaClasses'
+    if (window.listaClasses) {
+        
+        // A. Remove as habilidades da classe anterior
+        if (classeAntigaNome) {
+            const classeAntigaDados = window.listaClasses.find(c => c.nome === classeAntigaNome);
+            if (classeAntigaDados && classeAntigaDados.habilidade) {
+                classeAntigaDados.habilidade.forEach(hab => {
+                    const index = p.habilidades.indexOf(hab);
+                    if (index > -1) {
+                        p.habilidades.splice(index, 1); // Remove da lista
+                    }
+                });
+            }
+        }
+
+        // B. Adiciona as habilidades da classe nova
+        const novaClasseDados = window.listaClasses.find(c => c.nome === nome);
+        if (novaClasseDados && novaClasseDados.habilidade) {
+            novaClasseDados.habilidade.forEach(hab => {
+                if (!p.habilidades.includes(hab)) {
+                    p.habilidades.push(hab); // Adiciona na lista
+                }
+            });
+        }
+
+        // C. Salva as habilidades atualizadas no banco de dados
+        await window.atualizarDado(p.id, 'habilidades', p.habilidades);
+    }
+
+    // 4. CALCULA OS STATUS
     if (typeof calcularStatusClasse === "function") {
         await calcularStatusClasse(p); 
     }
 
-    // 3. Atualiza o Dado da Proficiência (Opcional, mas seguro se o sistema permitir)
+    // 5. ATUALIZA A PROFICIÊNCIA NO BANCO DE DADOS
     if (p.proficiencias !== undefined) {
         await window.atualizarDado(p.id, 'proficiencias', p.proficiencias);
     }
 
-    // 4. Força a atualização da Interface (Renderiza o que está no objeto)
+    // 6. ATUALIZA A INTERFACE GERAL
+    // Isso vai redesenhar a tela inteira, incluindo a lista de habilidades
     if (typeof atualizarInterface === "function") atualizarInterface();
 
-    // 5. Atualiza os campos visuais diretamente (Garantia visual imediata)
+    // 7. GARANTIAS VISUAIS IMEDIATAS (Campos específicos)
     const inputClasse = document.getElementById('info-classe');
     if (inputClasse) inputClasse.value = nome;
     
@@ -947,12 +984,11 @@ window.selecionarClasse = async (nome) => {
         caixaProficiencias.value = p.proficiencias || "";
     }
  
-    // 6. Alerta e Navegação
+    // 8. ALERTA E NAVEGAÇÃO
     alert(`Classe ${nome} selecionada com sucesso!`);
     window.abrirAbaChar('aba-info');
     
-    // 7. GARANTIA EXTRA: Se o 'atualizarInterface' ou a troca de aba
-    // limpar o campo, este tempo garante que o valor seja reposto 500ms depois.
+    // 9. GARANTIA EXTRA (Timeout contra conflitos de renderização)
     setTimeout(() => {
         const checkCampo = document.getElementById('def-proficiencias');
         if (checkCampo && p.proficiencias) {
