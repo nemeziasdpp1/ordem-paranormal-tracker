@@ -30,6 +30,7 @@ let abaModalHabAtiva = "";
 let subFiltroModalHabAtivo = "";
 let idsHabilidadesExpandidas = new Set();
 
+import { regrasHabilidades } from './regras.js';
 import { aplicarBonusDeHabilidades } from './regras.js';
 // --- NOVA LÓGICA DE DEFESA ---
 window.calcularDefesas = () => {
