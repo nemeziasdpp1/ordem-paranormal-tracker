@@ -32,19 +32,32 @@ let abaModalHabAtiva = "";
 let subFiltroModalHabAtivo = "";
 let idsHabilidadesExpandidas = new Set();
 
-// --- NOVA LÓGICA DE DEFESA ---
 window.calcularDefesas = () => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    // Pega inputs da tela (ou fallback para o objeto p)
+    if (!p.status) p.status = {};
+    
+    if (p.defOutrosManual === undefined) {
+        p.defOutrosManual = parseInt(p.defOutros) || 0;
+    }
+
+    const bonusAuto = p.status.bonusDefOutros || 0;
+
+    const totalVisualOutros = p.defOutrosManual + bonusAuto;
+
     const elAgi = document.getElementById('at-agi');
     const elEquip = document.getElementById('def-equip');
     const elOutros = document.getElementById('def-outros');
 
     const agi = parseInt(elAgi?.value || p.agi || 0);
     const equip = parseInt(elEquip?.value || p.defEquip || 0);
-    const outros = parseInt(elOutros?.value || p.defOutros || 0);
+
+    if (elOutros) {
+        elOutros.value = totalVisualOutros;
+    }
+
+    const defesaBase = 10 + agi + equip + totalVisualOutros;
 
     const getPericiaTotal = (nome) => {
         if (!p.pericias || !p.pericias[nome]) return 0;
@@ -54,17 +67,13 @@ window.calcularDefesas = () => {
     const reflexos = getPericiaTotal("Reflexos");
     const fortitude = getPericiaTotal("Fortitude");
 
-    const defesaBase = 10 + agi + equip + outros;
-    const esquivaTotal = defesaBase + reflexos;
-    const bloqueioTotal = fortitude;
-
     const elDef = document.getElementById('defesa-total');
     const elBloq = document.getElementById('bloqueio-total');
     const elEsq = document.getElementById('esquiva-total');
 
     if (elDef) elDef.innerText = defesaBase;
-    if (elBloq) elBloq.innerText = bloqueioTotal;
-    if (elEsq) elEsq.innerText = esquivaTotal;
+    if (elBloq) elBloq.innerText = fortitude; 
+    if (elEsq) elEsq.innerText = defesaBase + reflexos;
 };
 
 // --- Inicialização com OBR ---
