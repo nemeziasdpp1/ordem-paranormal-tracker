@@ -53,7 +53,7 @@ window.calcularDefesas = () => {
             const valorDigitado = parseInt(e.target.value) || 0;
 
             p.defOutrosManual = valorDigitado - bonusHabilidade;
-            p.defOutros = valorDigitado; 
+            p.defOutros = valorDigitado;
 
             window.calcularDefesas(); 
 
