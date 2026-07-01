@@ -36,15 +36,7 @@ window.calcularDefesas = () => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
-    if (!p.status) p.status = {};
-    
-    if (p.defOutrosManual === undefined) {
-        p.defOutrosManual = parseInt(p.defOutros) || 0;
-    }
-
-    const bonusAuto = p.status.bonusDefOutros || 0;
-
-    const totalVisualOutros = p.defOutrosManual + bonusAuto;
+    const bonusHabilidade = window.calcularBonusDefesaPorPoderes(p);
 
     const elAgi = document.getElementById('at-agi');
     const elEquip = document.getElementById('def-equip');
@@ -53,11 +45,13 @@ window.calcularDefesas = () => {
     const agi = parseInt(elAgi?.value || p.agi || 0);
     const equip = parseInt(elEquip?.value || p.defEquip || 0);
 
-    if (elOutros) {
-        elOutros.value = totalVisualOutros;
-    }
+    const manual = parseInt(elOutros?.value || p.defOutrosManual || 0);
 
-    const defesaBase = 10 + agi + equip + totalVisualOutros;
+    const totalOutros = manual + bonusHabilidade;
+
+    if (elOutros) elOutros.value = totalOutros;
+
+    const defesaBase = 10 + agi + equip + totalOutros;
 
     const getPericiaTotal = (nome) => {
         if (!p.pericias || !p.pericias[nome]) return 0;
@@ -74,6 +68,14 @@ window.calcularDefesas = () => {
     if (elDef) elDef.innerText = defesaBase;
     if (elBloq) elBloq.innerText = fortitude; 
     if (elEsq) elEsq.innerText = defesaBase + reflexos;
+};
+
+window.calcularBonusDefesaPorPoderes = (p) => {
+    let bonus = 0;
+    if (p.poderes && p.poderes.includes("Patrulha")) {
+        bonus += 2;
+    }
+    return bonus;
 };
 
 // --- Inicialização com OBR ---
