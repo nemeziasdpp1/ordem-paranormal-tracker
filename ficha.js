@@ -100,12 +100,9 @@ window.calcularStatusClasse = async (p) => {
         }
         // -------------------------------------------------
 
-        // 1. Pega os atributos DIRETO dos seus inputs do HTML
-        const inputVig = document.getElementById('at-vig');
-        const inputPre = document.getElementById('at-pre');
-        
-        const vigor = inputVig ? parseInt(inputVig.value) || 0 : 0;
-        const presenca = inputPre ? parseInt(inputPre.value) || 0 : 0;
+        // 1. Pega os atributos DIRETO DA MEMÓRIA DO PERSONAGEM (Mais seguro!)
+        const vigor = p.vig ? parseInt(p.vig) : 0;
+        const presenca = p.pre ? parseInt(p.pre) : 0;
 
         // 2. Calcula o Nível a partir do NEX
         const nex = p.nex ? parseInt(p.nex) : 5;
@@ -151,12 +148,22 @@ window.calcularStatusClasse = async (p) => {
         const atualizarBarraDisplay = (idInput, chaveStatus) => {
             const inputEl = document.getElementById(idInput);
             
-            // Aqui é o segredo: ele puxa o valor FINAL já com os bônus aplicados
+            // Puxa o valor FINAL já com os bônus aplicados
             const maximoFinal = p.status[`${chaveStatus}Max`]; 
             let atual = maximoFinal; 
 
+            // Tenta ler o valor atual da tela (se a tela já estiver carregada)
             if (inputEl && inputEl.value) {
                 const partes = inputEl.value.split('/');
+                if (partes.length === 2) {
+                    const atualExistente = parseInt(partes[0].trim());
+                    if (!isNaN(atualExistente) && atualExistente !== 0) {
+                        atual = atualExistente;
+                    }
+                }
+            // Fallback: se a tela não carregou ainda, lê do próprio banco de dados
+            } else if (p[chaveStatus]) {
+                const partes = String(p[chaveStatus]).split('/');
                 if (partes.length === 2) {
                     const atualExistente = parseInt(partes[0].trim());
                     if (!isNaN(atualExistente) && atualExistente !== 0) {
@@ -167,21 +174,30 @@ window.calcularStatusClasse = async (p) => {
 
             if (atual > maximoFinal) atual = maximoFinal;
 
-            // Salva o valor atual corrigido no objeto
+            // Salva o valor atual corrigido no objeto status (matemática interna)
             p.status[`${chaveStatus}Atual`] = atual;
 
-            // Exibe na tela no formato Atual / Máximo
+            // Monta o texto final
+            const textoFinal = `${atual} / ${maximoFinal}`;
+
+            // Salva direto no objeto principal (para o Banco de Dados)
+            p[chaveStatus] = textoFinal; 
+
+            // Exibe na tela
             if (inputEl) {
-                inputEl.value = `${atual} / ${maximoFinal}`;
+                inputEl.value = textoFinal;
             }
         };
 
-        // 6. Atualiza a tela (Note que não enviamos mais a variável, apenas o ID e a chave)
+        // 6. Atualiza as barras de vida/sanidade/esforço
         atualizarBarraDisplay('bar-display-pv', 'pv');
         atualizarBarraDisplay('bar-display-pe', 'pe');
         atualizarBarraDisplay('bar-display-san', 'san');
 
-        // REMOVIDO: await salvarNaSala(); (Deixamos o app.js cuidar disso)
+        // 7. Salva tudo automaticamente no banco de dados
+        if (typeof window.salvarNaSala === 'function') {
+            window.salvarNaSala(); 
+        }
 
     } catch (err) {
         console.error("Erro ao calcular os status:", err);
