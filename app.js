@@ -36,20 +36,36 @@ window.calcularDefesas = () => {
     const p = obterPersonagemAtual();
     if (!p) return;
 
+    if (p.defOutrosManual === undefined) {
+        p.defOutrosManual = parseInt(p.defOutros) || 0;
+    }
+
     const bonusHabilidade = window.calcularBonusDefesaPorPoderes(p);
+
+    const manual = p.defOutrosManual; 
+    const totalOutros = manual + bonusHabilidade;
+
+    const elOutros = document.getElementById('def-outros');
+    if (elOutros) {
+        elOutros.value = totalOutros;
+
+        elOutros.onchange = (e) => {
+            const valorDigitado = parseInt(e.target.value) || 0;
+
+            p.defOutrosManual = valorDigitado - bonusHabilidade;
+            p.defOutros = valorDigitado; 
+
+            window.calcularDefesas(); 
+
+            if (typeof window.salvarNaSala === 'function') window.salvarNaSala();
+        };
+    }
 
     const elAgi = document.getElementById('at-agi');
     const elEquip = document.getElementById('def-equip');
-    const elOutros = document.getElementById('def-outros');
-
+    
     const agi = parseInt(elAgi?.value || p.agi || 0);
     const equip = parseInt(elEquip?.value || p.defEquip || 0);
-
-    const manual = parseInt(elOutros?.value || p.defOutrosManual || 0);
-
-    const totalOutros = manual + bonusHabilidade;
-
-    if (elOutros) elOutros.value = totalOutros;
 
     const defesaBase = 10 + agi + equip + totalOutros;
 
