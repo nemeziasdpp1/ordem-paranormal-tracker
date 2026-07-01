@@ -57,7 +57,7 @@ window.calcularDefesas = () => {
 
             window.calcularDefesas(); 
 
-            if (typeof window.salvarNaSala === 'function') window.salvarNaSala();
+            if (typeof window.salvarNaSala === 'function') window.salvarNaSala(); 
         };
     }
 
