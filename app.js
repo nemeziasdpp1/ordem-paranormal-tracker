@@ -72,8 +72,11 @@ window.calcularDefesas = () => {
 
 window.calcularBonusDefesaPorPoderes = (p) => {
     let bonus = 0;
-    if (p.poderes && p.poderes.includes("Patrulha")) {
-        bonus += 2;
+    if (p.habilidades) {
+        const listaHabilidades = Array.isArray(p.habilidades) ? p.habilidades.join(", ") : String(p.habilidades);
+        if (listaHabilidades.includes("Patrulha")) {
+            bonus += 2;
+        }
     }
     return bonus;
 };
