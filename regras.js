@@ -18,7 +18,6 @@ export const regrasHabilidades = {
         if (!p.status) p.status = {};
         p.status.sanMax = (Number(p.status.sanMax) || 0) + bonusSAN; 
     }
-
 };
 
 export function aplicarBonusDeHabilidades(p) {
