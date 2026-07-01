@@ -212,10 +212,16 @@ window.selecionarPersonagem = (id) => {
     idPersonagemSelecionado = id;
     ocultarTodasTelas();
     const p = obterPersonagemAtual();
+    
     if (p) {
         document.getElementById('nome-titulo-personagem').innerText = p.nome;
         document.getElementById('menu-personagem').style.display = 'block';
-    } else { window.voltarParaRaiz(); }
+        window.calcularStatusClasse(p);
+        // ---------------------------
+        
+    } else { 
+        window.voltarParaRaiz(); 
+    }
 };
 
 window.mostrarListaPersonagens = () => { ocultarTodasTelas(); document.getElementById('tela-lista-personagens').style.display = 'block'; renderizarListaPersonagens(); };
