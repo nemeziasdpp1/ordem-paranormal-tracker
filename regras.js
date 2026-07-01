@@ -6,6 +6,11 @@ export const regrasHabilidades = {
         if (!p.status) p.status = {};
         p.status.pvMax = (Number(p.status.pvMax) || 0) + bonusPV; 
     },
+
+    "Patrulha": (p) => {
+        if (!p.status) p.status = {};
+        p.status.bonusDefOutros = (Number(p.status.bonusDefOutros) || 0) + 2;
+    },
     
     "Cicatrizes Psicológicas": (p) => {
         const nex = Number(p.nex) || 0;
