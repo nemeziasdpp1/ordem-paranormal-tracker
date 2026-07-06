@@ -15,7 +15,7 @@ export const regrasHabilidades = {
         if (!p.status) p.status = {};
         p.status.sanMax = (Number(p.status.sanMax) || 0) + bonusSAN;
     },
-    "Mobilidade": (p) => {
+    "Mobilidade Acrobática": (p) => {
         if (!p.status) p.status = {};
         // Bônus de Defesa
         p.status.bonusDefOutros = (Number(p.status.bonusDefOutros) || 0) + 2;
