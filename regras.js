@@ -23,8 +23,6 @@ export const regrasHabilidades = {
 export function aplicarBonusDeHabilidades(p) {
     if (!p.habilidades || !Array.isArray(p.habilidades)) return;
     if (!p.status) p.status = {};
-    p.status.pvMax = 0; // Ou o valor base do personagem
-    p.status.sanMax = 0; // Ou o valor base do personagem
     p.status.bonusDefOutros = 0;
     p.habilidades.forEach(hab => {
         if (regrasHabilidades[hab.nome]) {
