@@ -411,36 +411,38 @@ window.abrirModalOrigem = async (nomeOrigem) => {
     }
 };
 
-window.selecionarOrigem = async (nome) => {
-    const p = obterPersonagemAtual();
-    if (!p) return;
-
-    try {
-        // 1. Carrega ambos os arquivos necessários simultaneamente
-        const [todasOrigens, respHabilidades] = await Promise.all([
-            fetch('./data/origens.json').then(r => r.json()),
-            fetch('./data/habilidades.json').then(r => r.json())
-        ]);
-        
+window.selecionarOrigem = async (nome) => { 
+    console.log("🔍 [DETETIVE] 1. Função selecionarOrigem disparada para:", nome);
+    
+    const p = obterPersonagemAtual(); 
+    console.log("🔍 [DETETIVE] 2. Personagem atual retornado:", p);
+    
+    if (!p) {
+        console.warn("⚠️ [DETETIVE] O personagem atual está VAZIO/NULO! A função parou aqui em silêncio.");
+        alert("Aviso: Nenhum personagem ativo foi encontrado na memória do sistema.");
+        return;
+    }
+    
+    try { 
+        console.log("🔍 [DETETIVE] 3. Tentando carregar o origens.json...");
+        const response = await fetch('./data/origens.json'); 
+        const todasOrigens = await response.json(); 
         const origemData = todasOrigens[nome];
-
+        
         if (origemData) {
-            // Garante a estrutura necessária
+            console.log("🔍 [DETETIVE] 4. Origem encontrada no JSON. Aplicando dados...");
             if (!p.pericias) p.pericias = {};
             if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
             if (!p.habilidades) p.habilidades = [];
 
-            // 2. Limpa perícias e habilidades da origem anterior
             p.periciasOrigemAntiga.forEach(periciaAntiga => {
                 if (p.pericias[periciaAntiga]) {
                     p.pericias[periciaAntiga].treino = 0;
                 }
             });
-            p.periciasOrigemAntiga = []; 
-            // Remove apenas habilidades que foram marcadas como categoria "Origens"
+            p.periciasOrigemAntiga = [];
             p.habilidades = p.habilidades.filter(h => h.categoria !== "Origens");
-
-            // 3. Aplica novas perícias
+            
             if (origemData.pericias.length === 0) {
                 alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
             } else {
@@ -452,46 +454,36 @@ window.selecionarOrigem = async (nome) => {
                     p.periciasOrigemAntiga.push(novaPericia);
                 });
             }
-
-            // 4. Adiciona a(s) nova(s) habilidade(s) da origem
-            if (origemData.habilidade && Array.isArray(origemData.habilidade)) {
-                // Acessa o array dentro de Origens -> Todas as Origens
-                const listaHabilidadesDisponiveis = respHabilidades.Origens["Todas as Origens"];
-
-                origemData.habilidade.forEach(nomeHab => {
-                    // Busca a habilidade completa pelo nome
-                    const habCompleta = listaHabilidadesDisponiveis.find(h => h.nome === nomeHab);
-
-                    if (habCompleta) {
-                        p.habilidades.push({
-                            ...habCompleta, // Copia todos os dados (nome, desc, etc)
-                            categoria: "Origens" // Adiciona a categoria para identificar depois
-                        });
-                    } else {
-                        console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json`);
-                    }
-                });
-            }
+            
+            p.habilidades.push({ 
+                nome: nome, 
+                categoria: "Origens", 
+                descricao: origemData.descricao || "Sem descrição disponível." 
+            });
+        } else {
+            console.warn("⚠️ [DETETIVE] A origem '" + nome + "' não existe dentro do seu origens.json!");
         }
-    } catch (err) {
-        console.error("Erro ao processar origem:", err);
-    }
+    } catch (err) { 
+        console.error("❌ [DETETIVE] Erro crítico no bloco de processamento:", err); 
+    } 
 
-    // Atualiza dados e interface
+    console.log("🔍 [DETETIVE] 5. Salvando dados e atualizando propriedades...");
     p.origem = nome;
-    const inputOrigem = document.getElementById('info-origem');
-    if (inputOrigem) inputOrigem.value = nome;
+    const inputOrigem = document.getElementById('info-origem'); 
+    if (inputOrigem) inputOrigem.value = nome; 
     
-    await salvarNaSala();
+    console.log("🔍 [DETETIVE] 6. Chamando salvarNaSala()...");
+    await salvarNaSala(); 
+    console.log("🔍 [DETETIVE] 7. salvarNaSala() respondeu com sucesso!");
     
-    // Atualiza todas as interfaces
     if (typeof renderizarPericias === "function") renderizarPericias();
-    if (typeof renderizarHabilidades === "function") renderizarHabilidades();
-    if (typeof atualizarInterface === "function") atualizarInterface(); 
-
-    window.abrirAbaChar('aba-info');
+    if (typeof renderizarHabilidades === "function") renderizarHabilidades(); 
+    if (typeof atualizarInterface === "function") atualizarInterface();
+    
+    console.log("🔍 [DETETIVE] 8. Redirecionando para 'aba-info'...");
+    window.abrirAbaChar('aba-info'); 
+    console.log("🔍 [DETETIVE] 9. Fim da execução!");
 };
-
 
 // Garantir que a variável global do Set existe desde o início
 window.idsHabilidadesExpandidas = window.idsHabilidadesExpandidas || new Set();
