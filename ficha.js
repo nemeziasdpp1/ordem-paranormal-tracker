@@ -5,68 +5,86 @@ let periciasAutomaticasAtuais = [];
 import { aplicarBonusDeHabilidades } from './regras.js';
 
 window.selecionarOrigem = async (nomeDaOrigem) => {
-    // 1. Obtém o personagem e os dados necessários internamente
-    const personagemAtual = obterPersonagemAtual();
-    if (!personagemAtual) return;
+    // 1. Obtém o personagem
+    const p = window.obterPersonagemAtual();
+    if (!p) return;
 
     try {
-        const response = await fetch('./data/origens.json');
-        const origensJson = await response.json();
+        // 2. Carrega AMBOS os arquivos simultaneamente
+        const [todasOrigens, respHabilidades] = await Promise.all([
+            fetch('./data/origens.json').then(r => r.json()),
+            fetch('./data/habilidades.json').then(r => r.json())
+        ]);
 
-        // 2. Validações
-        const listaOrigens = origensJson.Origens["Todas as Origens"];
-        const origemData = listaOrigens.find(o => o.nome === nomeDaOrigem);
+        // 3. Busca os dados da origem clicada diretamente pela chave
+        const origemData = todasOrigens[nomeDaOrigem];
 
         if (!origemData) {
             console.error("Origem não encontrada: " + nomeDaOrigem);
             return;
         }
 
-        // 3. REMOVER PERÍCIAS E HABILIDADES DA ORIGEM ANTERIOR
-        periciasAutomaticasAtuais.forEach(nomePericia => {
-            if (personagemAtual.pericias[nomePericia]) {
-                personagemAtual.pericias[nomePericia].treino = 0; 
-                personagemAtual.pericias[nomePericia].bonus = 0; 
+        // Garante a estrutura necessária no personagem
+        if (!p.pericias) p.pericias = {};
+        if (!p.periciasOrigemAntiga) p.periciasOrigemAntiga = [];
+        if (!p.habilidades) p.habilidades = [];
+
+        // 4. REMOVER PERÍCIAS E HABILIDADES DA ORIGEM ANTERIOR
+        p.periciasOrigemAntiga.forEach(periciaAntiga => {
+            if (p.pericias[periciaAntiga]) {
+                p.pericias[periciaAntiga].treino = 0;
             }
         });
-        periciasAutomaticasAtuais = [];
+        p.periciasOrigemAntiga = []; // Limpa a memória
 
-        // Remove a habilidade da origem anterior
-        if (personagemAtual.habilidades) {
-            personagemAtual.habilidades = personagemAtual.habilidades.filter(h => h.categoria !== "Origens");
+        // Remove apenas habilidades que vieram de "Origens"
+        p.habilidades = p.habilidades.filter(h => h.categoria !== "Origens");
+
+        // 5. APLICAR NOVAS PERÍCIAS
+        if (origemData.pericias && origemData.pericias.length === 0) {
+            alert("Como Amnésico, lembre-se de ir até a aba de Perícias e escolher 2 perícias manualmente para treinar!");
+        } else if (origemData.pericias) {
+            origemData.pericias.forEach(novaPericia => {
+                if (!p.pericias[novaPericia]) {
+                    p.pericias[novaPericia] = { treino: 0, extra: 0 };
+                }
+                p.pericias[novaPericia].treino = 5;
+                p.periciasOrigemAntiga.push(novaPericia); // Salva para poder remover se trocar de origem depois
+            });
         }
 
-        // 4. APLICAR NOVAS PERÍCIAS
-        if (origemData.pericias && origemData.pericias.length > 0) {
-            origemData.pericias.forEach(nomePericia => {
-                if (personagemAtual.pericias[nomePericia]) {
-                    personagemAtual.pericias[nomePericia].treino = 5; 
-                    personagemAtual.pericias[nomePericia].bonus = 5; 
-                    periciasAutomaticasAtuais.push(nomePericia);
+        // 6. ADICIONAR A NOVA HABILIDADE DE ORIGEM
+        if (origemData.habilidade && Array.isArray(origemData.habilidade)) {
+            // Acessa a gaveta correta no habilidades.json
+            const listaHabilidadesDisponiveis = respHabilidades.Origens["Todas as Origens"];
+            
+            origemData.habilidade.forEach(nomeHab => {
+                const habCompleta = listaHabilidadesDisponiveis.find(h => h.nome === nomeHab);
+                if (habCompleta) {
+                    p.habilidades.push({
+                        ...habCompleta,
+                        categoria: "Origens" // Tag para identificarmos depois
+                    });
+                } else {
+                    console.warn(`Habilidade "${nomeHab}" não encontrada no habilidades.json!`);
                 }
             });
         }
 
-        // 5. ADICIONAR A NOVA HABILIDADE DE ORIGEM
-        if (!personagemAtual.habilidades) personagemAtual.habilidades = [];
-        personagemAtual.habilidades.push({
-            nome: origemData.nome,
-            categoria: "Origens",
-            descricao: origemData.descricao
-        });
+        // 7. ATUALIZAR DADOS, TELA E SALVAR
+        p.origem = nomeDaOrigem;
+        const inputOrigem = document.getElementById('info-origem');
+        if (inputOrigem) inputOrigem.value = nomeDaOrigem;
 
-        // 6. ATUALIZAR DADOS E TELA
-        personagemAtual.origem = nomeDaOrigem;
+        if (typeof window.salvarNaSala === "function") await window.salvarNaSala();
+
+        // Atualiza a interface
+        if (typeof window.renderizarPericias === "function") window.renderizarPericias();
+        if (typeof window.renderizarHabilidadesPersonagem === "function") window.renderizarHabilidadesPersonagem();
         
-        // Salva a alteração (assumindo que a função salvarNaSala existe globalmente)
-        if (typeof salvarNaSala === "function") await salvarNaSala();
-
-        // Atualiza as interfaces (chamando as funções globais diretamente)
-        if (typeof renderizarPericias === "function") renderizarPericias();
-        if (typeof renderizarHabilidades === "function") renderizarHabilidades();
-
+        window.abrirAbaChar('aba-info');
         console.log(`Origem ${nomeDaOrigem} aplicada com sucesso!`);
-        
+
     } catch (err) {
         console.error("Erro ao aplicar origem:", err);
     }
