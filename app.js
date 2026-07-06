@@ -477,11 +477,19 @@ window.toggleExpandirHabilidade = (idUnico) => {
 };
 
 window.removerHabilidadePersonagem = async (index) => {
-    const p = obterPersonagemAtual();
+    // 1. Obtém o personagem atual
+    const p = window.obterPersonagemAtual();
     if (!p || !p.habilidades) return;
+    // 2. Remove a habilidade do array
     p.habilidades.splice(index, 1);
-    await salvarNaSala();
-    window.renderizarHabilidadesPersonagem();
+    // 3. Recalcula os status (Essencial!)Ao chamar calcularStatusClasse, o sistema limpa os bônus e aplica novamente apenas com base nas habilidades que restaram.
+    // Esta função já invoca o salvarNaSala() internamente.
+    await window.calcularStatusClasse(p);
+    // 4. Atualiza a interface de habilidades
+    if (typeof window.renderizarHabilidadesPersonagem === 'function') {
+        window.renderizarHabilidadesPersonagem();
+    }
+    console.log("Habilidade removida e status recalculados com sucesso.");
 };
 
 // --- Gerenciamento do Modal de Busca e Seleção ---
