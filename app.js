@@ -40,9 +40,9 @@ window.calcularDefesas = () => {
         p.defOutrosManual = parseInt(p.defOutros) || 0;
     }
 
-    const bonusHabilidade = window.calcularBonusDefesaPorPoderes(p);
+    const bonusHabilidade = p.status?.bonusDefOutros || 0;
 
-    const manual = p.defOutrosManual; 
+    const manual = p.defOutrosManual;
     const totalOutros = manual + bonusHabilidade;
 
     const elOutros = document.getElementById('def-outros');
@@ -51,19 +51,18 @@ window.calcularDefesas = () => {
 
         elOutros.onchange = (e) => {
             const valorDigitado = parseInt(e.target.value) || 0;
-
+            // Matemática reversa
             p.defOutrosManual = valorDigitado - bonusHabilidade;
             p.defOutros = valorDigitado;
-
-            window.calcularDefesas(); 
-
-            if (typeof window.salvarNaSala === 'function') window.salvarNaSala(); 
+            
+            window.calcularDefesas();
+            if (typeof window.salvarNaSala === 'function') window.salvarNaSala();
         };
     }
 
     const elAgi = document.getElementById('at-agi');
     const elEquip = document.getElementById('def-equip');
-    
+
     const agi = parseInt(elAgi?.value || p.agi || 0);
     const equip = parseInt(elEquip?.value || p.defEquip || 0);
 
@@ -84,17 +83,6 @@ window.calcularDefesas = () => {
     if (elDef) elDef.innerText = defesaBase;
     if (elBloq) elBloq.innerText = fortitude; 
     if (elEsq) elEsq.innerText = defesaBase + reflexos;
-};
-
-window.calcularBonusDefesaPorPoderes = (p) => {
-    let bonus = 0;
-    if (p.habilidades) {
-        const listaHabilidades = Array.isArray(p.habilidades) ? p.habilidades.join(", ") : String(p.habilidades);
-        if (listaHabilidades.includes("Patrulha")) {
-            bonus += 2;
-        }
-    }
-    return bonus;
 };
 
 // --- Inicialização com OBR ---
