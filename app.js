@@ -97,7 +97,7 @@ OBR.onReady(async () => {
         personagens = [{ 
             id: "yuki", nome: "Yuki", jogador: "Dionatan", origem: "Policial", classe: "Ocultista", 
             pv: "24 / 24", san: "47 / 47", pe: "20 / 28", ini: "0", emIniciativa: false,
-            agi: "3", int: "4", vig: "2", pre: "3", forca: "1",
+            agi: "3", int: "4", vig: "2", pre: "3", for: "1",
             nex: "35", peTurno: "7", deslocamentoMetro: 9, deslocamentoQuadrado: 6, pericias: {} 
         }];
         await salvarNaSala();
@@ -736,7 +736,7 @@ window.abrirAbaChar = (idAba) => {
         document.getElementById('at-int').value = p.int || "0";
         document.getElementById('at-vig').value = p.vig || "0";
         document.getElementById('at-pre').value = p.pre || "0";
-        document.getElementById('at-for').value = p.forca || "0";
+        document.getElementById('at-for').value = p.for || "0";
         document.getElementById('def-equip').value = p.defEquip || "0";
         document.getElementById('def-outros').value = p.defOutros || "0";
         document.getElementById('def-protecao').value = p.defProtecao || "";
@@ -793,7 +793,7 @@ window.renderizarListaPersonagens = () => {
     });
     const bNovo = document.createElement('button'); bNovo.className = 'menu-btn'; bNovo.innerText = '+ Novo';
     bNovo.onclick = async () => { 
-        personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", forca:"0", emIniciativa: false, nex: "0", peTurno: "0", deslocamentoMetro: 9, deslocamentoQuadrado: 6, pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {} }); 
+        personagens.push({ id: 'char_'+Date.now(), nome: 'Novo', agi:"0", int:"0", vig:"0", pre:"0", for:"0", emIniciativa: false, nex: "0", peTurno: "0", deslocamentoMetro: 9, deslocamentoQuadrado: 6, pv: "20 / 20", san: "20 / 20", pe: "10 / 10", pericias: {} }); 
         await salvarNaSala(); renderizarListaPersonagens(); 
     };
     container.appendChild(bNovo);
