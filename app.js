@@ -233,9 +233,14 @@ window.fecharModal = () => document.getElementById('modal-pericia').style.displa
 // --- Utilitários de Dados ---
 function obterPersonagemAtual() {
     let p = personagens.find(char => char.id === idPersonagemSelecionado);
-    if (!p && personagens.length > 0) { idPersonagemSelecionado = personagens[0].id; p = personagens[0]; }
+    if (!p && personagens.length > 0) { 
+        idPersonagemSelecionado = personagens[0].id; 
+        p = personagens[0]; 
+    }
     return p;
 }
+
+window.obterPersonagemAtual = obterPersonagemAtual;
 
 // --- Navegação e UI ---
 window.selecionarPersonagem = (id) => {
