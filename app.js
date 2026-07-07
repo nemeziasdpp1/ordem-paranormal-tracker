@@ -85,6 +85,51 @@ window.calcularDefesas = () => {
     if (elEsq) elEsq.innerText = defesaBase + reflexos;
 };
 
+window.calcularDeslocamento = () => {
+    const p = window.obterPersonagemAtual();
+    if (!p) return;
+
+    // Se não houver valor manual, define o padrão do Ordem (9m / 6 quadrados)
+    if (p.deslocamentoMetroManual === undefined) {
+        p.deslocamentoMetroManual = parseFloat(p.deslocamentoMetro) || 9;
+    }
+
+    const bonusM = p.status?.bonusDeslocamento || 0;
+    // No Ordem Paranormal, cada 1.5m equivale a 1 quadrado
+    const bonusQ = Math.floor(bonusM / 1.5);
+
+    const totalM = p.deslocamentoMetroManual + bonusM;
+    const totalQ = Math.floor(p.deslocamentoMetroManual / 1.5) + bonusQ;
+
+    const elMetro = document.getElementById('ext-deslocamento-m');
+    const elQuad = document.getElementById('ext-deslocamento-q');
+
+    if (elMetro) {
+        elMetro.value = totalM;
+        elMetro.onchange = (e) => {
+            const valorDigitado = parseFloat(e.target.value) || 0;
+            // Matemática reversa
+            p.deslocamentoMetroManual = valorDigitado - bonusM;
+            p.deslocamentoMetro = valorDigitado;
+            window.calcularDeslocamento();
+            if (typeof window.salvarNaSala === 'function') window.salvarNaSala();
+        };
+    }
+
+    if (elQuad) {
+        elQuad.value = totalQ;
+        elQuad.onchange = (e) => {
+            const valorDigitado = parseInt(e.target.value) || 0;
+            // Transforma os quadrados digitados em metros para salvar na base manual
+            const quadradosManuais = valorDigitado - bonusQ;
+            p.deslocamentoMetroManual = quadradosManuais * 1.5;
+            p.deslocamentoQuadrado = valorDigitado;
+            window.calcularDeslocamento();
+            if (typeof window.salvarNaSala === 'function') window.salvarNaSala();
+        };
+    }
+};
+
 // --- Inicialização com OBR ---
 OBR.onReady(async () => {
     OBR.action.setWidth(320);
@@ -745,8 +790,7 @@ window.abrirAbaChar = (idAba) => {
         const selectNex = document.getElementById('ext-nex');
         if (selectNex) selectNex.innerHTML = gerarOpcoesNex(p.nex || 0);
         document.getElementById('ext-pe-turno').value = p.peTurno || "0";
-        document.getElementById('ext-deslocamento-m').value = p.deslocamentoMetro || "9";
-        document.getElementById('ext-deslocamento-q').value = p.deslocamentoQuadrado || "6";
+        window.calcularDeslocamento();
         document.getElementById('bar-display-pv').value = p.pv || "0 / 0";
         document.getElementById('bar-display-san').value = p.san || "0 / 0";
         document.getElementById('bar-display-pe').value = p.pe || "0 / 0";
