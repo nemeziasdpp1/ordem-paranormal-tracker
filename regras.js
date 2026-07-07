@@ -20,7 +20,7 @@ export const regrasHabilidades = {
         // Bônus de Defesa
         p.status.bonusDefOutros = (Number(p.status.bonusDefOutros) || 0) + 2;
         // Bônus de Deslocamento
-        p.status.deslocamento = (Number(p.status.deslocamento) || 0) + 3;
+        p.status.bonusDeslocamento = (Number(p.status.bonusDeslocamento) || 0) + 3;
     }
 };
 
@@ -28,11 +28,13 @@ export function aplicarBonusDeHabilidades(p) {
     if (!p.habilidades || !Array.isArray(p.habilidades)) return;
     if (!p.status) p.status = {};
     
-
+    // Zera os bônus antes de recalcular para evitar duplicação infinita
     p.status.bonusDefOutros = 0;
+    p.status.bonusDeslocamento = 0; 
+
     p.habilidades.forEach(hab => {
         if (regrasHabilidades[hab.nome]) {
-            regrasHabilidades[hab.nome](p); 
+            regrasHabilidades[hab.nome](p);
         }
     });
 }
