@@ -727,12 +727,9 @@ body {
 }
 
 .tag-afinidade {
-    background-color: #a855f7; /* A cor roxa que você usa nas tags */
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.85em;
+    color: #A347FF; /* A cor roxa exata que você pediu */
+    font-weight: bold; /* Mantém o destaque do texto */
+    background-color: transparent; /* Remove o fundo */
+    padding: 0; /* Remove o espaçamento de bordas */
     margin-right: 5px;
-    display: inline-block;
 }
