@@ -159,8 +159,10 @@ window.calcularStatusClasse = async (p) => {
         p.status.peMax = peBase;
         p.status.sanMax = sanBase;
 
-        // 4.6. Aplica os Bônus de Habilidades (O Calejado vai somar em cima do p.status.pvMax)
-        aplicarBonusDeHabilidades(p);
+        // 4.6. Aplica os Bônus de Habilidades (O Calejado, Cicatrizes Psicológicas, etc. vão somar no p.status)
+        if (typeof aplicarBonusDeHabilidades === 'function') {
+            aplicarBonusDeHabilidades(p);
+        }
 
         // 5. Tratamento especial para o formato "Atual / Máximo"
         const atualizarBarraDisplay = (idInput, chaveStatus) => {
@@ -192,27 +194,30 @@ window.calcularStatusClasse = async (p) => {
 
             if (atual > maximoFinal) atual = maximoFinal;
 
-            // Salva o valor atual corrigido no objeto status (matemática interna)
             p.status[`${chaveStatus}Atual`] = atual;
 
-            // Monta o texto final
             const textoFinal = `${atual} / ${maximoFinal}`;
 
-            // Salva direto no objeto principal (para o Banco de Dados)
             p[chaveStatus] = textoFinal; 
 
-            // Exibe na tela
             if (inputEl) {
                 inputEl.value = textoFinal;
             }
         };
 
-        // 6. Atualiza as barras de vida/sanidade/esforço
         atualizarBarraDisplay('bar-display-pv', 'pv');
         atualizarBarraDisplay('bar-display-pe', 'pe');
         atualizarBarraDisplay('bar-display-san', 'san');
 
-        // 7. Salva tudo automaticamente no banco de dados
+        if (typeof window.calcularDefesas === 'function') {
+            window.calcularDefesas();
+        }
+        if (typeof window.calcularDeslocamento === 'function') {
+            window.calcularDeslocamento();
+        }
+        // ----------------------------------------------------------------------------
+
+        // 7. Salva tudo automaticamente no banco de dados da sala
         if (typeof window.salvarNaSala === 'function') {
             window.salvarNaSala(); 
         }
