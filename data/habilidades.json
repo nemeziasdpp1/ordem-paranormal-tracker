@@ -199,18 +199,21 @@
       { "nome": "Vislumbres do Passado", "categoria": "Origens", "descricao": "Uma vez por sessão, pode fazer um teste de Intelecto (DT 10) para reconhecer lugares/pessoas. Se passar, recebe 1d4 PE temporários e info útil." }
     ]
   },
-  "Poderes Paranormais": {"Todos os Poderes": [
+  "Poderes Paranormais": {
+    "Conhecimento": [
     {
-      "nome": "Visão do Oculto",
+      "nome": "Expansão de Conhecimento",
       "categoria": "Poderes Paranormais",
+      "subcategoria": "Conhecimento",
       "elemento": "Conhecimento",
-      "descricao": "Você ignora camuflagem por escuridão e recebe +5 em testes de Percepção."
+      "descricao": "Você se conecta com o Conhecimento do Outro Lado, rompendo os limites de sua compreensão. Você aprende um poder de classe que não pertença à sua classe (caso o poder possua pré-requisitos, você precisa preenchê-los). Pré-requisito: Conhecimento 1. Afinidade: você aprende um segundo poder de classe que não pertença à sua classe."
     },
     {
-      "nome": "Sangue de Ferro",
+      "nome": "Percepção Paranormal",
       "categoria": "Poderes Paranormais",
-      "elemento": "Sangue",
-      "descricao": "Você recebe +2 PV para cada 5% de NEX."
+      "subcategoria": "Conhecimento",
+      "elemento": "Conhecimento",
+      "descricao": "O Conhecimento sussurra em sua mente. Em cenas de investigação, sempre que fizer um teste para procurar pistas, você pode rolar novamente um dado com resultado menor que 10. Você deve aceitar a segunda rolagem, mesmo que seja menor que a primeira. Afinidade: você pode rolar novamente até dois dados com resultado menor que 10."
     }
   ]}
 }
