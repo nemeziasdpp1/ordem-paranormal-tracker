@@ -678,3 +678,50 @@ body {
     color: #a855f7; /* Cor roxa da imagem */
     font-size: 0.9em;
 }
+
+/* Base universal para todas as tags de elementos */
+.tag-elemento {
+    display: inline-block;
+    font-family: 'Inter', sans-serif; /* Mude para a fonte principal do seu projeto se preferir */
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-left: 8px;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    color: #ffffff; /* Texto branco padrão para dar contraste */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilização específica por cor de elemento */
+.tag-elemento.conhecimento {
+    background-color: #dfb817; /* Amarelo Ouro característico */
+    color: #000000; /* Texto preto para ficar legível no fundo amarelo */
+}
+
+.tag-elemento.sangue {
+    background-color: #9c0c0c; /* Vermelho Sangue escuro */
+}
+
+.tag-elemento.morte {
+    background-color: #1c1c1c; /* Preto/Cinza bem escuro do Lodo */
+    border: 1px solid #444444;
+}
+
+.tag-elemento.energia {
+    background-color: #6a0dad; /* Roxo/Violeta caótico de Energia */
+}
+
+.tag-elemento.medo {
+    background-color: #ffffff; /* Branco Puro do Medo */
+    color: #000000; /* Texto preto */
+    border: 1px solid #000000;
+}
+
+.tag-elemento.varia {
+    background-color: #ffffff; /* Branco Puro do Medo */
+    color: #000000; /* Texto preto */
+    border: 1px solid #000000;
+}
