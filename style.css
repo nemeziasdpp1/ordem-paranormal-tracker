@@ -698,7 +698,6 @@ body {
 /* Estilização específica por cor de elemento */
 .tag-elemento.conhecimento {
     background-color: #dfb817; /* Amarelo Ouro característico */
-    color: #000000; /* Texto preto para ficar legível no fundo amarelo */
 }
 
 .tag-elemento.sangue {
