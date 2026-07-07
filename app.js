@@ -479,6 +479,12 @@ window.renderizarHabilidadesPersonagem = () => {
         // Verifica se a habilidade possui regras especiais de cálculo
         const temCalculoEspecial = Object.prototype.hasOwnProperty.call(regrasHabilidades, hab.nome);
         
+        // Processa a descrição: se encontrar "Afinidade:", coloca a tag nela
+        let descricaoProcessada = hab.descricao || "";
+        if (descricaoProcessada.includes("Afinidade:")) {
+            descricaoProcessada = descricaoProcessada.replace("Afinidade:", '<span class="tag-afinidade">Afinidade:</span>');
+        }
+
         // Define a tag do elemento (usada agora dentro do corpo expandido)
         let tagElemento = "";
         if (hab.elemento) {
@@ -505,7 +511,7 @@ window.renderizarHabilidadesPersonagem = () => {
             ${expandida ? `
                 <div class="card-hab-corpo">
                     ${tagElemento}
-                    <p style="margin: 0 0 10px 0;">${hab.descricao}</p>
+                    <p style="margin: 0 0 10px 0;">${descricaoProcessada}</p>
                     <div style="display:flex; justify-content:space-between; font-size:11px;">
                         <span onclick="event.stopPropagation(); window.removerHabilidadePersonagem(${index})" style="color:#ef4444; cursor:pointer;">Remover</span>
                         <span style="color:#22c55e; cursor:pointer;">Editar</span>
