@@ -1,18 +1,19 @@
 {
   "Rituais": [
-    { 
-      "nome": "Arma de Sangue", 
-      "elemento": "Sangue", 
-      "custo": "2 PE", 
-      "dt": "15", 
-      "descricao": "Você molda o sangue para criar uma arma..." 
-    },
-    { 
-      "nome": "Cicatrização", 
-      "elemento": "Morte", 
-      "custo": "2 PE", 
-      "dt": "15", 
-      "descricao": "Você acelera a regeneração das células..." 
+    {
+      "nome": "Arma de Sangue",
+      "elemento": ["Sangue"],
+      "circulo": 1,
+      "execucao": "Padrão",
+      "alcance": "Pessoal",
+      "alvo": "Você",
+      "duracao": "Cena",
+      "efeito": "Você molda o sangue...",
+      "resistencia": null,
+      "dados": "1d6",
+      "dadosDiscente": "2d6",
+      "dadosVerdadeiro": "3d6",
+      "descricao": "Você molda o sangue para criar uma arma..."
     }
   ]
 }
