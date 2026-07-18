@@ -674,27 +674,37 @@ window.filtrarHabilidadesModal = () => {
 window.adicionarHabilidadeAoPersonagem = async (idHab) => {
     const p = obterPersonagemAtual();
     if (!p) return;
+    
     if (!p.habilidades) p.habilidades = [];
-
     const listaOriginal = (bibliotecaHabilidades[abaModalHabAtiva] && bibliotecaHabilidades[abaModalHabAtiva][subFiltroModalHabAtivo]) || [];
     
     // Procura pela habilidade combinando a trava de segurança (id ou nome)
     const habEncontrada = listaOriginal.find(h => (h.id || h.nome) === idHab);
-
+    
     if (habEncontrada) {
         // Evita duplicados verificando também com a mesma trava
         if (p.habilidades.some(h => (h.id || h.nome) === idHab)) {
             alert("O personagem já possui esta habilidade.");
             return;
         }
-
+        
+        // 1. Adiciona a habilidade na memória do personagem
         p.habilidades.push({ ...habEncontrada });
-        await salvarNaSala();
+        
+        // 2. RECÁLCULO TOTAL (Isso garante que o regras.js seja lido imediatamente)
+        if (typeof window.calcularStatusClasse === 'function') {
+            // Essa função já recalcula tudo e chama o salvarNaSala() internamente!
+            await window.calcularStatusClasse(p); 
+        } else {
+            // Fallback apenas por segurança
+            await salvarNaSala(); 
+        }
+
+        // 3. Atualiza a interface
         window.renderizarHabilidadesPersonagem();
         window.fecharModalHabilidades();
     }
 };
-
 // --- Funções de Edição e Salvar ---
 window.toggleModoEdicao = async () => {
     const btn = document.getElementById('btn-toggle-atrib');
