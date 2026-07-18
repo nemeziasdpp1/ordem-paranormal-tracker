@@ -1049,3 +1049,57 @@ window.selecionarClasse = async (nome) => {
 
     window.abrirAbaChar('aba-info');
 };
+
+// Função para abrir o modal/menu de seleção de rituais
+async function abrirModalRitual() {
+    try {
+        const resp = await fetch('data/rituais.json');
+        const data = await resp.json();
+        const lista = data.Rituais;
+
+        // Aqui você abre o seu Modal. 
+        // Se você usa um modal genérico, injete a lista nele:
+        abrirModalSelecao(lista, "Ritual", (ritualSelecionado) => {
+            adicionarRitualAFicha(ritualSelecionado);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar rituais:", error);
+    }
+}
+
+// Função para adicionar o ritual ao objeto do personagem e salvar
+function adicionarRitualAFicha(ritual) {
+    if (!personagem.rituais) personagem.rituais = [];
+    
+    // Evita duplicatas
+    if (!personagem.rituais.find(r => r.nome === ritual.nome)) {
+        personagem.rituais.push(ritual);
+        salvarNaSala(); // Sua função que salva o estado
+        renderizarRituais(); // Função que desenha na tela
+    }
+}
+
+// Função para desenhar os rituais na tela da ficha
+function renderizarRituais() {
+    const container = document.getElementById('lista-rituais-adicionados');
+    container.innerHTML = ''; // Limpa o que já existe
+
+    if (personagem.rituais) {
+        personagem.rituais.forEach(ritual => {
+            const div = document.createElement('div');
+            div.className = 'item-ritual';
+            div.innerHTML = `
+                <span><strong>${ritual.nome}</strong> (${ritual.elemento}) - ${ritual.custo}</span>
+                <button onclick="removerRitual('${ritual.nome}')">x</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+}
+
+// Função para remover
+function removerRitual(nome) {
+    personagem.rituais = personagem.rituais.filter(r => r.nome !== nome);
+    salvarNaSala();
+    renderizarRituais();
+}
