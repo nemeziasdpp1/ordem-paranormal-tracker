@@ -1,1 +1,18 @@
-
+{
+  "Rituais": [
+    { 
+      "nome": "Arma de Sangue", 
+      "elemento": "Sangue", 
+      "custo": "2 PE", 
+      "dt": "15", 
+      "descricao": "Você molda o sangue para criar uma arma..." 
+    },
+    { 
+      "nome": "Cicatrização", 
+      "elemento": "Morte", 
+      "custo": "2 PE", 
+      "dt": "15", 
+      "descricao": "Você acelera a regeneração das células..." 
+    }
+  ]
+}
