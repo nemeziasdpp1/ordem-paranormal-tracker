@@ -10,9 +10,6 @@
       "duracao": "Cena",
       "efeito": "Você molda o sangue...",
       "resistencia": null,
-      "dados": "1d6",
-      "dadosDiscente": "2d6",
-      "dadosVerdadeiro": "3d6",
       "descricao": "Você molda o sangue para criar uma arma..."
     }
   ]
