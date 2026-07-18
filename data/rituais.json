@@ -1,6 +1,8 @@
 {
-  "Rituais": [
-    {
+  "Rituais": {
+    "Sangue": {
+      "1": [
+        {
       "nome": "Arma de Sangue",
       "elemento": ["Sangue"],
       "circulo": 1,
@@ -15,4 +17,6 @@
       "verdadeiro (+5 PE)": "muda o bônus para +5 em testes de ataque e +2 na margem de ameaça e no multiplicador de crítico. Requer 3º círculo e afinidade."
     }
   ]
+    }
+  }
 }
